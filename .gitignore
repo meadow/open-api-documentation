@@ -1,0 +1,14 @@
+node_modules/*
+emails/react/node_modules/*
+emails/react/dist.js
+config/*.json
+.DS_Store
+generate.js
+coverage
+npm-debug.log
+.nyc_output
+coverage.lcov
+app/scripts/*.csv
+newrelic_agent.log
+vividcortex.js
+.idea/

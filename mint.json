@@ -81,6 +81,13 @@
         "api-reference/endpoint/create",
         "api-reference/endpoint/delete"
       ]
+    },
+    {
+      "group": "Endpoints: Orders",
+      "pages": [
+        "api-reference/endpoints/orders/get-status",
+        "api-reference/endpoints/orders/post-pricing"
+      ]
     }
   ],
   "footerSocials": {
