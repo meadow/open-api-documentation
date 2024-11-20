@@ -2,57 +2,28 @@
   "$schema": "https://mintlify.com/schema.json",
   "name": "Starter Kit",
   "logo": {
-    "dark": "/logo/dark.svg",
-    "light": "/logo/light.svg"
+    "dark": "/images/logo-white.png",
+    "light": "/images/logo-purple.png"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "/images/favicon.svg",
   "colors": {
-    "primary": "#0D9373",
-    "light": "#07C983",
-    "dark": "#0D9373",
-    "anchors": {
-      "from": "#0D9373",
-      "to": "#07C983"
-    }
+    "primary": "#8019e4",
+    "light": "#63dde8",
+    "dark": "#8019e4"
   },
-  "topbarLinks": [
-    {
-      "name": "Support",
-      "url": "mailto:hi@mintlify.com"
-    }
-  ],
-  "topbarCtaButton": {
-    "name": "Dashboard",
-    "url": "https://dashboard.mintlify.com"
+  "layout": "solidSidenav",
+  "sidebar": {
+    "items": "card"
   },
-  "tabs": [
-    {
-      "name": "API Reference",
-      "url": "api-reference"
-    }
-  ],
-  "anchors": [
-    {
-      "name": "Documentation",
-      "icon": "book-open-cover",
-      "url": "https://mintlify.com/docs"
-    },
-    {
-      "name": "Community",
-      "icon": "slack",
-      "url": "https://mintlify.com/community"
-    },
-    {
-      "name": "Blog",
-      "icon": "newspaper",
-      "url": "https://mintlify.com/blog"
-    }
-  ],
+  "codeBlock": {
+    "mode": "auto"
+  },
   "navigation": [
     {
-      "group": "Get Started",
+      "group": "Using the API",
       "pages": [
         "introduction",
+        "authentication",
         "quickstart",
         "development"
       ]
@@ -85,14 +56,18 @@
     {
       "group": "Endpoints: Orders",
       "pages": [
-        "api-reference/endpoints/orders/get-status",
-        "api-reference/endpoints/orders/post-pricing"
+        "endpoints/orders/get-status",
+        "endpoints/orders/post-pricing",
+        "endpoints/orders/post-create"
       ]
     }
   ],
   "footerSocials": {
-    "x": "https://x.com/mintlify",
-    "github": "https://github.com/mintlify",
-    "linkedin": "https://linkedin.com/company/mintlify"
+    "github": "https://github.com/meadow"
+  },
+  "api": {
+    "paramFields": {
+      "expanded": "all"
+    }
   }
 }

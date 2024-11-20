@@ -8,6 +8,9 @@
   "servers": [
     {
       "url": "https://api-staging.getmeadow.com"
+    },
+    {
+      "url": "https://api.getmeadow.com"
     }
   ],
   "security": [
@@ -223,7 +226,7 @@
                     },
                     "netPrice": {
                       "type": "number",
-                      "description": "The final price of the order before payment fees."
+                      "description": "The final price of the order before payment & delivery fees."
                     },
                     "customerGrandTotal": {
                       "type": "number",
@@ -282,7 +285,7 @@
                     },
                     "taxes": {
                       "type": "array",
-                      "description": "All of the taxes applied that will be applied if an order is placed with this cart",
+                      "description": "All of the taxes that will be applied if an order is placed with this cart",
                       "items": {
                         "type": "object",
                         "properties": {
@@ -307,7 +310,7 @@
                     },
                     "idempotencyKey": {
                       "type": "string",
-                      "description": "A string that can be used when creating an order to ensure idempotency and avoid double orders due to server miscommunication."
+                      "description": "A string that should be used when creating an order to ensure idempotency and avoid double orders due to server miscommunication."
                     }
                   }
                 },
@@ -431,7 +434,501 @@
               }
             }
           },
-          "404": {
+          "4XX": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/orders": {
+      "post": {
+        "description": "Create an order for a customer",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["type", "lineItems", "customer", "idempotencyKey"],
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "description": "Order type - must be either `delivery` or `pickup`"
+                  },
+                  "lineItems": {
+                    "type": "array",
+                    "description": "An array of products to buy",
+                    "items": {
+                      "type": "object",
+                      "required": ["productOptionId", "quantity"],
+                      "properties": {
+                        "productOptionId": {
+                          "type": "number",
+                          "description": "The ID from the menu api response (`https://daffodil.getmeadow.com`) `data[].options[].id`"
+                        },
+                        "quantity": {
+                          "type": "number",
+                          "description": "The quantity of this product option to purchase"
+                        }
+                      }
+                    }
+                  },
+                  "customer": {
+                    "type": "object",
+                    "description": "The customer for this order. This object is optional, but if provided, must have a `firstName`, `lastName` and either an `email` or `phone`.",
+                    "required": ["firstName", "lastName"],
+                    "properties": {
+                      "firstName": {
+                        "type": "string",
+                        "description": "The first name of the customer"
+                      },
+                      "lastName": {
+                        "type": "string",
+                        "description": "The last name of the customer. Multiple last names may be separated by a space."
+                      },
+                      "email": {
+                        "type": "string",
+                        "description": "The email of the customer. At least one of email, phone must be provided."
+                      },
+                      "phone": {
+                        "type": "string",
+                        "description": "The phone of the customer. At least one of email, phone must be provided."
+                      },
+                      "birthday": {
+                        "type": "string",
+                        "description": "The birthday submitted as `YYYY-MM-DD`"
+                      }
+                    }
+                  },
+                  "address": {
+                    "type": "object",
+                    "description": "The address of the customer. Required if `type` is set to `delivery`",
+                    "required": ["street1", "city", "state", "postalCode"],
+                    "properties": {
+                      "street1": {
+                        "type": "string",
+                        "description": ""
+                      },
+                      "street2": {
+                        "type": "string",
+                        "description": ""
+                      },
+                      "city": {
+                        "type": "string",
+                        "description": ""
+                      },
+                      "state": {
+                        "type": "string",
+                        "description": ""
+                      },
+                      "postalCode": {
+                        "type": "string",
+                        "description": ""
+                      }
+                    }
+                  },
+                  "idempotencyKey": {
+                    "type": "string",
+                    "description": "Key to help avoid double orders due to server miscommunication. Please see \"Idempotent Requests\" section. Please use the string provided to you by the pricing endpoint. This value must be a v4 UUID."
+                  },
+                  "deliveryNotes": {
+                    "type": "string",
+                    "description": "Optional notes field to help fulfill the order (Example: please call on delivery)"
+                  },
+                  "deliveryFee": {
+                    "type": "number",
+                    "description": "A fee that will be passed through and added onto the `customerGrandTotal`"
+                  },
+                  "deliveryFeeDescription": {
+                    "type": "string",
+                    "description": "A passthrough title for the delivery fee"
+                  },
+                  "discountCodes": {
+                    "type": "array",
+                    "description": "An array of promo codes to redeem. These codes must already exist in the Meadow backend.",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "example": {
+                "lineItems": [
+                  {
+                    "productOptionId": 1899,
+                    "quantity": 3
+                  }
+                ],
+                "type": "delivery",
+                "address": {
+                  "street1": "60 13th St",
+                  "city": "San Francisco",
+                  "state": "California",
+                  "postalCode": "94103"
+                },
+                "customer": {
+                  "firstName": "Perrin",
+                  "lastName": "Aybara",
+                  "email": "perrin@getmeadow.com"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Order cart pricing response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "The ID for the order. Used to fetch status updates"
+                    },
+                    "status": {
+                      "type": "string",
+                      "description": "The status of the order. Will be set to `draft` or `new` depending on the organization's settings."
+                    },
+                    "totalPrice": {
+                      "type": "number",
+                      "description": "The subtotal price before discounts, credits, adjustments are taken into account."
+                    },
+                    "netPrice": {
+                      "type": "number",
+                      "description": "The final price of the order before payment & delivery fees."
+                    },
+                    "customerGrandTotal": {
+                      "type": "number",
+                      "description": "The cost of the order that the customer will pay"
+                    },
+                    "lineItems": {
+                      "type": "array",
+                      "description": "The line items with pricing information attached",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "productOptionId": {
+                            "type": "number",
+                            "description": "The product option ID for this line item"
+                          },
+                          "quantity": {
+                            "type": "number",
+                            "description": "The quantity of this line item"
+                          },
+                          "unitPrice": {
+                            "type": "number",
+                            "description": "The unit price for a single quantity of this line item"
+                          },
+                          "subtotalPrice": {
+                            "type": "number",
+                            "description": "The total cost of all quantities of this line item before discounts"
+                          },
+                          "finalPrice": {
+                            "type": "number",
+                            "description": "The final cost of this line item after discounts"
+                          },
+                          "discounts": {
+                            "type": "array",
+                            "description": "An array of automatic discounts applied to this line item (may be empty)",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "amountUsed": {
+                                  "type": "number",
+                                  "description": "The amount of the discount represented in cents."
+                                },
+                                "description": {
+                                  "type": "string",
+                                  "description": "The description of the discount, which may be shown to the customer"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "discounts": {
+                      "type": "array",
+                      "description": "An array of order level discounts",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "amountUsed": {
+                            "type": "number",
+                            "description": "The amount of the discount represented in cents"
+                          },
+                          "description": {
+                            "type": "string",
+                            "description": "The description of the discount, which may be shown to the customer"
+                          }
+                        }
+                      }
+                    },
+                    "credits": {
+                      "type": "array",
+                      "description": "An array of credits applied. May be store credit or promo codes attached to the customers account.",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "amountUsed": {
+                            "type": "number",
+                            "description": "The amount of the credit used represented in cents"
+                          },
+                          "description": {
+                            "type": "string",
+                            "description": "The description of the credit, which may be shown to the customer"
+                          }
+                        }
+                      }
+                    },
+                    "adjustments": {
+                      "type": "array",
+                      "description": "An array of adjustments made to the order. May be a tax exemption or other future Meadow POS behavior.",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "amount": {
+                            "type": "number",
+                            "description": "The amount of the adjustment represented in cents."
+                          },
+                          "description": {
+                            "type": "string",
+                            "description": "The description of the adjustment, which may be shown to the customer"
+                          }
+                        }
+                      }
+                    },
+                    "taxes": {
+                      "type": "array",
+                      "description": "All of the taxes applied to this order",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "amount": {
+                            "type": "number",
+                            "description": "The amount of the tax represented in cents to show to the user"
+                          },
+                          "description": {
+                            "type": "string",
+                            "description": "The description of the tax to show to the user"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "data": {
+                    "id": "176099362",
+                    "organizationId": 1,
+                    "totalPrice": 22650,
+                    "netPrice": 21191,
+                    "deliveryNotes": null,
+                    "createdAt": "2022-05-03T20:56:27.830Z",
+                    "updatedAt": "2022-05-03T20:56:27.830Z",
+                    "customerGrandTotal": 21191,
+                    "type": "delivery",
+                    "source": "open-api",
+                    "status": "draft",
+                    "taxExempt": true,
+                    "isMedical": false,
+                    "idempotencyKey": null,
+                    "deliveryFee": null,
+                    "deliveryFeeDescription": null,
+                    "apiConsumerName": "Meadow Integrator",
+                    "credits": [
+                      {
+                        "id": 342,
+                        "creditId": 360,
+                        "orderId": "176099362",
+                        "type": "store-credit",
+                        "amountUsed": 500,
+                        "description": "Store Credit",
+                        "createdAt": "2022-05-03T20:56:27.830Z",
+                        "updatedAt": "2022-05-03T20:56:27.830Z",
+                        "percent": null
+                      }
+                    ],
+                    "lineItems": [
+                      {
+                        "id": 15258,
+                        "orderId": "176099362",
+                        "productOptionId": 1899,
+                        "quantity": 3,
+                        "productId": 758,
+                        "productName": "Kush Minntz",
+                        "productUnit": "gram",
+                        "productStrainType": "hybrid",
+                        "optionName": "Eighth",
+                        "optionAmount": 3.54,
+                        "optionPrice": 6500,
+                        "createdAt": "2022-05-03T20:56:27.830Z",
+                        "updatedAt": "2022-05-03T20:56:27.830Z",
+                        "productIsFeatured": true,
+                        "productCategoryId": 1,
+                        "productSubCategoryIds": [],
+                        "productBrand": "Minntz",
+                        "deletedAt": null,
+                        "productUnitPlural": "grams",
+                        "unitPrice": 6500,
+                        "subtotalPrice": 19500,
+                        "finalPrice": 19500,
+                        "productBrandId": 226,
+                        "optionSalesPrice": null,
+                        "discounts": []
+                      },
+                      {
+                        "id": 15259,
+                        "orderId": "176099362",
+                        "productOptionId": 2307,
+                        "quantity": 1,
+                        "productId": 994,
+                        "productName": "Blue Dream",
+                        "productUnit": "gram",
+                        "productStrainType": "none",
+                        "optionName": "Eighth",
+                        "optionAmount": 3.5,
+                        "optionPrice": 4000,
+                        "createdAt": "2022-05-03T20:56:27.830Z",
+                        "updatedAt": "2022-05-03T20:56:27.830Z",
+                        "productIsFeatured": false,
+                        "productCategoryId": 1,
+                        "productSubCategoryIds": [],
+                        "productBrand": "Angora Heirloom",
+                        "deletedAt": null,
+                        "productUnitPlural": "grams",
+                        "unitPrice": 3500,
+                        "subtotalPrice": 3500,
+                        "finalPrice": 3150,
+                        "productBrandId": 330,
+                        "optionSalesPrice": 3500,
+                        "discounts": [
+                          {
+                            "id": 1448,
+                            "orderId": "176099362",
+                            "orderLineItemId": 15259,
+                            "discountId": 166,
+                            "type": "percent",
+                            "amount": 10,
+                            "amountUsed": 350,
+                            "description": "10% Off Tuesday Heirloom's",
+                            "createdAt": "2022-05-03T20:56:27.830Z",
+                            "updatedAt": "2022-05-03T20:56:27.830Z",
+                            "deletedAt": null,
+                            "adminId": null
+                          }
+                        ]
+                      }
+                    ],
+                    "taxes": [
+                      {
+                        "id": 15140,
+                        "orderId": "176099362",
+                        "amount": 0,
+                        "description": "State Sales Tax",
+                        "createdAt": "2022-05-03T20:56:27.830Z",
+                        "updatedAt": "2022-05-03T20:56:27.830Z",
+                        "deletedAt": null,
+                        "taxId": 59,
+                        "rate": "9.5",
+                        "amountBeforeExemption": 2061,
+                        "amountExempted": 2061,
+                        "included": false,
+                        "exemptable": true,
+                        "encompass": true,
+                        "excludedProductCategoryIds": [],
+                        "nonExemptableProductCategoryIds": [
+                          7
+                        ],
+                        "normalRate": "9.5",
+                        "type": "standard"
+                      },
+                      {
+                        "id": 15141,
+                        "orderId": "176099362",
+                        "amount": 1555,
+                        "description": "Excise Tax",
+                        "createdAt": "2022-05-03T20:56:27.830Z",
+                        "updatedAt": "2022-05-03T20:56:27.830Z",
+                        "deletedAt": null,
+                        "taxId": 133,
+                        "rate": "15",
+                        "amountBeforeExemption": 1555,
+                        "amountExempted": 0,
+                        "included": false,
+                        "exemptable": false,
+                        "encompass": false,
+                        "excludedProductCategoryIds": [
+                          7
+                        ],
+                        "nonExemptableProductCategoryIds": [],
+                        "normalRate": "15",
+                        "type": "excise"
+                      },
+                      {
+                        "id": 15142,
+                        "orderId": "176099362",
+                        "amount": 0,
+                        "description": "City Tax (Included)",
+                        "createdAt": "2022-05-03T20:56:27.830Z",
+                        "updatedAt": "2022-05-03T20:56:27.830Z",
+                        "deletedAt": null,
+                        "taxId": 134,
+                        "rate": "10",
+                        "amountBeforeExemption": 2014,
+                        "amountExempted": 2014,
+                        "included": true,
+                        "exemptable": true,
+                        "encompass": false,
+                        "excludedProductCategoryIds": [],
+                        "nonExemptableProductCategoryIds": [],
+                        "normalRate": "10",
+                        "type": "standard"
+                      }
+                    ],
+                    "discounts": [
+                      {
+                        "id": 4586,
+                        "discountId": 165,
+                        "orderId": "176099362",
+                        "type": "flat",
+                        "amount": 500,
+                        "amountUsed": 500,
+                        "description": "Tuesday $5",
+                        "createdAt": "2022-05-03T20:56:27.830Z",
+                        "updatedAt": "2022-05-03T20:56:27.830Z",
+                        "deletedAt": null,
+                        "adminId": null
+                      }
+                    ],
+                    "adjustments": [
+                      {
+                        "id": 1722,
+                        "orderId": "176099362",
+                        "amount": -2014,
+                        "description": "City Tax Exemption",
+                        "createdAt": "2022-05-03T20:56:27.830Z",
+                        "updatedAt": "2022-05-03T20:56:27.830Z",
+                        "deletedAt": null,
+                        "isTaxExemption": true,
+                        "taxId": 134,
+                        "adminId": null
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "4XX": {
             "description": "Unexpected error",
             "content": {
               "application/json": {
@@ -609,7 +1106,7 @@
               },
               "code": {
                 "type": "string",
-                "example": "RESOURCE_NOT_FOUND"
+                "example": "CODE_OF_ERROR_WILL_BE_HERE"
               }
             }
           }

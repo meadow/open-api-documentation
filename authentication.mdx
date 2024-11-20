@@ -1,0 +1,18 @@
+---
+title: Authentication
+description: How to authenticate with the Meadow API
+---
+
+<Warning>Every request must be made via `https` or it will fail.</Warning>
+
+## Headers
+
+Every request must be authenticated by sending these two headers:
+
+<ParamField header="X-Consumer-Key" type="string" required={true}>
+  A string that will be provided to you by a Meadow representative
+</ParamField>
+
+<ParamField header="X-Client-Key" type="string" required={true}>
+  A string that will be generated in the Meadow UI by a mutual client of Meadow and your company
+</ParamField>

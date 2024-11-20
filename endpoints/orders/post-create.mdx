@@ -1,0 +1,14 @@
+---
+title: 'Create Order'
+openapi: 'POST /api/v1/orders'
+---
+
+# Idempotency
+
+In order to prevent accidental double orders from being placed from issues such as network failures, Meadow uses an `idempotencyKey` strategy. For every request to create an order, the request body must include an `idempotencyKey` which is a unique UUID v4 string.
+
+If an order for this key has already been placed, it will be returned as the data instead of placing a duplicate order.
+
+In order to simplify this process for integrators, an `idempotencyKey` is returned from the [pricing request (POST /api/v1/orders/pricing)](/endpoints/orders/post-pricing). Please save the key from the last pricing request you use and submit it along with the order.
+
+Please reach out if you have any questions about this.

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="600px" height="600px" viewBox="0 0 600 600" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Untitled 5</title>
+    <g id="Page-1" stroke="none" stroke-width="0" fill="none" fill-rule="evenodd">
+        <rect id="Rectangle" fill="#9600ED" x="0" y="0" width="600" height="600" rx="50"></rect>
+        <g id="meadow-logo-mark-white" transform="translate(25, 25)" fill="#FFFFFF" fill-rule="nonzero">
+            <path d="M92,368.5 L115.8,344.71 C128.092236,332.384237 128.092236,312.435763 115.8,300.11 L92,276.37 L115.78,252.59 C128.071085,240.267664 128.071085,220.322336 115.78,208 L92,184.25 L2.84217094e-14,276.37 L92,368.5 Z" id="Path"></path>
+            <path d="M184.14,92.13 L208.33,116.31 C220.425815,128.355964 239.984185,128.355964 252.08,116.31 L279.61,88.78 L303.8,112.94 C315.899286,125.005895 335.480714,125.005895 347.58,112.94 L368.39,92.13 L276.15,-2.84217094e-14 L184.14,92.13 Z" id="Path"></path>
+            <path d="M300.05,436.84 L276.15,460.59 L252.4,436.84 C240.094793,424.535826 220.145207,424.535826 207.84,436.84 L207.84,436.84 L184,460.59 L276.12,552.8 L368.27,460.71 L344.52,436.96 C332.258228,424.68246 312.377853,424.628814 300.05,436.84 Z" id="Path"></path>
+            <path d="M460.51,184.25 L440.16,204.6 C427.855826,216.905207 427.855826,236.854793 440.16,249.16 L440.16,249.16 L463.92,272.91 L436.79,300.04 C424.498915,312.362336 424.498915,332.307664 436.79,344.63 L460.57,368.41 L552.7,276.29 L460.51,184.25 Z" id="Path"></path>
+            <rect id="Rectangle" transform="translate(276.2503, 276.3699) rotate(-45) translate(-276.2503, -276.3699)" x="211.120306" y="211.239914" width="130.26" height="130.26"></rect>
+            <rect id="Rectangle" transform="translate(115.0668, 115.1834) rotate(-45) translate(-115.0668, -115.1834)" x="49.9367575" y="82.6084493" width="130.26" height="65.15"></rect>
+            <rect id="Rectangle" transform="translate(437.4863, 437.5722) rotate(-45) translate(-437.4863, -437.5722)" x="372.356281" y="404.997236" width="130.26" height="65.15"></rect>
+            <rect id="Rectangle" transform="translate(115.0568, 437.5605) rotate(-45) translate(-115.0568, -437.5605)" x="82.4817705" y="372.430533" width="65.15" height="130.26"></rect>
+            <rect id="Rectangle" transform="translate(437.4668, 115.1398) rotate(-45) translate(-437.4668, -115.1398)" x="404.891771" y="50.0097967" width="65.15" height="130.26"></rect>
+        </g>
+    </g>
+</svg>
