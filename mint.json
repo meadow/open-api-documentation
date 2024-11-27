@@ -38,11 +38,25 @@
       ]
     },
     {
+      "group": "Endpoints: Analytics",
+      "pages": [
+        "endpoints/analytics/get-orders"
+      ]
+    },
+    {
       "group": "Endpoints: Orders",
       "pages": [
         "endpoints/orders/get-status",
         "endpoints/orders/post-pricing",
         "endpoints/orders/post-create"
+      ]
+    },
+    {
+      "group": "Endpoints: Products",
+      "pages": [
+        "endpoints/products/get-menu",
+        "endpoints/products/get-tags",
+        "endpoints/products/put-update-upc"
       ]
     }
   ],
