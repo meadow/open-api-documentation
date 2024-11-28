@@ -40,27 +40,27 @@
     {
       "group": "Endpoints: Analytics",
       "pages": [
-        "endpoints/analytics/get-customers",
+        "endpoints/analytics/list-customers",
         "endpoints/analytics/retrieve-customer",
-        "endpoints/analytics/get-orders",
-        "endpoints/analytics/get-order-detail",
-        "endpoints/analytics/get-order-returns"
+        "endpoints/analytics/list-orders",
+        "endpoints/analytics/retrieve-order",
+        "endpoints/analytics/list-order-returns"
       ]
     },
     {
       "group": "Endpoints: Orders",
       "pages": [
-        "endpoints/orders/get-status",
-        "endpoints/orders/post-pricing",
-        "endpoints/orders/post-create"
+        "endpoints/orders/retrieve-status",
+        "endpoints/orders/retrieve-pricing",
+        "endpoints/orders/create"
       ]
     },
     {
       "group": "Endpoints: Products",
       "pages": [
-        "endpoints/products/get-menu",
-        "endpoints/products/get-tags",
-        "endpoints/products/put-update-upc"
+        "endpoints/products/list-menu",
+        "endpoints/products/list-tags",
+        "endpoints/products/update-upcs"
       ]
     }
   ],
