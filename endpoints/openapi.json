@@ -495,672 +495,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "description": "The ID of the order"
-                    },
-                    "totalPrice": {
-                      "type": "number",
-                      "description": "The subtotal price before discounts, credits, adjustments are taken into account."
-                    },
-                    "netPrice": {
-                      "type": "number",
-                      "description": "The final price of the order before payment & delivery fees. Includes taxes"
-                    },
-                    "customerGrandTotal": {
-                      "type": "number",
-                      "description": "The final price of the order after all fees"
-                    },
-                    "createdAt": {
-                      "type": "string",
-                      "description": "The datetime the order was created"
-                    },
-                    "packedAt": {
-                      "type": "string",
-                      "description": "The datetime the order was packed on"
-                    },
-                    "fulfilledAt": {
-                      "type": "string",
-                      "description": "The date the order was fulfilled"
-                    },
-                    "type": {
-                      "type": "string",
-                      "description": "One of `delivery`, `pickup`, or `in-store`"
-                    },
-                    "status": {
-                      "type": "string",
-                      "description": "The status of the order. One of `draft`, `new`, `packed`, `fulfilled`, `canceled`\n\n- `draft` is an order submitted without inventory taken out\n- `new` is an order that has had inventory associated with it\n- `packed` signifies an order has been processed and is waiting for pickup/delivery\n- `fulfilled` is an order that has been fully completed\n- `canceled` is an order that has been canceled"
-                    },
-                    "cancelationReason": {
-                      "type": "string",
-                      "description": "A description of why the order was canceled"
-                    },
-                    "canceledAt": {
-                      "type": "string",
-                      "description": "When the order was canceled"
-                    },
-                    "taxExempt": {
-                      "type": "boolean",
-                      "description": "Whether this order was marked as tax exempt or not"
-                    },
-                    "refundTotal": {
-                      "type": "number",
-                      "description": "The amount refunded by returns on this order"
-                    },
-                    "isMedical": {
-                      "type": "boolean",
-                      "description": "Whether this order was for a medical customer or not"
-                    },
-                    "customerName": {
-                      "type": "string",
-                      "description": "The name of the customer for express pickup or kiosk orders."
-                    },
-                    "deliveryFee": {
-                      "type": "number",
-                      "description": "The delivery fee for the order"
-                    },
-                    "deliveryFeeDescription": {
-                      "type": "string",
-                      "description": "A description of the delivery fee that can be shown to the customer"
-                    },
-                    "lineItems": {
-                      "type": "array",
-                      "description": "All of the products purchased with this order",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "id": {
-                            "type": "number",
-                            "description": "The ID of this line item"
-                          },
-                          "quantity": {
-                            "type": "number",
-                            "description": "The quantity of this line item"
-                          },
-                          "productId": {
-                            "type": "number",
-                            "description": "The id of the product purchased"
-                          },
-                          "productName": {
-                            "type": "string",
-                            "description": "The name of the product purchased"
-                          },
-                          "optionId": {
-                            "type": "number",
-                            "description": "he id of the product option purchased"
-                          },
-                          "optionName": {
-                            "type": "string",
-                            "description": "The name of the product option"
-                          },
-                          "optionPrice": {
-                            "type": "number",
-                            "description": "The price of the product option at time of purchase"
-                          },
-                          "optionSalesPrice": {
-                            "type": "number",
-                            "description": "The price of the product option at time of purchase if it was on sale"
-                          },
-                          "productBrandId": {
-                            "type": "number",
-                            "description": "The brand id of the product"
-                          },
-                          "productBrand": {
-                            "type": "string",
-                            "description": "The name of the brand of the product"
-                          },
-                          "unitPrice": {
-                            "type": "number",
-                            "description": "The price per unit of this line item"
-                          },
-                          "subtotalPrice": {
-                            "type": "number",
-                            "description": "The subtotal of this line item before discounts"
-                          },
-                          "finalPrice": {
-                            "type": "number",
-                            "description": "The final price for this line item after all discounts"
-                          },
-                          "productMovingAverageCostPerUnit": {
-                            "type": "number",
-                            "description": "The moving average cost per unit of the product"
-                          },
-                          "optionMovingAverageCostPerUnit": {
-                            "type": "string",
-                            "description": "The moving average cost per unit of the product option"
-                          },
-                          "packageLineCost": {
-                            "type": "string",
-                            "description": "The total cost for all metrc packages used to fulfill this line item"
-                          },
-                          "primaryCategory": {
-                            "type": "object",
-                            "description": "The primary category for the product of this line item",
-                            "properties": {
-                              "id": {
-                                "type": "number",
-                                "description": "The ID of this product category"
-                              },
-                              "name": {
-                                "type": "string",
-                                "description": "The name of the primary category"
-                              }
-                            }
-                          },
-                          "discounts": {
-                            "type": "array",
-                            "description": "An array of discounts applied to this line item (may be empty)",
-                            "items": {
-                              "type": "object",
-                              "properties": {
-                                "discountId": {
-                                  "type": "number",
-                                  "description": "The ID for this discount. This value will be null for a custom discount added by a budtender",
-                                  "nullable": true
-                                },
-                                "type": {
-                                  "type": "string",
-                                  "description": "Either `flat` for a dollar amount or `percent` for a percent amount off"
-                                },
-                                "amount": {
-                                  "type": "number",
-                                  "description": "The amount of the discount before being applied. Either in cents or a percent depending on the type."
-                                },
-                                "amountUsed": {
-                                  "type": "number",
-                                  "description": "The amount that was taken off of the line item by this discount, represented in cents"
-                                },
-                                "description": {
-                                  "type": "string",
-                                  "description": "The description of the discount, which may be shown to the customer"
-                                }
-                              }
-                            }
-                          },
-                          "fulfillAs": {
-                            "type": "array",
-                            "description": "An array of objects showing what packages or product options fulfilled this order. Could also be `null` if the line item does not have any packages or substitutions associated with it.",
-                            "items": {
-                              "type": "object",
-                              "properties": {
-                                "pkg": {
-                                  "type": "object",
-                                  "description": "An object about the compliance package for this fulfillment. Please handle both `null` and an empty object `{}` for times when there is not a package",
-                                  "properties": {
-                                    "unit": {
-                                      "type": "string",
-                                      "description": "The metrc unit of this package"
-                                    },
-                                    "label": {
-                                      "type": "string",
-                                      "description": "The metrc package tag"
-                                    },
-                                    "costPerUnit": {
-                                      "type": "string",
-                                      "description": "The cost per unit of this package"
-                                    }
-                                  }
-                                },
-                                "optionSum": {
-                                  "type": "number",
-                                  "description": "A negative number showing how much quantity of the underlying product option was used for this fulfillment. For `option` tracking this will be an integer, but for `product` tracking it could be a decimal."
-                                },
-                                "productOptionId": {
-                                  "type": "number",
-                                  "description": "The ID of the product option used for this fulfillment. For most cases, it will be the same as `lineItems[].optionId`, but in cases where another option is substituted to fulfill another (Example: 2 eighths fulfilling a quarter option), this `productOptionId` could be different."
-                                },
-                                "quantityFulfilled": {
-                                  "type": "string",
-                                  "description": "The quantity of the underlying `lineItem` that this fulfillment is responsible for"
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    },
-                    "customer": {
-                      "type": "object",
-                      "description": "The customer attached to this order. Will be an empty object `{}` if there is no customer associated with this order (i.e. it is an anonymous order)",
-                      "properties": {
-                        "id": {
-                          "type": "number",
-                          "description": "The ID of the customer"
-                        },
-                        "firstName": {
-                          "type": "string",
-                          "description": "The first name of the customer"
-                        },
-                        "lastName": {
-                          "type": "string",
-                          "description": "The last name of the customer"
-                        },
-                        "email": {
-                          "type": "string",
-                          "description": "The email of the customer"
-                        },
-                        "phone": {
-                          "type": "string",
-                          "description": "The phone of the customer"
-                        },
-                        "birthday": {
-                          "type": "string",
-                          "description": "The birthday of the customer"
-                        },
-                        "hashId": {
-                          "type": "string",
-                          "description": "An ID used to display to the customer and dispensary instead of the `id` number"
-                        },
-                        "sex": {
-                          "type": "string",
-                          "description": "One of `male`, `female`, `tertiary`"
-                        },
-                        "zip": {
-                          "type": "string",
-                          "description": "The postal code for the customer"
-                        },
-                        "licenseExpiry": {
-                          "type": "string",
-                          "description": "The expiration date of this customer’s drivers license or `null` if it is not recorded."
-                        },
-                        "medicalExpiration": {
-                          "type": "string",
-                          "description": "The expiration date of this customer’s medical recommendation or `null` if they are an adult use customer"
-                        }
-                      }
-                    },
-                    "placedBy": {
-                      "type": "object",
-                      "description": "The employee that created this order. Will be an empty object `{}` if this order was created by a customer and not an employee.",
-                      "properties": {
-                        "id": {
-                          "type": "number",
-                          "description": "The ID of the employee who created this order"
-                        },
-                        "email": {
-                          "type": "string",
-                          "description": "The email of the employee"
-                        },
-                        "firstName": {
-                          "type": "string",
-                          "description": "The first name of the employee"
-                        },
-                        "lastName": {
-                          "type": "string",
-                          "description": "The last name of the employee"
-                        }
-                      }
-                    },
-                    "fulfilledBy": {
-                      "type": "object",
-                      "description": "The employee that fulfilled this order. Will be an empty object `{}` if there is no employee that fulfilled it.",
-                      "properties": {
-                        "id": {
-                          "type": "number",
-                          "description": "The ID of the employee who fulfilled this order"
-                        },
-                        "email": {
-                          "type": "string",
-                          "description": "The email of the employee"
-                        },
-                        "firstName": {
-                          "type": "string",
-                          "description": "The first name of the employee"
-                        },
-                        "lastName": {
-                          "type": "string",
-                          "description": "The last name of the employee"
-                        }
-                      }
-                    },
-                    "adjustments": {
-                      "type": "array",
-                      "description": "Adjustments either made automatically such as even dollar rounding or custom adjustments by an employee",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "amount": {
-                            "type": "number",
-                            "description": "The amount of the adjustment in cents. May be either negative or positive."
-                          },
-                          "description": {
-                            "type": "string",
-                            "description": "A description for the adjustment"
-                          },
-                          "isTaxExemption": {
-                            "type": "boolean",
-                            "description": "Set to true if this adjustment was automatically added to offset taxes that were included in the price of a product when a customer is tax exempt"
-                          },
-                          "taxid": {
-                            "type": "number",
-                            "description": "The ID of the tax exempted or `null`"
-                          }
-                        }
-                      }
-                    },
-                    "credits": {
-                      "type": "array",
-                      "description": "Credits used on this order",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "creditId": {
-                            "type": "number",
-                            "description": "The ID for the credit applied"
-                          },
-                          "type": {
-                            "type": "string",
-                            "description": "Either `promo-code` or `store-credit`"
-                          },
-                          "amountUsed": {
-                            "type": "number",
-                            "description": "The credit amount applied to the order in cents"
-                          },
-                          "description": {
-                            "type": "string",
-                            "description": "A description of the credit"
-                          }
-                        }
-                      }
-                    },
-                    "discounts": {
-                      "type": "array",
-                      "description": "The discounts applied to this order",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "discountId": {
-                            "type": "number",
-                            "description": "The ID for this discount. This value will be null for a custom discount added by a budtender."
-                          },
-                          "type": {
-                            "type": "string",
-                            "description": "Either `flat` for a dollar amount or `percent` for a percent amount off"
-                          },
-                          "amount": {
-                            "type": "number",
-                            "description": "The amount of the discount before being applied. Either in cents or a percent depending on the type."
-                          },
-                          "amountUsed": {
-                            "type": "number",
-                            "description": "The amount of the discount that was applied to the order represented in cents."
-                          },
-                          "description": {
-                            "type": "string",
-                            "description": "The description of the discount, which may be shown to the customer"
-                          }
-                        }
-                      }
-                    },
-                    "loyaltyRedemptions": {
-                      "type": "array",
-                      "description": "The loyalty redemptions used on this order",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "type": {
-                            "type": "string",
-                            "description": "One of `cash-back`, `flat`, `percent`, or `free-product`"
-                          },
-                          "description": {
-                            "type": "string",
-                            "description": "A description of the reward that was redeemed"
-                          },
-                          "pointsRequirement": {
-                            "type": "string",
-                            "description": "The minimum number of loyalty points required to redeem this reward"
-                          },
-                          "pointsAmount": {
-                            "type": "string",
-                            "description": "The amount of points used in this redemption"
-                          },
-                          "discountAmount": {
-                            "type": "string",
-                            "description": "The discount amount of the reward. For `cash-back` this is the amount in cents per point used. For `flat` it is a flat amount in cents, `percent` would be a percent off"
-                          },
-                          "amountUsed": {
-                            "type": "number",
-                            "description": "The amount of the discount applied to the order in cents"
-                          },
-                          "productOptionId": {
-                            "type": "number",
-                            "description": "The product option id for a `free-product` redemption",
-                            "nullable": true
-                          }
-                        }
-                      }
-                    },
-                    "taxes": {
-                      "type": "array",
-                      "description": "The taxes applied to this order",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "taxId": {
-                            "type": "number",
-                            "description": "The ID for this tax"
-                          },
-                          "amount": {
-                            "type": "number",
-                            "description": "The amount applied to the order in cents"
-                          },
-                          "description": {
-                            "type": "string",
-                            "description": "A description of the tax"
-                          },
-                          "rate": {
-                            "type": "string",
-                            "description": "A numeric value for the percentage of a tax"
-                          },
-                          "amountBeforeExemption": {
-                            "type": "number",
-                            "description": "The amount of the tax as calculated before determining what was exempted in cents"
-                          },
-                          "amountExempted": {
-                            "type": "number",
-                            "description": "The amount of the tax reduction due to an exemption in cents"
-                          },
-                          "included": {
-                            "type": "boolean",
-                            "description": "Whether the amount of this tax was already included in the product of the line items"
-                          },
-                          "exemptable": {
-                            "type": "boolean",
-                            "description": "Whether this tax is able to be exempted"
-                          },
-                          "tier": {
-                            "type": "string",
-                            "description": "The order of tax compounding. Will be a value between 1 and 5 indicating the order the tax was applied. Each tier may have multiple taxes in it."
-                          },
-                          "type": {
-                            "type": "string",
-                            "description": "Either `standard` or `california-excise`"
-                          },
-                          "normalRate": {
-                            "type": "string",
-                            "description": "The rate of this tax before it was overriden by an employee"
-                          }
-                        }
-                      }
-                    },
-                    "returns": {
-                      "type": "array",
-                      "description": "The returns applied to this order",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "id": {
-                            "type": "number",
-                            "description": "The ID of this return"
-                          },
-                          "refundType": {
-                            "type": "string",
-                            "description": "One of `payment-method`, `store-credit` or `none`"
-                          },
-                          "refundInitial": {
-                            "type": "number",
-                            "description": "The initial refund before taxes, credits, adjustments, loyalty, and discounts"
-                          },
-                          "refundTotal": {
-                            "type": "number",
-                            "description": "The final refund total of the return"
-                          },
-                          "creditsTotal": {
-                            "type": "number",
-                            "description": "The amount of credits refunded from the order"
-                          },
-                          "discountsTotal": {
-                            "type": "number",
-                            "description": "The amount of discounts refunded from the order"
-                          },
-                          "adjustmentAmount": {
-                            "type": "number",
-                            "description": "A manual adjustment of the refund for this return"
-                          },
-                          "adjustmentDescription": {
-                            "type": "string",
-                            "description": "A description for the adjustment if there is one"
-                          },
-                          "paymentTypeName": {
-                            "type": "string",
-                            "description": "The name of the payment type this refund was processed as"
-                          },
-                          "loyaltyTotal": {
-                            "type": "number",
-                            "description": "The amount of a loyalty redemption returned"
-                          },
-                          "voidedAt": {
-                            "type": "string",
-                            "description": "The date that this return was voided or `null`. If there is a value here, it means the return was canceled and is no longer applicable",
-                            "nullable": true
-                          },
-                          "voidedReason": {
-                            "type": "string",
-                            "description": "The reason this return was voided"
-                          },
-                          "createdAt": {
-                            "type": "string",
-                            "description": "The date this return was created"
-                          },
-                          "lineItems": {
-                            "type": "array",
-                            "description": "An array of line items for this return",
-                            "items": {
-                              "type": "object",
-                              "properties": {
-                                "orderLineItemId": {
-                                  "type": "number",
-                                  "description": "The ID of the `lineItems[].id` that is being returned"
-                                },
-                                "type": {
-                                  "type": "string",
-                                  "description": "Either `return` or `exchange`"
-                                },
-                                "inventoryAction": {
-                                  "type": "string",
-                                  "description": "One of `waste`, `inventory` , or `vendor`."
-                                },
-                                "quantity": {
-                                  "type": "number",
-                                  "description": "The quantity of the order line item being returned"
-                                },
-                                "reason": {
-                                  "type": "string",
-                                  "description": "A reason this line item is being returned"
-                                },
-                                "fulfillAs": {
-                                  "type": "array",
-                                  "description": "Fulfillment information for the packages on this return. See `lineItems[].fulfillAs` for possible properties",
-                                  "items": {
-                                    "type": "object"
-                                  }
-                                }
-                              }
-                            }
-                          },
-                          "taxes": {
-                            "type": "array",
-                            "description": "An array of tax information about this return",
-                            "items": {
-                              "type": "object",
-                              "properties": {
-                                "amount": {
-                                  "type": "number",
-                                  "description": "The amount of tax proportionally applied to this return"
-                                },
-                                "description": {
-                                  "type": "string",
-                                  "description": "A description of the tax"
-                                },
-                                "refunded": {
-                                  "type": "boolean",
-                                  "description": "A boolean of whether this tax was refunded to the customer or not"
-                                },
-                                "rate": {
-                                  "type": "number",
-                                  "description": "The tax rate"
-                                },
-                                "included": {
-                                  "type": "boolean",
-                                  "description": "Whether this tax was included in the price of the products"
-                                },
-                                "exemptable": {
-                                  "type": "boolean",
-                                  "description": "Whether this tax was exemptable or not"
-                                }
-                              }
-                            }
-                          },
-                          "createdBy": {
-                            "type": "object",
-                            "description": "The employee that created this return",
-                            "properties": {
-                              "id": {
-                                "type": "number",
-                                "description": "The id of the employee who created tihs return"
-                              },
-                              "email": {
-                                "type": "string",
-                                "description": "The email of the employee"
-                              },
-                              "firstName": {
-                                "type": "string",
-                                "description": "The first name of the employee"
-                              },
-                              "lastName": {
-                                "type": "string",
-                                "description": "The last name of the employee"
-                              }
-                            }
-                          },
-                          "voidedBy": {
-                            "type": "object",
-                            "description": "The employee that voided this return (or `{}` if it is not voided)",
-                            "properties": {
-                              "id": {
-                                "type": "number",
-                                "description": "The id of the employee who created tihs return"
-                              },
-                              "email": {
-                                "type": "string",
-                                "description": "The email of the employee"
-                              },
-                              "firstName": {
-                                "type": "string",
-                                "description": "The first name of the employee"
-                              },
-                              "lastName": {
-                                "type": "string",
-                                "description": "The last name of the employee"
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
+                  "$ref": "#/components/schemas/Order"
                 },
                 "example": {
                   "data": [
@@ -1495,6 +830,743 @@
                       "returns": []
                     }
                   ]
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Create an order for a customer",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["type", "lineItems", "customer", "idempotencyKey"],
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "description": "Order type - must be either `delivery` or `pickup`"
+                  },
+                  "lineItems": {
+                    "type": "array",
+                    "description": "An array of products to buy",
+                    "items": {
+                      "type": "object",
+                      "required": ["productOptionId", "quantity"],
+                      "properties": {
+                        "productOptionId": {
+                          "type": "number",
+                          "description": "The ID from the menu api response (`https://daffodil.getmeadow.com`) `data[].options[].id`"
+                        },
+                        "quantity": {
+                          "type": "number",
+                          "description": "The quantity of this product option to purchase"
+                        }
+                      }
+                    }
+                  },
+                  "customer": {
+                    "type": "object",
+                    "description": "The customer for this order. This object is optional, but if provided, must have a `firstName`, `lastName` and either an `email` or `phone`.",
+                    "required": ["firstName", "lastName"],
+                    "properties": {
+                      "firstName": {
+                        "type": "string",
+                        "description": "The first name of the customer"
+                      },
+                      "lastName": {
+                        "type": "string",
+                        "description": "The last name of the customer. Multiple last names may be separated by a space."
+                      },
+                      "email": {
+                        "type": "string",
+                        "description": "The email of the customer. At least one of email, phone must be provided."
+                      },
+                      "phone": {
+                        "type": "string",
+                        "description": "The phone of the customer. At least one of email, phone must be provided."
+                      },
+                      "birthday": {
+                        "type": "string",
+                        "description": "The birthday submitted as `YYYY-MM-DD`"
+                      }
+                    }
+                  },
+                  "address": {
+                    "type": "object",
+                    "description": "The address of the customer. Required if `type` is set to `delivery`",
+                    "required": ["street1", "city", "state", "postalCode"],
+                    "properties": {
+                      "street1": {
+                        "type": "string",
+                        "description": ""
+                      },
+                      "street2": {
+                        "type": "string",
+                        "description": ""
+                      },
+                      "city": {
+                        "type": "string",
+                        "description": ""
+                      },
+                      "state": {
+                        "type": "string",
+                        "description": ""
+                      },
+                      "postalCode": {
+                        "type": "string",
+                        "description": ""
+                      }
+                    }
+                  },
+                  "idempotencyKey": {
+                    "type": "string",
+                    "description": "Key to help avoid double orders due to server miscommunication. Please see \"Idempotent Requests\" section. Please use the string provided to you by the pricing endpoint. This value must be a v4 UUID."
+                  },
+                  "deliveryNotes": {
+                    "type": "string",
+                    "description": "Optional notes field to help fulfill the order (Example: please call on delivery)"
+                  },
+                  "deliveryFee": {
+                    "type": "number",
+                    "description": "A fee that will be passed through and added onto the `customerGrandTotal`"
+                  },
+                  "deliveryFeeDescription": {
+                    "type": "string",
+                    "description": "A passthrough title for the delivery fee"
+                  },
+                  "discountCodes": {
+                    "type": "array",
+                    "description": "An array of promo codes to redeem. These codes must already exist in the Meadow backend.",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "example": {
+                "lineItems": [
+                  {
+                    "productOptionId": 1899,
+                    "quantity": 3
+                  }
+                ],
+                "type": "delivery",
+                "address": {
+                  "street1": "60 13th St",
+                  "city": "San Francisco",
+                  "state": "California",
+                  "postalCode": "94103"
+                },
+                "customer": {
+                  "firstName": "Perrin",
+                  "lastName": "Aybara",
+                  "email": "perrin@getmeadow.com"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Order cart pricing response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "The ID for the order. Used to fetch status updates"
+                    },
+                    "status": {
+                      "type": "string",
+                      "description": "The status of the order. Will be set to `draft` or `new` depending on the organization's settings."
+                    },
+                    "totalPrice": {
+                      "type": "number",
+                      "description": "The subtotal price before discounts, credits, adjustments are taken into account."
+                    },
+                    "netPrice": {
+                      "type": "number",
+                      "description": "The final price of the order before payment & delivery fees."
+                    },
+                    "customerGrandTotal": {
+                      "type": "number",
+                      "description": "The cost of the order that the customer will pay"
+                    },
+                    "lineItems": {
+                      "type": "array",
+                      "description": "The line items with pricing information attached",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "productOptionId": {
+                            "type": "number",
+                            "description": "The product option ID for this line item"
+                          },
+                          "quantity": {
+                            "type": "number",
+                            "description": "The quantity of this line item"
+                          },
+                          "unitPrice": {
+                            "type": "number",
+                            "description": "The unit price for a single quantity of this line item"
+                          },
+                          "subtotalPrice": {
+                            "type": "number",
+                            "description": "The total cost of all quantities of this line item before discounts"
+                          },
+                          "finalPrice": {
+                            "type": "number",
+                            "description": "The final cost of this line item after discounts"
+                          },
+                          "discounts": {
+                            "type": "array",
+                            "description": "An array of automatic discounts applied to this line item (may be empty)",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "amountUsed": {
+                                  "type": "number",
+                                  "description": "The amount of the discount represented in cents."
+                                },
+                                "description": {
+                                  "type": "string",
+                                  "description": "The description of the discount, which may be shown to the customer"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "discounts": {
+                      "type": "array",
+                      "description": "An array of order level discounts",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "amountUsed": {
+                            "type": "number",
+                            "description": "The amount of the discount represented in cents"
+                          },
+                          "description": {
+                            "type": "string",
+                            "description": "The description of the discount, which may be shown to the customer"
+                          }
+                        }
+                      }
+                    },
+                    "credits": {
+                      "type": "array",
+                      "description": "An array of credits applied. May be store credit or promo codes attached to the customers account.",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "amountUsed": {
+                            "type": "number",
+                            "description": "The amount of the credit used represented in cents"
+                          },
+                          "description": {
+                            "type": "string",
+                            "description": "The description of the credit, which may be shown to the customer"
+                          }
+                        }
+                      }
+                    },
+                    "adjustments": {
+                      "type": "array",
+                      "description": "An array of adjustments made to the order. May be a tax exemption or other future Meadow POS behavior.",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "amount": {
+                            "type": "number",
+                            "description": "The amount of the adjustment represented in cents."
+                          },
+                          "description": {
+                            "type": "string",
+                            "description": "The description of the adjustment, which may be shown to the customer"
+                          }
+                        }
+                      }
+                    },
+                    "taxes": {
+                      "type": "array",
+                      "description": "All of the taxes applied to this order",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "amount": {
+                            "type": "number",
+                            "description": "The amount of the tax represented in cents to show to the user"
+                          },
+                          "description": {
+                            "type": "string",
+                            "description": "The description of the tax to show to the user"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "data": {
+                    "id": "176099362",
+                    "organizationId": 1,
+                    "totalPrice": 22650,
+                    "netPrice": 21191,
+                    "deliveryNotes": null,
+                    "createdAt": "2022-05-03T20:56:27.830Z",
+                    "updatedAt": "2022-05-03T20:56:27.830Z",
+                    "customerGrandTotal": 21191,
+                    "type": "delivery",
+                    "source": "open-api",
+                    "status": "draft",
+                    "taxExempt": true,
+                    "isMedical": false,
+                    "idempotencyKey": null,
+                    "deliveryFee": null,
+                    "deliveryFeeDescription": null,
+                    "apiConsumerName": "Meadow Integrator",
+                    "credits": [
+                      {
+                        "id": 342,
+                        "creditId": 360,
+                        "orderId": "176099362",
+                        "type": "store-credit",
+                        "amountUsed": 500,
+                        "description": "Store Credit",
+                        "createdAt": "2022-05-03T20:56:27.830Z",
+                        "updatedAt": "2022-05-03T20:56:27.830Z",
+                        "percent": null
+                      }
+                    ],
+                    "lineItems": [
+                      {
+                        "id": 15258,
+                        "orderId": "176099362",
+                        "productOptionId": 1899,
+                        "quantity": 3,
+                        "productId": 758,
+                        "productName": "Kush Minntz",
+                        "productUnit": "gram",
+                        "productStrainType": "hybrid",
+                        "optionName": "Eighth",
+                        "optionAmount": 3.54,
+                        "optionPrice": 6500,
+                        "createdAt": "2022-05-03T20:56:27.830Z",
+                        "updatedAt": "2022-05-03T20:56:27.830Z",
+                        "productIsFeatured": true,
+                        "productCategoryId": 1,
+                        "productSubCategoryIds": [],
+                        "productBrand": "Minntz",
+                        "deletedAt": null,
+                        "productUnitPlural": "grams",
+                        "unitPrice": 6500,
+                        "subtotalPrice": 19500,
+                        "finalPrice": 19500,
+                        "productBrandId": 226,
+                        "optionSalesPrice": null,
+                        "discounts": []
+                      },
+                      {
+                        "id": 15259,
+                        "orderId": "176099362",
+                        "productOptionId": 2307,
+                        "quantity": 1,
+                        "productId": 994,
+                        "productName": "Blue Dream",
+                        "productUnit": "gram",
+                        "productStrainType": "none",
+                        "optionName": "Eighth",
+                        "optionAmount": 3.5,
+                        "optionPrice": 4000,
+                        "createdAt": "2022-05-03T20:56:27.830Z",
+                        "updatedAt": "2022-05-03T20:56:27.830Z",
+                        "productIsFeatured": false,
+                        "productCategoryId": 1,
+                        "productSubCategoryIds": [],
+                        "productBrand": "Angora Heirloom",
+                        "deletedAt": null,
+                        "productUnitPlural": "grams",
+                        "unitPrice": 3500,
+                        "subtotalPrice": 3500,
+                        "finalPrice": 3150,
+                        "productBrandId": 330,
+                        "optionSalesPrice": 3500,
+                        "discounts": [
+                          {
+                            "id": 1448,
+                            "orderId": "176099362",
+                            "orderLineItemId": 15259,
+                            "discountId": 166,
+                            "type": "percent",
+                            "amount": 10,
+                            "amountUsed": 350,
+                            "description": "10% Off Tuesday Heirloom's",
+                            "createdAt": "2022-05-03T20:56:27.830Z",
+                            "updatedAt": "2022-05-03T20:56:27.830Z",
+                            "deletedAt": null,
+                            "adminId": null
+                          }
+                        ]
+                      }
+                    ],
+                    "taxes": [
+                      {
+                        "id": 15140,
+                        "orderId": "176099362",
+                        "amount": 0,
+                        "description": "State Sales Tax",
+                        "createdAt": "2022-05-03T20:56:27.830Z",
+                        "updatedAt": "2022-05-03T20:56:27.830Z",
+                        "deletedAt": null,
+                        "taxId": 59,
+                        "rate": "9.5",
+                        "amountBeforeExemption": 2061,
+                        "amountExempted": 2061,
+                        "included": false,
+                        "exemptable": true,
+                        "encompass": true,
+                        "excludedProductCategoryIds": [],
+                        "nonExemptableProductCategoryIds": [
+                          7
+                        ],
+                        "normalRate": "9.5",
+                        "type": "standard"
+                      },
+                      {
+                        "id": 15141,
+                        "orderId": "176099362",
+                        "amount": 1555,
+                        "description": "Excise Tax",
+                        "createdAt": "2022-05-03T20:56:27.830Z",
+                        "updatedAt": "2022-05-03T20:56:27.830Z",
+                        "deletedAt": null,
+                        "taxId": 133,
+                        "rate": "15",
+                        "amountBeforeExemption": 1555,
+                        "amountExempted": 0,
+                        "included": false,
+                        "exemptable": false,
+                        "encompass": false,
+                        "excludedProductCategoryIds": [
+                          7
+                        ],
+                        "nonExemptableProductCategoryIds": [],
+                        "normalRate": "15",
+                        "type": "excise"
+                      },
+                      {
+                        "id": 15142,
+                        "orderId": "176099362",
+                        "amount": 0,
+                        "description": "City Tax (Included)",
+                        "createdAt": "2022-05-03T20:56:27.830Z",
+                        "updatedAt": "2022-05-03T20:56:27.830Z",
+                        "deletedAt": null,
+                        "taxId": 134,
+                        "rate": "10",
+                        "amountBeforeExemption": 2014,
+                        "amountExempted": 2014,
+                        "included": true,
+                        "exemptable": true,
+                        "encompass": false,
+                        "excludedProductCategoryIds": [],
+                        "nonExemptableProductCategoryIds": [],
+                        "normalRate": "10",
+                        "type": "standard"
+                      }
+                    ],
+                    "discounts": [
+                      {
+                        "id": 4586,
+                        "discountId": 165,
+                        "orderId": "176099362",
+                        "type": "flat",
+                        "amount": 500,
+                        "amountUsed": 500,
+                        "description": "Tuesday $5",
+                        "createdAt": "2022-05-03T20:56:27.830Z",
+                        "updatedAt": "2022-05-03T20:56:27.830Z",
+                        "deletedAt": null,
+                        "adminId": null
+                      }
+                    ],
+                    "adjustments": [
+                      {
+                        "id": 1722,
+                        "orderId": "176099362",
+                        "amount": -2014,
+                        "description": "City Tax Exemption",
+                        "createdAt": "2022-05-03T20:56:27.830Z",
+                        "updatedAt": "2022-05-03T20:56:27.830Z",
+                        "deletedAt": null,
+                        "isTaxExemption": true,
+                        "taxId": 134,
+                        "adminId": null
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/orders/{orderId}/detail": {
+      "get": {
+        "description": "Retrieve information about a specific order",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Order status response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                },
+                "example": {
+                  "data": {
+                    "id": "1471684654",
+                    "organizationId": 1,
+                    "totalPrice": 4000,
+                    "netPrice": 3140,
+                    "createdAt": "2022-12-15T21:13:14.500Z",
+                    "packedAt": null,
+                    "fulfilledAt": null,
+                    "paymentTypeId": null,
+                    "paymentTypeName": null,
+                    "paymentTypeFee": null,
+                    "paymentTypeFeeDescription": null,
+                    "customerGrandTotal": 3140,
+                    "type": "in-store",
+                    "source": "web-admin",
+                    "status": "new",
+                    "cancelationReason": null,
+                    "cancelAdminId": null,
+                    "canceledAt": null,
+                    "taxExempt": true,
+                    "refundTotal": 0,
+                    "isMedical": false,
+                    "customerName": null,
+                    "deliveryFee": null,
+                    "deliveryFeeDescription": null,
+                    "lineItems": [
+                      {
+                        "id": 1234,
+                        "quantity": 1,
+                        "productId": 398,
+                        "productName": "50 Dose Pen",
+                        "productUnit": "item",
+                        "productStrainType": "mixed",
+                        "optionId": 1112,
+                        "optionName": "Calm",
+                        "optionAmount": 1,
+                        "optionPrice": 4500,
+                        "optionSalesPrice": null,
+                        "productBrandId": 37,
+                        "productBrand": "Dosist",
+                        "unitPrice": 4500,
+                        "subtotalPrice": 4500,
+                        "finalPrice": 4000,
+                        "productMovingAverageCostPerUnit": null,
+                        "optionMovingAverageCostPerUnit": 25,
+                        "packageLineCost": null,
+                        "primaryCategory": {
+                          "id": 8,
+                          "name": "Flowers",
+                          "cannabisType": "non-concentrated"
+                        },
+                        "fulfillAs": [
+                          {
+                            "pkg": {
+                              "unit": "Grams",
+                              "label": "1A4FF0300000029000008338",
+                              "costPerUnit": "0"
+                            },
+                            "optionSum": -3,
+                            "productOptionId": 1112,
+                            "quantityFulfilled": "3"
+                          }
+                        ],
+                        "discounts": [
+                          {
+                            "discountId": 29,
+                            "type": "flat",
+                            "amount": 500,
+                            "amountUsed": 500,
+                            "description": "$ 5 Discount"
+                          }
+                        ]
+                      }
+                    ],
+                    "customer": {},
+                    "placedBy": {
+                      "id": 1,
+                      "email": "rick@getmeadow.com",
+                      "firstName": "Rick",
+                      "lastName": "Harrison"
+                    },
+                    "fulfilledBy": {
+                      "id": 2983,
+                      "email": "rick+1@getmeadow.com",
+                      "firstName": "Rick",
+                      "lastName": "Harrison"
+                    },
+                    "adjustments": [
+                      {
+                        "amount": -327,
+                        "description": "City Tax Exemption",
+                        "isTaxExemption": true,
+                        "taxId": 134
+                      }
+                    ],
+                    "credits": [
+                      {
+                        "creditId": 361,
+                        "type": "store-credit",
+                        "amountUsed": 133,
+                        "description": "Store credit"
+                      }
+                    ],
+                    "discounts": [
+                      {
+                        "discountId": 7,
+                        "type": "percent",
+                        "amount": 10,
+                        "amountUsed": 400,
+                        "description": "Seniors"
+                      }
+                    ],
+                    "loyaltyRedemptions": [
+                      {
+                        "type": "cash-back",
+                        "description": "2% Cash Back",
+                        "pointsRequirement": "1",
+                        "pointsAmount": "-500.0",
+                        "discountAmount": "2",
+                        "amountUsed": 1000,
+                        "productOptionId": null
+                      }
+                    ],
+                    "taxes": [
+                      {
+                        "taxId": 59,
+                        "amount": 0,
+                        "description": "State Sales Tax",
+                        "rate": "9.5",
+                        "amountBeforeExemption": 311,
+                        "amountExempted": 311,
+                        "included": false,
+                        "exemptable": true,
+                        "tier": "1",
+                        "type": "standard",
+                        "normalRate": "9.5"
+                      },
+                      {
+                        "taxId": 134,
+                        "amount": 0,
+                        "description": "City Tax (Included)",
+                        "rate": "10",
+                        "amountBeforeExemption": 327,
+                        "amountExempted": 327,
+                        "included": true,
+                        "exemptable": true,
+                        "tier": "1",
+                        "type": "standard",
+                        "normalRate": "10"
+                      }
+                    ],
+                    "returns": [
+                      {
+                        "id": 364,
+                        "refundType": "payment-method",
+                        "refundInitial": -4500,
+                        "refundTotal": -4905,
+                        "creditsTotal": 0,
+                        "discountsTotal": 0,
+                        "adjustmentAmount": 0,
+                        "adjustmentDescription": "",
+                        "paymentTypeName": "Cash",
+                        "loyaltyTotal": 0,
+                        "voidedAt": "2023-05-04T20:48:41.508Z",
+                        "voidedReason": "void reason here",
+                        "createdAt": "2023-05-04T20:34:48.387Z",
+                        "lineItems": [
+                          {
+                            "orderLineItemId": 15368,
+                            "type": "return",
+                            "inventoryAction": "waste",
+                            "quantity": 1,
+                            "reason": "Product was defective",
+                            "fulfillAs": []
+                          }
+                        ],
+                        "taxes": [
+                          {
+                            "taxId": 59,
+                            "amount": -225,
+                            "description": "State Sales Tax",
+                            "refunded": true,
+                            "rate": "5",
+                            "included": false,
+                            "exemptable": false,
+                            "type": "standard",
+                            "tier": "1"
+                          },
+                          {
+                            "taxId": 134,
+                            "amount": -180,
+                            "description": "City Tax (Included)",
+                            "refunded": true,
+                            "rate": "10",
+                            "included": false,
+                            "exemptable": false,
+                            "type": "standard",
+                            "tier": "1"
+                          }
+                        ],
+                        "createdBy": {
+                          "id": 1,
+                          "email": "rick@getmeadow.com",
+                          "firstName": "Rick",
+                          "lastName": "Harrison"
+                        },
+                        "voidedBy": {
+                          "id": 1,
+                          "email": "rick@getmeadow.com",
+                          "firstName": "Rick",
+                          "lastName": "Harrison"
+                        }
+                      }
+                    ]
+                  }
                 }
               }
             }
@@ -2755,6 +2827,674 @@
               "code": {
                 "type": "string",
                 "example": "CODE_OF_ERROR_WILL_BE_HERE"
+              }
+            }
+          }
+        }
+      },
+      "Order": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The ID of the order"
+          },
+          "totalPrice": {
+            "type": "number",
+            "description": "The subtotal price before discounts, credits, adjustments are taken into account."
+          },
+          "netPrice": {
+            "type": "number",
+            "description": "The final price of the order before payment & delivery fees. Includes taxes"
+          },
+          "customerGrandTotal": {
+            "type": "number",
+            "description": "The final price of the order after all fees"
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "The datetime the order was created"
+          },
+          "packedAt": {
+            "type": "string",
+            "description": "The datetime the order was packed on"
+          },
+          "fulfilledAt": {
+            "type": "string",
+            "description": "The date the order was fulfilled"
+          },
+          "type": {
+            "type": "string",
+            "description": "One of `delivery`, `pickup`, or `in-store`"
+          },
+          "status": {
+            "type": "string",
+            "description": "The status of the order. One of `draft`, `new`, `packed`, `fulfilled`, `canceled`\n\n- `draft` is an order submitted without inventory taken out\n- `new` is an order that has had inventory associated with it\n- `packed` signifies an order has been processed and is waiting for pickup/delivery\n- `fulfilled` is an order that has been fully completed\n- `canceled` is an order that has been canceled"
+          },
+          "cancelationReason": {
+            "type": "string",
+            "description": "A description of why the order was canceled"
+          },
+          "canceledAt": {
+            "type": "string",
+            "description": "When the order was canceled"
+          },
+          "taxExempt": {
+            "type": "boolean",
+            "description": "Whether this order was marked as tax exempt or not"
+          },
+          "refundTotal": {
+            "type": "number",
+            "description": "The amount refunded by returns on this order"
+          },
+          "isMedical": {
+            "type": "boolean",
+            "description": "Whether this order was for a medical customer or not"
+          },
+          "customerName": {
+            "type": "string",
+            "description": "The name of the customer for express pickup or kiosk orders."
+          },
+          "deliveryFee": {
+            "type": "number",
+            "description": "The delivery fee for the order"
+          },
+          "deliveryFeeDescription": {
+            "type": "string",
+            "description": "A description of the delivery fee that can be shown to the customer"
+          },
+          "lineItems": {
+            "type": "array",
+            "description": "All of the products purchased with this order",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "description": "The ID of this line item"
+                },
+                "quantity": {
+                  "type": "number",
+                  "description": "The quantity of this line item"
+                },
+                "productId": {
+                  "type": "number",
+                  "description": "The id of the product purchased"
+                },
+                "productName": {
+                  "type": "string",
+                  "description": "The name of the product purchased"
+                },
+                "optionId": {
+                  "type": "number",
+                  "description": "he id of the product option purchased"
+                },
+                "optionName": {
+                  "type": "string",
+                  "description": "The name of the product option"
+                },
+                "optionPrice": {
+                  "type": "number",
+                  "description": "The price of the product option at time of purchase"
+                },
+                "optionSalesPrice": {
+                  "type": "number",
+                  "description": "The price of the product option at time of purchase if it was on sale"
+                },
+                "productBrandId": {
+                  "type": "number",
+                  "description": "The brand id of the product"
+                },
+                "productBrand": {
+                  "type": "string",
+                  "description": "The name of the brand of the product"
+                },
+                "unitPrice": {
+                  "type": "number",
+                  "description": "The price per unit of this line item"
+                },
+                "subtotalPrice": {
+                  "type": "number",
+                  "description": "The subtotal of this line item before discounts"
+                },
+                "finalPrice": {
+                  "type": "number",
+                  "description": "The final price for this line item after all discounts"
+                },
+                "productMovingAverageCostPerUnit": {
+                  "type": "number",
+                  "description": "The moving average cost per unit of the product"
+                },
+                "optionMovingAverageCostPerUnit": {
+                  "type": "string",
+                  "description": "The moving average cost per unit of the product option"
+                },
+                "packageLineCost": {
+                  "type": "string",
+                  "description": "The total cost for all metrc packages used to fulfill this line item"
+                },
+                "primaryCategory": {
+                  "type": "object",
+                  "description": "The primary category for the product of this line item",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "description": "The ID of this product category"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the primary category"
+                    }
+                  }
+                },
+                "discounts": {
+                  "type": "array",
+                  "description": "An array of discounts applied to this line item (may be empty)",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "discountId": {
+                        "type": "number",
+                        "description": "The ID for this discount. This value will be null for a custom discount added by a budtender",
+                        "nullable": true
+                      },
+                      "type": {
+                        "type": "string",
+                        "description": "Either `flat` for a dollar amount or `percent` for a percent amount off"
+                      },
+                      "amount": {
+                        "type": "number",
+                        "description": "The amount of the discount before being applied. Either in cents or a percent depending on the type."
+                      },
+                      "amountUsed": {
+                        "type": "number",
+                        "description": "The amount that was taken off of the line item by this discount, represented in cents"
+                      },
+                      "description": {
+                        "type": "string",
+                        "description": "The description of the discount, which may be shown to the customer"
+                      }
+                    }
+                  }
+                },
+                "fulfillAs": {
+                  "type": "array",
+                  "description": "An array of objects showing what packages or product options fulfilled this order. Could also be `null` if the line item does not have any packages or substitutions associated with it.",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "pkg": {
+                        "type": "object",
+                        "description": "An object about the compliance package for this fulfillment. Please handle both `null` and an empty object `{}` for times when there is not a package",
+                        "properties": {
+                          "unit": {
+                            "type": "string",
+                            "description": "The metrc unit of this package"
+                          },
+                          "label": {
+                            "type": "string",
+                            "description": "The metrc package tag"
+                          },
+                          "costPerUnit": {
+                            "type": "string",
+                            "description": "The cost per unit of this package"
+                          }
+                        }
+                      },
+                      "optionSum": {
+                        "type": "number",
+                        "description": "A negative number showing how much quantity of the underlying product option was used for this fulfillment. For `option` tracking this will be an integer, but for `product` tracking it could be a decimal."
+                      },
+                      "productOptionId": {
+                        "type": "number",
+                        "description": "The ID of the product option used for this fulfillment. For most cases, it will be the same as `lineItems[].optionId`, but in cases where another option is substituted to fulfill another (Example: 2 eighths fulfilling a quarter option), this `productOptionId` could be different."
+                      },
+                      "quantityFulfilled": {
+                        "type": "string",
+                        "description": "The quantity of the underlying `lineItem` that this fulfillment is responsible for"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "customer": {
+            "type": "object",
+            "description": "The customer attached to this order. Will be an empty object `{}` if there is no customer associated with this order (i.e. it is an anonymous order)",
+            "properties": {
+              "id": {
+                "type": "number",
+                "description": "The ID of the customer"
+              },
+              "firstName": {
+                "type": "string",
+                "description": "The first name of the customer"
+              },
+              "lastName": {
+                "type": "string",
+                "description": "The last name of the customer"
+              },
+              "email": {
+                "type": "string",
+                "description": "The email of the customer"
+              },
+              "phone": {
+                "type": "string",
+                "description": "The phone of the customer"
+              },
+              "birthday": {
+                "type": "string",
+                "description": "The birthday of the customer"
+              },
+              "hashId": {
+                "type": "string",
+                "description": "An ID used to display to the customer and dispensary instead of the `id` number"
+              },
+              "sex": {
+                "type": "string",
+                "description": "One of `male`, `female`, `tertiary`"
+              },
+              "zip": {
+                "type": "string",
+                "description": "The postal code for the customer"
+              },
+              "licenseExpiry": {
+                "type": "string",
+                "description": "The expiration date of this customer’s drivers license or `null` if it is not recorded."
+              },
+              "medicalExpiration": {
+                "type": "string",
+                "description": "The expiration date of this customer’s medical recommendation or `null` if they are an adult use customer"
+              }
+            }
+          },
+          "placedBy": {
+            "type": "object",
+            "description": "The employee that created this order. Will be an empty object `{}` if this order was created by a customer and not an employee.",
+            "properties": {
+              "id": {
+                "type": "number",
+                "description": "The ID of the employee who created this order"
+              },
+              "email": {
+                "type": "string",
+                "description": "The email of the employee"
+              },
+              "firstName": {
+                "type": "string",
+                "description": "The first name of the employee"
+              },
+              "lastName": {
+                "type": "string",
+                "description": "The last name of the employee"
+              }
+            }
+          },
+          "fulfilledBy": {
+            "type": "object",
+            "description": "The employee that fulfilled this order. Will be an empty object `{}` if there is no employee that fulfilled it.",
+            "properties": {
+              "id": {
+                "type": "number",
+                "description": "The ID of the employee who fulfilled this order"
+              },
+              "email": {
+                "type": "string",
+                "description": "The email of the employee"
+              },
+              "firstName": {
+                "type": "string",
+                "description": "The first name of the employee"
+              },
+              "lastName": {
+                "type": "string",
+                "description": "The last name of the employee"
+              }
+            }
+          },
+          "adjustments": {
+            "type": "array",
+            "description": "Adjustments either made automatically such as even dollar rounding or custom adjustments by an employee",
+            "items": {
+              "type": "object",
+              "properties": {
+                "amount": {
+                  "type": "number",
+                  "description": "The amount of the adjustment in cents. May be either negative or positive."
+                },
+                "description": {
+                  "type": "string",
+                  "description": "A description for the adjustment"
+                },
+                "isTaxExemption": {
+                  "type": "boolean",
+                  "description": "Set to true if this adjustment was automatically added to offset taxes that were included in the price of a product when a customer is tax exempt"
+                },
+                "taxid": {
+                  "type": "number",
+                  "description": "The ID of the tax exempted or `null`"
+                }
+              }
+            }
+          },
+          "credits": {
+            "type": "array",
+            "description": "Credits used on this order",
+            "items": {
+              "type": "object",
+              "properties": {
+                "creditId": {
+                  "type": "number",
+                  "description": "The ID for the credit applied"
+                },
+                "type": {
+                  "type": "string",
+                  "description": "Either `promo-code` or `store-credit`"
+                },
+                "amountUsed": {
+                  "type": "number",
+                  "description": "The credit amount applied to the order in cents"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "A description of the credit"
+                }
+              }
+            }
+          },
+          "discounts": {
+            "type": "array",
+            "description": "The discounts applied to this order",
+            "items": {
+              "type": "object",
+              "properties": {
+                "discountId": {
+                  "type": "number",
+                  "description": "The ID for this discount. This value will be null for a custom discount added by a budtender."
+                },
+                "type": {
+                  "type": "string",
+                  "description": "Either `flat` for a dollar amount or `percent` for a percent amount off"
+                },
+                "amount": {
+                  "type": "number",
+                  "description": "The amount of the discount before being applied. Either in cents or a percent depending on the type."
+                },
+                "amountUsed": {
+                  "type": "number",
+                  "description": "The amount of the discount that was applied to the order represented in cents."
+                },
+                "description": {
+                  "type": "string",
+                  "description": "The description of the discount, which may be shown to the customer"
+                }
+              }
+            }
+          },
+          "loyaltyRedemptions": {
+            "type": "array",
+            "description": "The loyalty redemptions used on this order",
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "description": "One of `cash-back`, `flat`, `percent`, or `free-product`"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "A description of the reward that was redeemed"
+                },
+                "pointsRequirement": {
+                  "type": "string",
+                  "description": "The minimum number of loyalty points required to redeem this reward"
+                },
+                "pointsAmount": {
+                  "type": "string",
+                  "description": "The amount of points used in this redemption"
+                },
+                "discountAmount": {
+                  "type": "string",
+                  "description": "The discount amount of the reward. For `cash-back` this is the amount in cents per point used. For `flat` it is a flat amount in cents, `percent` would be a percent off"
+                },
+                "amountUsed": {
+                  "type": "number",
+                  "description": "The amount of the discount applied to the order in cents"
+                },
+                "productOptionId": {
+                  "type": "number",
+                  "description": "The product option id for a `free-product` redemption",
+                  "nullable": true
+                }
+              }
+            }
+          },
+          "taxes": {
+            "type": "array",
+            "description": "The taxes applied to this order",
+            "items": {
+              "type": "object",
+              "properties": {
+                "taxId": {
+                  "type": "number",
+                  "description": "The ID for this tax"
+                },
+                "amount": {
+                  "type": "number",
+                  "description": "The amount applied to the order in cents"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "A description of the tax"
+                },
+                "rate": {
+                  "type": "string",
+                  "description": "A numeric value for the percentage of a tax"
+                },
+                "amountBeforeExemption": {
+                  "type": "number",
+                  "description": "The amount of the tax as calculated before determining what was exempted in cents"
+                },
+                "amountExempted": {
+                  "type": "number",
+                  "description": "The amount of the tax reduction due to an exemption in cents"
+                },
+                "included": {
+                  "type": "boolean",
+                  "description": "Whether the amount of this tax was already included in the product of the line items"
+                },
+                "exemptable": {
+                  "type": "boolean",
+                  "description": "Whether this tax is able to be exempted"
+                },
+                "tier": {
+                  "type": "string",
+                  "description": "The order of tax compounding. Will be a value between 1 and 5 indicating the order the tax was applied. Each tier may have multiple taxes in it."
+                },
+                "type": {
+                  "type": "string",
+                  "description": "Either `standard` or `california-excise`"
+                },
+                "normalRate": {
+                  "type": "string",
+                  "description": "The rate of this tax before it was overriden by an employee"
+                }
+              }
+            }
+          },
+          "returns": {
+            "type": "array",
+            "description": "The returns applied to this order",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "description": "The ID of this return"
+                },
+                "refundType": {
+                  "type": "string",
+                  "description": "One of `payment-method`, `store-credit` or `none`"
+                },
+                "refundInitial": {
+                  "type": "number",
+                  "description": "The initial refund before taxes, credits, adjustments, loyalty, and discounts"
+                },
+                "refundTotal": {
+                  "type": "number",
+                  "description": "The final refund total of the return"
+                },
+                "creditsTotal": {
+                  "type": "number",
+                  "description": "The amount of credits refunded from the order"
+                },
+                "discountsTotal": {
+                  "type": "number",
+                  "description": "The amount of discounts refunded from the order"
+                },
+                "adjustmentAmount": {
+                  "type": "number",
+                  "description": "A manual adjustment of the refund for this return"
+                },
+                "adjustmentDescription": {
+                  "type": "string",
+                  "description": "A description for the adjustment if there is one"
+                },
+                "paymentTypeName": {
+                  "type": "string",
+                  "description": "The name of the payment type this refund was processed as"
+                },
+                "loyaltyTotal": {
+                  "type": "number",
+                  "description": "The amount of a loyalty redemption returned"
+                },
+                "voidedAt": {
+                  "type": "string",
+                  "description": "The date that this return was voided or `null`. If there is a value here, it means the return was canceled and is no longer applicable",
+                  "nullable": true
+                },
+                "voidedReason": {
+                  "type": "string",
+                  "description": "The reason this return was voided"
+                },
+                "createdAt": {
+                  "type": "string",
+                  "description": "The date this return was created"
+                },
+                "lineItems": {
+                  "type": "array",
+                  "description": "An array of line items for this return",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "orderLineItemId": {
+                        "type": "number",
+                        "description": "The ID of the `lineItems[].id` that is being returned"
+                      },
+                      "type": {
+                        "type": "string",
+                        "description": "Either `return` or `exchange`"
+                      },
+                      "inventoryAction": {
+                        "type": "string",
+                        "description": "One of `waste`, `inventory` , or `vendor`."
+                      },
+                      "quantity": {
+                        "type": "number",
+                        "description": "The quantity of the order line item being returned"
+                      },
+                      "reason": {
+                        "type": "string",
+                        "description": "A reason this line item is being returned"
+                      },
+                      "fulfillAs": {
+                        "type": "array",
+                        "description": "Fulfillment information for the packages on this return. See `lineItems[].fulfillAs` for possible properties",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    }
+                  }
+                },
+                "taxes": {
+                  "type": "array",
+                  "description": "An array of tax information about this return",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "amount": {
+                        "type": "number",
+                        "description": "The amount of tax proportionally applied to this return"
+                      },
+                      "description": {
+                        "type": "string",
+                        "description": "A description of the tax"
+                      },
+                      "refunded": {
+                        "type": "boolean",
+                        "description": "A boolean of whether this tax was refunded to the customer or not"
+                      },
+                      "rate": {
+                        "type": "number",
+                        "description": "The tax rate"
+                      },
+                      "included": {
+                        "type": "boolean",
+                        "description": "Whether this tax was included in the price of the products"
+                      },
+                      "exemptable": {
+                        "type": "boolean",
+                        "description": "Whether this tax was exemptable or not"
+                      }
+                    }
+                  }
+                },
+                "createdBy": {
+                  "type": "object",
+                  "description": "The employee that created this return",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "description": "The id of the employee who created tihs return"
+                    },
+                    "email": {
+                      "type": "string",
+                      "description": "The email of the employee"
+                    },
+                    "firstName": {
+                      "type": "string",
+                      "description": "The first name of the employee"
+                    },
+                    "lastName": {
+                      "type": "string",
+                      "description": "The last name of the employee"
+                    }
+                  }
+                },
+                "voidedBy": {
+                  "type": "object",
+                  "description": "The employee that voided this return (or `{}` if it is not voided)",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "description": "The id of the employee who created tihs return"
+                    },
+                    "email": {
+                      "type": "string",
+                      "description": "The email of the employee"
+                    },
+                    "firstName": {
+                      "type": "string",
+                      "description": "The first name of the employee"
+                    },
+                    "lastName": {
+                      "type": "string",
+                      "description": "The last name of the employee"
+                    }
+                  }
+                }
               }
             }
           }
