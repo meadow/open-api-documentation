@@ -2201,6 +2201,515 @@
         }
       },
     },
+    "/api/v1/products/all": {
+      "get": {
+        "description": "Retrieve all product information for both active and inactive products",
+        "servers": [
+          {
+            "url": "https://daffodil-staging.getmeadow.com"
+          },
+          {
+            "url": "https://daffodil.getmeadow.com"
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Inventory locations response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "description": "The ID of the product"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the product"
+                    },
+                    "unit": {
+                      "type": "string",
+                      "description": "Either `gram` or `item`"
+                    },
+                    "strainType": {
+                      "type": "string",
+                      "description": "One of `sativa`, `indica`, `hybrid`, `hybrid-sativa`, `hybrid-indica`, `cbd`, `mixed`, or `none`"
+                    },
+                    "thcAmount": {
+                      "type": "string",
+                      "description": "The amount of THC in the product"
+                    },
+                    "thcAmountEach": {
+                      "type": "string",
+                      "description": "The amount of THC per each of the product"
+                    },
+                    "thcUnit": {
+                      "type": "string",
+                      "description": "Either `%` or `mg`"
+                    },
+                    "cbdAmount": {
+                      "type": "string",
+                      "description": "The amount of CBD in the product"
+                    },
+                    "cbdAmountEach": {
+                      "type": "string",
+                      "description": "The amount of CBD per each of the product"
+                    },
+                    "cbdUnit": {
+                      "type": "string",
+                      "description": "Either `%` or `mg`"
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "A text description about the product"
+                    },
+                    "inventoryType": {
+                      "type": "string",
+                      "description": "Either `option` or `product`. See above for clarification"
+                    },
+                    "isActive": {
+                      "type": "boolean",
+                      "description": "Whether the product is active on menus or not"
+                    },
+                    "isFeatured": {
+                      "type": "boolean",
+                      "description": "Whether the product is featured or not"
+                    },
+                    "movingAverageCostPerUnit": {
+                      "type": "string",
+                      "description": "The moving average cost per unit for this product if this products `inventoryType` is product"
+                    },
+                    "locationInventory": {
+                      "type": "array",
+                      "description": "The location inventory if this product's `inventoryType` is product",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "inventoryLocationId": {
+                            "type": "number",
+                            "description": "The id for this inventory location"
+                          },
+                          "amount": {
+                            "type": "string",
+                            "description": "The amount of inventory for this product"
+                          }
+                        }
+                      }
+                    },
+                    "options": {
+                      "type": "array",
+                      "description": "All of the pricing options for a product",
+                      "items": {
+                        "properties": {
+                          "id": {
+                            "type": "number",
+                            "description": "The ID of this option"
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "The name of this option"
+                          },
+                          "amount": {
+                            "type": "number",
+                            "description": "The amount of the underlying unit of this product"
+                          },
+                          "price": {
+                            "type": "number",
+                            "description": "The price in cents of this option"
+                          },
+                          "salesPrice": {
+                            "type": "number",
+                            "description": "The sales price in cents if one exists"
+                          },
+                          "upc": {
+                            "type": "string",
+                            "description": "The UPC code for this option"
+                          },
+                          "movingAverageCostPerUnit": {
+                            "type": "string",
+                            "description": "The moving average cost per unit for this product option"
+                          },
+                          "locationInventory": {
+                            "type": "array",
+                            "description": "The inventory by location for this product option. Will only have values if the product's `inventoryType` is set to `option`",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "inventoryLocationId": {
+                                  "type": "number",
+                                  "description": "The id for this inventory location"
+                                },
+                                "amount": {
+                                  "type": "string",
+                                  "description": "The amount of inventory for this option"
+                                },
+                                "maxQuantity": {
+                                  "type": "number",
+                                  "description": "The maximum quantity of this product option that is purchasable"
+                                }
+                              }
+                            }
+                          },
+                        }
+                      }
+                    },
+                    "photos": {
+                      "type": "array",
+                      "description": "All of the photos for a product",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "fullPath": {
+                            "type": "string",
+                            "description": "The URL to use to display the photo"
+                          }
+                        }
+                      }
+                    },
+                    "primaryCategory": {
+                      "type": "object",
+                      "description": "The primary category of the product",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "The name of the primary category"
+                        }
+                      }
+                    },
+                    "brand": {
+                      "type": "object",
+                      "description": "The brand of the product",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "The name of the brand"
+                        }
+                      }
+                    },
+                    "subCategories": {
+                      "type": "array",
+                      "description": "The sub-categories for the product",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "description": "The name of the sub-category"
+                          }
+                        }
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "description": "Additional information regarding products for this organization",
+                      "properties": {
+                        "categories": {
+                          "type": "array",
+                          "description": "All of the primary categories for this organization",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string",
+                                "description": "The name of the category"
+                              },
+                              "order": {
+                                "type": "number",
+                                "description": "The organization can determine what order they would like the categories to be displayed to the customer, starting with 0"
+                              }
+                            }
+                          }
+                        },
+                        "inventoryLocations": {
+                          "type": "array",
+                          "description": "All the inventory locations for this dispensary",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "number",
+                                "description": "The id for this location. This can be used to match up with `locationInventory[].inventoryLocationId` elsewhere in the response"
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "The name of the inventory location"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "data": [
+                    {
+                      "id": 516,
+                      "organizationId": 1,
+                      "name": "3C Farms Strawberry Fields",
+                      "unit": "gram",
+                      "strainType": "sativa",
+                      "strainName": "3C Farms Strawberry Fields",
+                      "percentThc": null,
+                      "percentCbd": null,
+                      "thcAmount": null,
+                      "thcAmountEach": null,
+                      "thcUnit": null,
+                      "cbdAmount": null,
+                      "cbdAmountEach": null,
+                      "cbdUnit": null,
+                      "description": "",
+                      "createdAt": "2019-04-29T19:01:12.770Z",
+                      "isActive": false,
+                      "isFeatured": false,
+                      "archivedAt": null,
+                      "inventoryType": "option",
+                      "unitPlural": "grams",
+                      "movingAverageCostPerUnit": null,
+                      "isCompliant": false,
+                      "options": [
+                        {
+                          "id": 1432,
+                          "productId": 516,
+                          "name": "Gram",
+                          "amount": 1,
+                          "price": 1500,
+                          "salesPrice": null,
+                          "createdAt": "2019-04-29T12:01:12.786-07:00",
+                          "upc": null,
+                          "content": "1",
+                          "movingAverageCostPerUnit": "43.090909",
+                          "locationInventory": [
+                            {
+                              "inventoryLocationId": 10,
+                              "amount": "110",
+                              "maxQuantity": 110
+                            }
+                          ]
+                        },
+                        {
+                          "id": 1433,
+                          "productId": 516,
+                          "name": "Eighth",
+                          "amount": 3.5,
+                          "price": 3500,
+                          "salesPrice": null,
+                          "createdAt": "2019-04-29T12:01:12.787-07:00",
+                          "upc": null,
+                          "content": "3.5",
+                          "movingAverageCostPerUnit": "14.642858",
+                          "locationInventory": [
+                            {
+                              "inventoryLocationId": 7,
+                              "amount": "50",
+                              "maxQuantity": 50
+                            },
+                            {
+                              "inventoryLocationId": 8,
+                              "amount": "85",
+                              "maxQuantity": 85
+                            },
+                            {
+                              "inventoryLocationId": 10,
+                              "amount": "0",
+                              "maxQuantity": 0
+                            }
+                          ]
+                        }
+                      ],
+                      "photos": [],
+                      "productGroups": [],
+                      "primaryCategory": {
+                        "id": 1,
+                        "name": "Flowers",
+                        "order": 0,
+                        "cannabisType": "non-concentrated"
+                      },
+                      "brand": {
+                        "id": 2,
+                        "name": "3C Farms"
+                      },
+                      "locationInventory": [],
+                      "subCategories": [
+                        {
+                          "id": 45,
+                          "name": "Top Shelf"
+                        }
+                      ]
+                    },
+                    {
+                      "id": 770,
+                      "organizationId": 1,
+                      "name": "1:3 Releaf Soak",
+                      "unit": "item",
+                      "strainType": "sativa",
+                      "strainName": "",
+                      "percentThc": null,
+                      "percentCbd": null,
+                      "thcAmount": "100",
+                      "thcAmountEach": null,
+                      "thcUnit": "mg",
+                      "cbdAmount": "300",
+                      "cbdAmountEach": null,
+                      "cbdUnit": "mg",
+                      "description": "This slow-release patch sticks to skin, offering pain relief through transdermal delivery of full-spectrum cannabinoids. With a quick and easy single application, you get up to 12 hours of relief for your whole body. This product has the potential for some intoxicating effects. Find the ratio that works best for your specific needs: the patch comes in several options from THC-rich to CBD-exclusive.\n\nAvailable individually, each patch has 30mg cannabinoids.\n\n",
+                      "createdAt": "2020-03-24T22:07:00.005Z",
+                      "isActive": false,
+                      "isFeatured": false,
+                      "archivedAt": null,
+                      "inventoryType": "option",
+                      "unitPlural": "items",
+                      "movingAverageCostPerUnit": null,
+                      "isCompliant": false,
+                      "options": [
+                        {
+                          "id": 1936,
+                          "productId": 770,
+                          "name": "",
+                          "amount": 1,
+                          "price": 3000,
+                          "salesPrice": null,
+                          "createdAt": "2020-03-24T15:07:00.023-07:00",
+                          "upc": null,
+                          "content": "100",
+                          "movingAverageCostPerUnit": null,
+                          "locationInventory": []
+                        }
+                      ],
+                      "photos": [
+                        {
+                          "id": 409,
+                          "productId": 770,
+                          "path": "2020/8/8115fb84-304d-456b-90bb-5feafd3aae7f.jpeg",
+                          "createdAt": "2020-09-15T21:13:35.917Z",
+                          "format": null,
+                          "fullPath": "https://meadow-staging.imgix.net/2020/8/8115fb84-304d-456b-90bb-5feafd3aae7f.jpeg?auto=format,compress&cs=csrgb&fit=max&h=640&w=640"
+                        }
+                      ],
+                      "productGroups": [],
+                      "primaryCategory": {
+                        "id": 5,
+                        "name": "Topicals",
+                        "order": 5,
+                        "cannabisType": "concentrated"
+                      },
+                      "brand": {
+                        "id": 111,
+                        "name": "Papa & Barkley"
+                      },
+                      "locationInventory": [],
+                      "subCategories": []
+                    }
+                  ],
+                  "meta": {
+                    "categories": [
+                      {
+                        "id": 1,
+                        "name": "Flowers",
+                        "order": 0,
+                        "cannabisType": "non-concentrated"
+                      },
+                      {
+                        "id": 56,
+                        "name": "Vape",
+                        "order": 1,
+                        "cannabisType": "concentrated"
+                      },
+                      {
+                        "id": 2,
+                        "name": "Pre-Rolls",
+                        "order": 2,
+                        "cannabisType": "non-concentrated"
+                      },
+                      {
+                        "id": 4,
+                        "name": "Concentrates",
+                        "order": 3,
+                        "cannabisType": "concentrated"
+                      },
+                      {
+                        "id": 3,
+                        "name": "Edibles",
+                        "order": 4,
+                        "cannabisType": "concentrated"
+                      },
+                      {
+                        "id": 5,
+                        "name": "Topicals",
+                        "order": 5,
+                        "cannabisType": "concentrated"
+                      },
+                      {
+                        "id": 17,
+                        "name": "Clones",
+                        "order": 6,
+                        "cannabisType": "immature-plant"
+                      },
+                      {
+                        "id": 7,
+                        "name": "Accessories",
+                        "order": 7,
+                        "cannabisType": "none"
+                      },
+                      {
+                        "id": 138,
+                        "name": "Meadow Select",
+                        "order": 8,
+                        "cannabisType": "none"
+                      },
+                      {
+                        "id": 6,
+                        "name": "Seeds",
+                        "order": 9,
+                        "cannabisType": "none"
+                      }
+                    ],
+                    "inventoryLocations": [
+                      {
+                        "id": 7,
+                        "name": "Retail Floor"
+                      },
+                      {
+                        "id": 8,
+                        "name": "Vault Backstock"
+                      },
+                      {
+                        "id": 10,
+                        "name": "Delivery Inventory"
+                      },
+                      {
+                        "id": 62,
+                        "name": "Display"
+                      },
+                      {
+                        "id": 69,
+                        "name": "Car 1"
+                      },
+                      {
+                        "id": 70,
+                        "name": "Car 2"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIError"
+                }
+              }
+            }
+          }
+        }
+      },
+    },
     "/api/v1/menu": {
       "get": {
         "description": "Fetch the menu for an organization",
@@ -2459,18 +2968,15 @@
                       "subCategories": [
                         {
                           "id": 55,
-                          "name": "Vape Cartridge",
-                          "isRoot": false
+                          "name": "Vape Cartridge"
                         },
                         {
                           "id": 95,
-                          "name": "Disposable",
-                          "isRoot": false
+                          "name": "Disposable"
                         },
                         {
                           "id": 165,
-                          "name": "Vapes",
-                          "isRoot": false
+                          "name": "Vapes"
                         }
                       ],
                       "inStock": true
@@ -2548,8 +3054,7 @@
                       "subCategories": [
                         {
                           "id": 45,
-                          "name": "Top Shelf",
-                          "isRoot": false
+                          "name": "Top Shelf"
                         }
                       ],
                       "inStock": true
@@ -2617,38 +3122,7 @@
                         "order": 9,
                         "cannabisType": "none"
                       }
-                    ],
-                    "subCategories": {
-                      "Vape": [
-                        "Disposable",
-                        "Vape Cartridge",
-                        "Vapes"
-                      ],
-                      "Pre-Rolls": [
-                        "Top Shelf"
-                      ],
-                      "Concentrates": [
-                        "Badder",
-                        "Hash",
-                        "Live Resin",
-                        "Sauce",
-                        "wax"
-                      ],
-                      "Flowers": [
-                        "Top Shelf",
-                        "indoor",
-                        "sleep"
-                      ],
-                      "Edibles": [
-                        "Tincture",
-                        "sleep"
-                      ],
-                      "Meadow Select": [],
-                      "Accessories": [],
-                      "Topicals": [
-                        "Creams"
-                      ]
-                    }
+                    ]
                   }
                 }
               }
