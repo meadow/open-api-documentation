@@ -1981,7 +1981,7 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "Order return response",
+            "description": "Instore queue response",
             "content": {
               "application/json": {
                 "schema": {
@@ -2022,6 +2022,168 @@
                       }
                     ]
                   }
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIError"
+                }
+              }
+            }
+          }
+        }
+      },
+    },
+    "/api/v1/organization": {
+      "get": {
+        "description": "Retrieve basic information about the organization",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Organization response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "description": "The id for the organization"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the organization"
+                    },
+                    "customerEmail": {
+                      "type": "string",
+                      "description": "Customer facing email",
+                      "nullable": true
+                    },
+                    "customerPhone": {
+                      "type": "string",
+                      "description": "Customer facing phone number",
+                      "nullable": true
+                    },
+                    "hasDelivery": {
+                      "type": "boolean",
+                      "description": "Whether this organization accepts delivery orders"
+                    },
+                    "hasPickup": {
+                      "type": "boolean",
+                      "description": "Whether this organization accepts pickup orders"
+                    },
+                    "state": {
+                      "type": "string",
+                      "description": "The state this organization is located in"
+                    },
+                    "licenseNumber": {
+                      "type": "string",
+                      "description": "The license number for this organization",
+                      "nullable": true
+                    },
+                    "taxesIncluded": {
+                      "type": "boolean",
+                      "description": "Whether taxes are included in the price of products"
+                    },
+                    "tz": {
+                      "type": "string",
+                      "description": "The timezone name of the organization. This value should be used to adjust UTC times found throughout the API"
+                    }
+                  }
+                },
+                "example": {
+                  "data": {
+                    "id": 1,
+                    "name": "Meadow Lands",
+                    "customerEmail": "partners@getmeadow.com",
+                    "customerPhone": "+14155551234",
+                    "hasDelivery": true,
+                    "hasPickup": true,
+                    "state": "california",
+                    "licenseNumber": "C10-0420XYZ-LIC",
+                    "taxesIncluded": false,
+                    "tz": "America/Los_Angeles"
+                  }
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIError"
+                }
+              }
+            }
+          }
+        }
+      },
+    },
+    "/api/v1/inventory-locations": {
+      "get": {
+        "description": "Retrieve all of the inventory locations for the organization. These may be cross referenced in other requests when you see `inventoryLocationId`.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Inventory locations response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "description": "The ID of the inventory location"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the inventory location"
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "A description of the inventory location",
+                      "nullable": true
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "Either `standard` or `vehicle`"
+                    }
+                  }
+                },
+                "example": {
+                  "data": [
+                    {
+                      "id": 7,
+                      "name": "Retail Floor",
+                      "description": "Default inventory location.",
+                      "type": "standard"
+                    },
+                    {
+                      "id": 8,
+                      "name": "Vault Backstock",
+                      "description": "the vault in the back",
+                      "type": "standard"
+                    },
+                    {
+                      "id": 10,
+                      "name": "Delivery Inventory",
+                      "description": "For Delivery Only",
+                      "type": "standard"
+                    },
+                    {
+                      "id": 84,
+                      "name": "Delivery Ledger Car",
+                      "description": null,
+                      "type": "vehicle"
+                    }
+                  ]
                 }
               }
             }
