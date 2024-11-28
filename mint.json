@@ -44,7 +44,8 @@
         "endpoints/analytics/retrieve-customer",
         "endpoints/analytics/list-orders",
         "endpoints/analytics/retrieve-order",
-        "endpoints/analytics/list-order-returns"
+        "endpoints/analytics/list-order-returns",
+        "endpoints/analytics/list-instore-queues"
       ]
     },
     {
