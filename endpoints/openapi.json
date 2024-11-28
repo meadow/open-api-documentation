@@ -2710,6 +2710,420 @@
         }
       },
     },
+    "/api/v1/purchase-orders": {
+      "get": {
+        "description": "Retrieve all purchase orders for an organization in reverse chronological order. 50 purchase orders will be returned at a time and may be paginated using the `startingAfter` query parameter.",
+        "parameters": [
+          {
+            "name": "startingAfter",
+            "in": "query",
+            "description": "The `id` for a purchase order that you want to retrieve all purchase orders after this one. Pass in the last `id` in a response to retrieve the next page.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List purchase orders response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "description": "The ID of the purchase order"
+                    },
+                    "status": {
+                      "type": "string",
+                      "description": "Either `open` or `closed`"
+                    },
+                    "notes": {
+                      "type": "string",
+                      "description": "User entered notes for this purchase order"
+                    },
+                    "expectedAt": {
+                      "type": "string",
+                      "description": "A date for when this purchase order is expected in `YYYY-MM-DD`"
+                    },
+                    "paymentStatus": {
+                      "type": "string",
+                      "description": "Either `paid`, `unpaid`, or `partial`"
+                    },
+                    "paymentTerms": {
+                      "type": "string",
+                      "description": "One of `net15`, `net30`, `net60`, `cod` or `custom`"
+                    },
+                    "paymentTermsDueDate": {
+                      "type": "string",
+                      "description": "The payment terms due date"
+                    },
+                    "totalAmount": {
+                      "type": "string",
+                      "description": "The total amount (quantity) of product on this purchase order"
+                    },
+                    "totalAmountReceived": {
+                      "type": "string",
+                      "description": "The total amount (quantity) of product received on this purchase order"
+                    },
+                    "subtotal": {
+                      "type": "number",
+                      "description": "The subtotal of the purchase order in cents"
+                    },
+                    "finalTotal": {
+                      "type": "number",
+                      "description": "The final total of the purchase order in cents"
+                    },
+                    "caExciseTotal": {
+                      "type": "number",
+                      "description": "The number for pre-2023 California excise of this purchase order in cents"
+                    },
+                    "shippingHandlingFee": {
+                      "type": "number",
+                      "description": "The shipping fee in cents"
+                    },
+                    "shippingHandlingFeeExcise": {
+                      "type": "number",
+                      "description": "The number for pre-2023 California excise of the shipping and handling fee"
+                    },
+                    "amountPaid": {
+                      "type": "number",
+                      "description": "The amount paid for this purchase order in cents"
+                    },
+                    "amountOustanding": {
+                      "type": "number",
+                      "description": "The amount still left to be paid in cents"
+                    },
+                    "externalInvoiceNumber": {
+                      "type": "string",
+                      "description": "The external invoice number"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "description": "When this purchase order was created"
+                    },
+                    "vendor": {
+                      "type": "object",
+                      "nullable": true,
+                      "description": "Information about the loyalty of the customer (Can be `null`)",
+                      "properties": {
+                        "id": {
+                          "type": "number",
+                          "description": "The id for this vendor"
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "The name of this vendor"
+                        },
+                        "phone": {
+                          "type": "string",
+                          "description": "The phone for this vendor"
+                        },
+                        "notes": {
+                          "type": "string",
+                          "description": "User entered notes about this vendor"
+                        },
+                        "email": {
+                          "type": "string",
+                          "description": "The email of this vendor"
+                        },
+                        "sellerPermitNumber": {
+                          "type": "string",
+                          "description": "The license number for this vendor"
+                        },
+                        "street1": {
+                          "type": "string",
+                          "description": ""
+                        },
+                        "street2": {
+                          "type": "string",
+                          "description": ""
+                        },
+                        "city": {
+                          "type": "string",
+                          "description": ""
+                        },
+                        "state": {
+                          "type": "string",
+                          "description": ""
+                        },
+                        "postalCode": {
+                          "type": "string",
+                          "description": ""
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "description": "When this vendor was created"
+                        }
+                      }
+                    },
+                    "lineItems": {
+                      "type": "array",
+                      "description": "All of the line items for this purchase order",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "number",
+                            "description": "The id of this line item"
+                          },
+                          "amount": {
+                            "type": "string",
+                            "description": "The amount (quantity) for the product in this line item"
+                          },
+                          "costPerUnit": {
+                            "type": "string",
+                            "description": "The cost for each amount of this line item in dollars"
+                          },
+                          "subtotal": {
+                            "type": "number",
+                            "description": "The subtotal for this line item in cents"
+                          },
+                          "finalTotal": {
+                            "type": "number",
+                            "description": "The final total for this line item in cents"
+                          },
+                          "amountReceived": {
+                            "type": "string",
+                            "description": "The amount that has been received thus far"
+                          },
+                          "caExcisePerUnit": {
+                            "type": "string",
+                            "description": "The amount of pre-2023 California excise tax per unit in dollars"
+                          },
+                          "caExciseTotal": {
+                            "type": "number",
+                            "description": "The total amount of pre-2023 California excise tax for this line item in cents"
+                          },
+                          "receptions": {
+                            "type": "array",
+                            "description": "All of the receptions for this purchase order line item",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "inventoryLocationId": {
+                                  "type": "number",
+                                  "description": "The id of the inventory location where this inventory was received"
+                                },
+                                "amount": {
+                                  "type": "string",
+                                  "description": "The amount (quantity) of the reception"
+                                },
+                                "createdAt": {
+                                  "type": "string",
+                                  "description": "When this reception was created"
+                                }
+                              }
+                            }
+                          },
+                          "product": {
+                            "type": "object",
+                            "description": "The product that this line item is for",
+                            "properties": {
+                              "id": {
+                                "type": "number",
+                                "description": "The ID of the product"
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "The name of the product"
+                              },
+                              "unit": {
+                                "type": "string",
+                                "description": "Either `gram` or `item`"
+                              },
+                              "strainType": {
+                                "type": "string",
+                                "description": "The strain type of the product"
+                              },
+                              "primaryCategory": {
+                                "type": "object",
+                                "description": "The category for this product",
+                                "properties": {
+                                  "id": {
+                                    "type": "number",
+                                    "description": "ID of the category"
+                                  },
+                                  "name": {
+                                    "type": "string",
+                                    "description": "The name of the category"
+                                  },
+                                  "cannabisType": {
+                                    "type": "string",
+                                    "description": "One of the following values:\n`non-concentrated` - Flower or other non-concentrated THC products\n`concentrated` - Concentrated THC products (Example: Edibles, Concentrates)\n`immature-plant` - Cannabis plants\n`none` - This product does not contain cannabis\n`mi-infused-solids` - Cannabis infused solids (only in Michigan) (Example: edibles)\n`mi-infused-fluids` - Cannabis infused fluids (only in Michigan) (Example: drinks)\n`edibles` - Edible product (only used in New Jersey & Massachusetts)"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "data": [
+                    {
+                      "id": 642,
+                      "status": "open",
+                      "notes": "test notes",
+                      "expectedAt": "2024-01-25",
+                      "paymentStatus": "unpaid",
+                      "paymentTerms": "custom",
+                      "paymentTermsDueDate": "2024-02-02",
+                      "totalAmount": "45",
+                      "totalAmountReceived": "50",
+                      "subtotal": 37700,
+                      "finalTotal": 38000,
+                      "caExciseTotal": 0,
+                      "shippingHandlingFee": 300,
+                      "shippingHandlingFeeExcise": 0,
+                      "amountPaid": 0,
+                      "amountOutstanding": 38000,
+                      "externalInvoiceNumber": "123456",
+                      "createdAt": "2024-01-24T00:29:39.641Z",
+                      "vendor": {
+                        "id": 3,
+                        "name": "Emerald Green 420 Distributors",
+                        "phone": "",
+                        "notes": "On time distributor",
+                        "email": "",
+                        "sellerPermitNumber": "420247123",
+                        "street1": "420 Main Street",
+                        "street2": null,
+                        "city": "San Francisco",
+                        "state": "CA",
+                        "postalCode": "94103",
+                        "createdAt": "2017-02-20T11:29:03.882-08:00"
+                      },
+                      "lineItems": [
+                        {
+                          "id": 1037,
+                          "amount": "7",
+                          "costPerUnit": "5.00",
+                          "subtotal": 3500,
+                          "amountReceived": "50",
+                          "finalTotal": 3500,
+                          "caExcisePerUnit": "0",
+                          "caExciseTotal": 0,
+                          "createdAt": "2024-01-24T00:29:39.656Z",
+                          "receptions": [
+                            {
+                              "inventoryLocationId": 88,
+                              "amount": "50",
+                              "createdAt": "2024-01-24T00:30:47.181Z"
+                            }
+                          ],
+                          "product": {
+                            "id": 675,
+                            "name": "#Lunchbreak",
+                            "unit": "gram",
+                            "strainType": "sativa",
+                            "createdAt": "2019-07-17T17:14:58.523Z",
+                            "primaryCategory": {
+                              "id": 8,
+                              "name": "Flowers",
+                              "cannabisType": "non-concentrated",
+                              "createdAt": "2016-04-02T08:03:27.028Z"
+                            }
+                          }
+                        },
+                        {
+                          "id": 1038,
+                          "amount": "38",
+                          "costPerUnit": "9.00",
+                          "subtotal": 34200,
+                          "amountReceived": "0",
+                          "finalTotal": 34200,
+                          "caExcisePerUnit": "0",
+                          "caExciseTotal": 0,
+                          "createdAt": "2024-01-24T00:29:39.656Z",
+                          "receptions": [],
+                          "product": {
+                            "id": 9759,
+                            "name": "41 Unicornz",
+                            "unit": "item",
+                            "strainType": "sativa",
+                            "createdAt": "2023-10-02T18:33:52.134Z",
+                            "primaryCategory": {
+                              "id": 253,
+                              "name": "Vapes",
+                              "cannabisType": "concentrated",
+                              "createdAt": "2023-04-14T21:25:36.473Z"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": 641,
+                      "status": "open",
+                      "notes": null,
+                      "expectedAt": null,
+                      "paymentStatus": "unpaid",
+                      "paymentTerms": null,
+                      "paymentTermsDueDate": null,
+                      "totalAmount": "1",
+                      "totalAmountReceived": "0",
+                      "subtotal": 100,
+                      "finalTotal": 100,
+                      "caExciseTotal": 0,
+                      "shippingHandlingFee": 0,
+                      "shippingHandlingFeeExcise": 0,
+                      "amountPaid": 0,
+                      "amountOutstanding": 100,
+                      "externalInvoiceNumber": null,
+                      "createdAt": "2024-01-10T22:38:48.857Z",
+                      "vendor": null,
+                      "lineItems": [
+                        {
+                          "id": 1036,
+                          "amount": "1",
+                          "costPerUnit": "1.00",
+                          "subtotal": 100,
+                          "amountReceived": "0",
+                          "finalTotal": 100,
+                          "caExcisePerUnit": "0",
+                          "caExciseTotal": 0,
+                          "createdAt": "2024-01-10T22:38:48.864Z",
+                          "receptions": [],
+                          "product": {
+                            "id": 10039,
+                            "name": "Blue Dream",
+                            "unit": "gram",
+                            "strainType": "sativa",
+                            "createdAt": "2024-01-10T22:38:00.373Z",
+                            "primaryCategory": {
+                              "id": 8,
+                              "name": "Flowers",
+                              "cannabisType": "non-concentrated",
+                              "createdAt": "2016-04-02T08:03:27.028Z"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIError"
+                }
+              }
+            }
+          }
+        }
+      },
+    },
     "/api/v1/menu": {
       "get": {
         "description": "Fetch the menu for an organization",
