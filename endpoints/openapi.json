@@ -20,6 +20,188 @@
     }
   ],
   "paths": {
+    "/api/v1/customers": {
+      "get": {
+        "description": "Retrieve all customers for an organization in reverse chronological order. 50 customers will be returned at a time and may be paginated using the `startingAfter` query parameter.",
+        "parameters": [
+          {
+            "name": "startingAfter",
+            "in": "query",
+            "description": "The `id` for a customer that you want to retrieve all customers after this one. Pass in the last `id` in a response to retrieve the next page.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "startingOn",
+            "in": "query",
+            "description": "A date that must be formatted as `YYYY-MM-DD`. When submitted, the response will return the latest customer on that day and continue in reverse chronological order. I.E. if `2022-11-25` is passed in, the first customer will be as close to 11:59pm November 25th, 2022 as possible.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "description": "Accepts a single value of `updatedAt` if you would like the customers list to be sorted by when each customer was last updated in reverse chronological order (i.e. most recently updated first). Example on how to use: `?sortBy=updatedAt`",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List customers response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer"
+                },
+                "example": {
+                  "data": [
+                    {
+                      "id": 2982,
+                      "hashId": "e35rkb",
+                      "firstName": "Perrin",
+                      "lastName": "Aybara",
+                      "email": null,
+                      "phone": null,
+                      "joinedAt": "2022-05-05T04:38:22.448Z",
+                      "updatedAt": "2023-04-04T20:22:38.491Z",
+                      "birthday": "1990-01-01",
+                      "sex": "male",
+                      "zip": null,
+                      "licenseExpiry": "2022-11-13",
+                      "marketingOptIn": true,
+                      "marketingOptInAt": "2023-02-23T00:10:58.199Z",
+                      "customerGroups": ["Industry", "Veterans"],
+                      "loyalty": {
+                        "pointsAmount": 0
+                      },
+                      "mostRecentAddress": {
+                        "street1": "123 Main St",
+                        "street2": null,
+                        "city": "San Francisco",
+                        "state": "CA",
+                        "postalCode": "94103"
+                      },
+                      "medicalExpiration": "2024-04-20"
+                    },
+                    {
+                      "id": 2981,
+                      "hashId": "gkwd5g",
+                      "firstName": "Rand",
+                      "lastName": "Al'Thor",
+                      "email": "rand@getmeadow.com",
+                      "phone": "+18145551234",
+                      "joinedAt": "2022-05-05T04:37:54.188Z",
+                      "updatedAt": "2023-04-04T20:22:38.491Z",
+                      "birthday": null,
+                      "sex": null,
+                      "zip": null,
+                      "licenseExpiry": null,
+                      "marketingOptIn": false,
+                      "marketingOptInAt": null,
+                      "customerGroups": [],
+                      "loyalty": {
+                        "pointsAmount": 143.5
+                      },
+                      "mostRecentAddress": null,
+                      "medicalExpiration": null
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIError"
+                }
+              }
+            }
+          }
+        }
+      },
+    },
+    "/api/v1/customers/${customerId}": {
+      "get": {
+        "description": "Retrieve details for a specific customer via ID",
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "path",
+            "description": "ID of customer to retrieve",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List customer response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer"
+                },
+                "example": {
+                  "data": {
+                    "id": 2987,
+                    "hashId": "b6a97e",
+                    "firstName": "Perrin",
+                    "lastName": "Aybara",
+                    "email": "perrin@getmeadow.com",
+                    "phone": null,
+                    "joinedAt": "2022-09-22T00:13:41.824Z",
+                    "updatedAt": "2022-09-22T00:13:41.841Z",
+                    "birthday": "1990-11-08",
+                    "sex": "male",
+                    "zip": "96150",
+                    "licenseExpiry": null,
+                    "marketingOptIn": false,
+                    "marketingOptInAt": null,
+                    "customerGroups": [
+                      "Industry"
+                    ],
+                    "loyalty": {
+                      "pointsAmount": 0
+                    },
+                    "mostRecentAddress": {
+                      "street1": "123 Main St",
+                      "street2": null,
+                      "city": "San Francisco",
+                      "state": "California",
+                      "postalCode": "94103"
+                    },
+                    "medicalExpiration": null
+                  }
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIError"
+                }
+              }
+            }
+          }
+        }
+      },
+    },
     "/api/v1/orders/{orderId}": {
       "get": {
         "description": "Retrieves the status of the order for that ID",
@@ -965,7 +1147,7 @@
                 ],
                 "type": "delivery",
                 "address": {
-                  "street1": "60 13th St",
+                  "street1": "123 Main St",
                   "city": "San Francisco",
                   "state": "California",
                   "postalCode": "94103"
@@ -2547,6 +2729,113 @@
               }
             }
           }
+        }
+      },
+      "Customer": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "description": "The id for the customer"
+          },
+          "hashId": {
+            "type": "string",
+            "description": "An ID used to display to the customer and dispensary instead of the `id` number"
+          },
+          "firstName": {
+            "type": "string",
+            "description": "The first name of the customer"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "The last name of the customer"
+          },
+          "email": {
+            "type": "string",
+            "description": "The email of the customer"
+          },
+          "phone": {
+            "type": "string",
+            "description": "The phone of the customer"
+          },
+          "joinedAt": {
+            "type": "string",
+            "description": "The date the customer joined the dispensary"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "The date this customer was last updated"
+          },
+          "birthday": {
+            "type": "string",
+            "description": "The birthday of the customer in `YYYY-MM-DD`"
+          },
+          "sex": {
+            "type": "string",
+            "description": "One of `male`, `female`, `tertiary`"
+          },
+          "zip": {
+            "type": "string",
+            "description": "The postal code of the customer"
+          },
+          "licenseExpiry": {
+            "type": "string",
+            "description": "The expiration date of this customer’s drivers license or `null` if it is not recorded.",
+            "nullable": true
+          },
+          "marketingOptIn": {
+            "type": "boolean",
+            "description": "Whether this customer is opted in to receive marketing"
+          },
+          "marketingOptInAt": {
+            "type": "string",
+            "description": "When this customer opted in to marketing or `null`",
+            "nullable": true
+          },
+          "customerGroups": {
+            "type": "array",
+            "description": "An array of Strings for the names of the customer groups this customer is a part of (Example: Veterans, Seniors, etc.)",
+            "items": {
+              "type": "string"
+            }
+          },
+          "loyalty": {
+            "type": "object",
+            "description": "Information about the loyalty of the customer",
+            "properties": {
+              "pointsAmount": {
+                "type": "number",
+                "description": "The amount of loyalty points the customer has accrued"
+              }
+            }
+          },
+          "mostRecentAddress": {
+            "type": "object",
+            "description": "The most recent address used for a delivery order or `null` if one does not exist",
+            "nullable": true,
+            "properties": {
+              "street1": {
+                "type": "string"
+              },
+              "street2": {
+                "type": "string"
+              },
+              "city": {
+                "type": "string"
+              },
+              "state": {
+                "type": "string"
+              },
+              "postalCode": {
+                "type": "string"
+              },
+            }
+          },
+          "medicalExpiration": {
+            "type": "string",
+            "description": "The expiration date of this customer’s medical recommendation or `null` if they are an adult use customer",
+            "nullable": true
+          },
         }
       },
       "Order": {

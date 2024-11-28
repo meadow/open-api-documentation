@@ -40,6 +40,8 @@
     {
       "group": "Endpoints: Analytics",
       "pages": [
+        "endpoints/analytics/get-customers",
+        "endpoints/analytics/retrieve-customer",
         "endpoints/analytics/get-orders",
         "endpoints/analytics/get-order-detail",
         "endpoints/analytics/get-order-returns"
