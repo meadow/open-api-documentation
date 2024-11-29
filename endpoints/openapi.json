@@ -673,7 +673,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Order status response",
+            "description": "List orders response",
             "content": {
               "application/json": {
                 "schema": {
@@ -1163,7 +1163,7 @@
         },
         "responses": {
           "201": {
-            "description": "Order cart pricing response",
+            "description": "Create order response",
             "content": {
               "application/json": {
                 "schema": {
@@ -1538,7 +1538,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Order status response",
+            "description": "Orders detail response",
             "content": {
               "application/json": {
                 "schema": {
@@ -2215,7 +2215,7 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "Inventory locations response",
+            "description": "Products all response",
             "content": {
               "application/json": {
                 "schema": {
