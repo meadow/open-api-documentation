@@ -3,4 +3,6 @@ title: 'List tags'
 openapi: 'GET /api/v1/products/tags'
 ---
 
-<Note>Each tag returned will have a corresponding list of product IDs that will correspond with the results of [Retrieve Menu](/endpoints/products/get-menu)</Note>
+<Warning>This endpoint needs to be retrieved using `daffodil.getmeadow.com` or `daffodil-staging.getmeadow.com` (staging sandbox) instead of the api subdomain.<br /><br />Example URL: `https://daffodil.getmeadow.com/api/v1/products/tags`</Warning>
+
+<Note>This endpoint will return all tags. No pagination is necessary</Note>

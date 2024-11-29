@@ -9,6 +9,6 @@ In order to prevent accidental double orders from being placed from issues such 
 
 If an order for this key has already been placed, it will be returned as the data instead of placing a duplicate order.
 
-In order to simplify this process for integrators, an `idempotencyKey` is returned from the [pricing request (POST /api/v1/orders/pricing)](/endpoints/orders/post-pricing). Please save the key from the last pricing request you use and submit it along with the order.
+In order to simplify this process for integrators, an `idempotencyKey` is returned from the [pricing request (POST /api/v1/orders/pricing)](/endpoints/orders/retrieve-pricing). Please save the key from the last pricing request you use and submit it along with the order.
 
 Please reach out if you have any questions about this.

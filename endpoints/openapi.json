@@ -3127,6 +3127,14 @@
     "/api/v1/menu": {
       "get": {
         "description": "Fetch the menu for an organization",
+        "servers": [
+          {
+            "url": "https://daffodil-staging.getmeadow.com"
+          },
+          {
+            "url": "https://daffodil.getmeadow.com"
+          }
+        ],
         "parameters": [
           {
             "name": "type",
@@ -3558,6 +3566,14 @@
     "/api/v1/products/tags": {
       "get": {
         "description": "Fetch all of the product tags for an organziation",
+        "servers": [
+          {
+            "url": "https://daffodil-staging.getmeadow.com"
+          },
+          {
+            "url": "https://daffodil.getmeadow.com"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Tags response",
@@ -3577,7 +3593,7 @@
                     },
                     "productIds": {
                       "type": "array",
-                      "description": "An array of IDs that will correspond to the id property of each product from the [Retrieve Menu](/endpoints/products/get-menu) endpoint. This value can be null if it does not have any products associated with it.",
+                      "description": "An array of IDs that will correspond to the id property of each product from the [Retrieve Menu](/endpoints/menu/list-menu) endpoint. This value can be null if it does not have any products associated with it.",
                       "items": {
                         "type": "number"
                       },
