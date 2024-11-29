@@ -1,0 +1,55 @@
+---
+title: Changelog
+description: 'New updates and improvements to the Meadow API'
+---
+
+<Update label="May 30, 2024">
+  - Adds `type` query parameter to [GET /api/v1/orders](/endpoints/analytics/list-orders)
+</Update>
+
+<Update label="February 20, 2024">
+  - Adds `primaryCategory` to order line items returned from [GET /api/v1/orders](/endpoints/analytics/list-orders) and [GET /api/v1/orders/\{orderId\}/detail](/endpoints/analytics/retrieve-order)
+</Update>
+
+<Update label="February 2, 2024">
+  - Adds `sortBy` query parameter to [GET /api/v1/customers](/endpoints/analytics/list-customers)
+  - Adds [GET /api/v1/order-returns](/endpoints/analytics/list-order-returns)
+</Update>
+
+<Update label="January 24, 2024">
+  - Adds [GET /api/v1/purchase-orders](/endpoints/analytics/list-purchase-orders)
+</Update>
+
+<Update label="July 28, 2023">
+  - Adds [GET /api/v1/orders/\{orderId\}/detail](/endpoints/analytics/retrieve-order)
+  - Adds [GET /api/v1/customers/\{customerId\}](/endpoints/analytics/retrieve-customer)
+  - Adds [GET /api/v1/inventory-locations](/endpoints/analytics/list-inventory-locations)
+  - Adds `fulfilledOnly` query parameter to [GET /api/v1/orders](/endpoints/analytics/list-orders)
+    - When set to `true`, only fulfilled orders will be returned in reverse chronological order
+</Update>
+
+<Update label="June 30, 2023">
+  Adds the following fields to [GET /api/v1/customers](/endpoints/analytics/list-customers)
+    - `licenseExpiry` - The expiration date of this customer’s drivers license or `null` if it is not recorded.
+
+  Adds the following fields to [GET /api/v1/orders](/endpoints/analytics/list-orders)
+    - `customer.licenseExpiry` - The expiration date of this customer’s drivers license or `null` if it is not recorded.
+    - `customer.medicalExpiration` - The expiration date of their medical recommendation or `null` if they are an adult use customer
+</Update>
+
+<Update label="May 24, 2023">
+  Adds the following fields to [GET /api/v1/customers](/endpoints/analytics/list-customers)
+    - `marketingOptIn` - Whether this customer has opted in to receive marketing
+    - `marketingOptInAt` - When the customer opted in if they did
+</Update>
+
+<Update label="May 12, 2023">
+  Adds the following fields to [GET /api/v1/customers](/endpoints/analytics/list-customers)
+    - `updatedAt` - The time this customer was last updated
+    - `customerGroups` An array of strings for customer groups this customer is a part of (Example: Veterans, Seniors, etc.)
+    - `medicalExpiration` - The expiration date of their medical recommendation or `null` if they are an adult use customer
+
+  Adds the following fields to [GET /api/v1/orders](/endpoints/analytics/list-orders)
+    - `returns` - Please see documentation for full definition
+    - `lineItems[].fulfillAs` - Please see documentation for full definition
+</Update>

@@ -131,7 +131,7 @@
         }
       },
     },
-    "/api/v1/customers/${customerId}": {
+    "/api/v1/customers/{customerId}": {
       "get": {
         "description": "Retrieve details for a specific customer via ID",
         "parameters": [

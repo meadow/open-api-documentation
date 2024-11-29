@@ -27,7 +27,8 @@
         "responses",
         "errors",
         "permissions",
-        "rate-limits"
+        "rate-limits",
+        "changelog"
       ]
     },
     {
