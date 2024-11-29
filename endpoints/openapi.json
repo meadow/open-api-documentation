@@ -280,7 +280,7 @@
                       "properties": {
                         "productOptionId": {
                           "type": "number",
-                          "description": "The ID from the menu api response (`https://daffodil.getmeadow.com`) `data[].options[].id`"
+                          "description": "The ID from the [menu api response](/endpoints/menu/list-menu) (`https://daffodil.getmeadow.com`) `data[].options[].id`"
                         },
                         "quantity": {
                           "type": "number",
@@ -1050,7 +1050,7 @@
                       "properties": {
                         "productOptionId": {
                           "type": "number",
-                          "description": "The ID from the menu api response (`https://daffodil.getmeadow.com`) `data[].options[].id`"
+                          "description": "The ID from the [menu api response](/endpoints/menu/list-menu) (`https://daffodil.getmeadow.com`) `data[].options[].id`"
                         },
                         "quantity": {
                           "type": "number",
@@ -1115,7 +1115,7 @@
                   },
                   "idempotencyKey": {
                     "type": "string",
-                    "description": "Key to help avoid double orders due to server miscommunication. Please see \"Idempotent Requests\" section. Please use the string provided to you by the pricing endpoint. This value must be a v4 UUID."
+                    "description": "Key to help avoid double orders due to server miscommunication. Please see [\"Idempotent Requests\" section](#idempotency). Please use the string provided to you by the [pricing endpoint](/endpoints/orders/retrieve-pricing). This value must be a v4 UUID."
                   },
                   "deliveryNotes": {
                     "type": "string",
@@ -3673,7 +3673,7 @@
                       "properties": {
                         "id": {
                           "type": "number",
-                          "description": "The ID from the menu api response `data[].options[].id`"
+                          "description": "The ID from the [menu api response](/endpoints/menu/list-menu) `data[].options[].id`"
                         },
                         "upc": {
                           "type": "string",
