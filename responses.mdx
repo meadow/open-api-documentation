@@ -1,0 +1,29 @@
+---
+title: Responses
+description: 'How to handle responses from Meadow endpoints'
+---
+
+The Meadow API is completely JSON based. All of our response's are wrapped in a `data` envelope like this:
+
+```json
+{
+  "data": {
+    "key": "value"
+  }
+}
+```
+
+For endpoints that return multiple items, they will be formatted like this:
+
+```json
+{
+  "data": [
+    {
+      "key": "value"
+    },
+    {
+      "key": "value"
+    }
+  ]
+}
+```

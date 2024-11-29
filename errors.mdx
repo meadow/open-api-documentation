@@ -1,0 +1,211 @@
+---
+title: Errors
+description: 'How to handle errors returned from Meadow endpoints'
+---
+
+Meadow uses  HTTP response codes to indicate the success or failure of an API request. Codes in the `2xx` range indicate success. Codes in the `4xx` range indicate an error that failed given the information provided (e.g., a required parameter was omitted, a order could not be created, etc.). Codes in the `5xx` range indicate an error with Meadow's servers (which should happen very infrequently).
+
+# Error Response
+
+When an error is returned, it will be in the following format
+
+<ResponseField name="message" type="string">
+  A human readable string to describe the error to a developer
+</ResponseField>
+
+<ResponseField name="code" type="string">
+  A code pertaining to a specific Meadow error (Example: `INVALID_API_CREDENTIALS`)
+</ResponseField>
+
+<ResponseField name="meta" type="object">
+  Some errors will contain additional information in this object to help debug the issue
+</ResponseField>
+
+### Example
+
+```json
+{
+  "error": {
+    "message": "Your API credentials are invalid.",
+    "code": "INVALID_API_CREDENTIALS"
+  }
+}
+```
+
+# Error Codes
+
+Below is a list of error codes that Meadow may return on various requests. This list does not contain every single error that is possible, so we encourage you to handle unknown codes that you have not seen before.
+
+### `INVALID_API_CREDENTIALS`
+Thrown when either the `X-Consumer-Key` or `X-Client-Key` provided is invalid
+```json
+{
+  "error": {
+    "message": "Your API credentials are invalid.",
+    "code": "INVALID_API_CREDENTIALS"
+  }
+}
+```
+
+### `INSUFFICIENT_PERMISSIONS`
+The `X-Client-Key` is valid but does not have the proper permissions for that endpoint
+```json
+{
+  "error": {
+    "message": "This API client key does not have permissions to perform this request.",
+    "code": "INSUFFICIENT_PERMISSIONS"
+  }
+}
+```
+
+### `MISSING_PARAMS`
+The request body is missing a required parameter
+```json
+{
+  "error": {
+    "message": "Please enter your address.",
+    "code": "MISSING_PARAMS",
+    "meta": {
+      "missing": [
+        "address"
+      ]
+    }
+  }
+}
+```
+
+### `INVALID_PARAMS`
+One or more of the properties in the request body is invalid.
+```json
+{
+  "error": {
+    "message": "type must be one of: delivery, pickup, in-store.",
+    "code": "INVALID_PARAMS"
+  }
+}
+```
+
+### `INVALID_ORDER`
+An order was unable to be created for an unknown reason
+```json
+{
+  "error": {
+    "message": "The order you submitted was malformed.",
+    "code": "INVALID_ORDER"
+  }
+}
+```
+
+### `INVALID_ORDER_QUANTITY`
+Thrown when a line item has an invalid quantity
+```json
+{
+  "error": {
+    "message": "Orders cannot contain negative quantities.",
+    "code": "INVALID_ORDER_QUANTITY"
+  }
+}
+```
+
+### `INVALID_ORDER_TYPE`
+Throw when an order type (example: `pickup`) is submitted but the organization does not allow that type of order
+```json
+{
+  "error": {
+    "message": "The organization does not support that order type.",
+    "code": "INVALID_ORDER_TYPE"
+  }
+}
+```
+
+### `INVALID_IDEMPOTENCY_KEY`
+The`idempotencyKey` submitted is not a valid uuid v4. We recommend using the `idempotencyKey` returned from pricing so you do not run into this error.
+```json
+{
+  "error": {
+    "message": "idempotencyKey must be a uuid v4",
+    "code": "INVALID_IDEMPOTENCY_KEY"
+  }
+}
+```
+
+### `PURCHASE_LIMIT_EXCEEDED`
+Each state has its own set of purchase limits. When an order would put a customer over the limit, this error is thrown
+```json
+{
+  "error": {
+    "message": "This order is over the daily purchase limit by 3.36g of non-concentrated cannabis (flowers).",
+    "code": "PURCHASE_LIMIT_EXCEEDED",
+    "meta": {
+      "overages": [
+        {
+          "cannabisType": "non-concentrated",
+          "limit": "28.5",
+          "total": "31.86",
+          "overage": "3.36"
+        }
+      ]
+    }
+  }
+}
+```
+
+### `ORDER_MINIMUM_NOT_MET`
+Organizations may set minimums for orders. This is thrown if the final total is under the minimum.
+```json
+{
+  "error": {
+    "message": "The amount you submitted is under the order minimum for this organization.",
+    "code": "ORDER_MINIMUM_NOT_MET",
+    "meta": {
+      "minimum": "$75"
+    }
+  }
+}
+```
+
+### `PRODUCT_IS_INACTIVE`
+Thrown when an organization has removed a product from their menu, but an order was submitted with it.
+```json
+{
+  "error": {
+    "message": "One of the products you submitted is currently inactive.",
+    "code": "PRODUCT_IS_INACTIVE",
+    "meta": {
+      "productId": 994
+    }
+  }
+}
+```
+
+### `TRANSACTION_RETRY_EXCEEDED`
+This error should be very rare, but if it is thrown, show a generic error to the customer with a button to submit the order again.
+```json
+{
+  "error": {
+    "message": "Retry limit exceeded for concurrent transactions. Retry the request.",
+    "code": "TRANSACTION_RETRY_EXCEEDED"
+  }
+}
+```
+
+### `OUT_OF_STOCK`
+Thrown when there is not enough inventory of a product or product option to create an order
+```json
+{
+  "error": {
+    "message": "An order line exceeds current inventory.",
+    "code": "OUT_OF_STOCK",
+    "meta": {
+      "lineItem": {
+        "productOptionId": 2307,
+        "quantity": 1,
+        "specifiedPackageId": null
+      },
+      "product": {
+        "name": "Blue Dream"
+      }
+    }
+  }
+}
+```

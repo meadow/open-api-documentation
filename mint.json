@@ -23,7 +23,11 @@
       "group": "Using the API",
       "pages": [
         "introduction",
-        "authentication"
+        "authentication",
+        "responses",
+        "errors",
+        "permissions",
+        "rate-limits"
       ]
     },
     {
@@ -42,7 +46,7 @@
       ]
     },
     {
-      "group": "Endpoints: Orders",
+      "group": "Endpoints: Create Orders",
       "pages": [
         "endpoints/orders/retrieve-status",
         "endpoints/orders/retrieve-pricing",
@@ -57,7 +61,7 @@
       ]
     },
     {
-      "group": "Endpoints: Products",
+      "group": "Endpoints: Products & Inventory",
       "pages": [
         "endpoints/products/update-upcs"
       ]
