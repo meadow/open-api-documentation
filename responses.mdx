@@ -3,6 +3,10 @@ title: Responses
 description: 'How to handle responses from Meadow endpoints'
 ---
 
+<Note>You may notice there are extra properties in a response than are documented on the respective endpoint. Generally speaking, you should only ever have to use the properties that we explicitly document. If you have any questions, please feel free to reach out.</Note>
+
+## Response Shape
+
 The Meadow API is completely JSON based. All of our response's are wrapped in a `data` envelope like this:
 
 ```json
@@ -28,4 +32,8 @@ For endpoints that return multiple items, they will be formatted like this:
 }
 ```
 
-<Note>You may notice there are extra properties in a response than are documented on the respective endpoint. Generally speaking, you should only ever have to use the properties that we explicitly document. If you have any questions, please feel free to reach out.</Note>
+## Financial/Monetary Values
+
+Almost all prices/monetary amounts contained in the Meadow API will be represented as a JSON Number in cents. I.E. `24310` is equivalent to $243.10
+
+One notable exception to this rule is product and product option `movingAverageCostPerUnit` because they contain more decimal places than 2. These properties will be returned as strings.
