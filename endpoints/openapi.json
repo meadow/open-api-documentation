@@ -269,7 +269,8 @@
                 "properties": {
                   "type": {
                     "type": "string",
-                    "description": "Order type - must be either `delivery` or `pickup`"
+                    "description": "The type of the order",
+                    "enum": ["delivery", "pickup"]
                   },
                   "lineItems": {
                     "type": "array",
@@ -664,10 +665,11 @@
           {
             "name": "type",
             "in": "query",
-            "description": "One of `delivery`, `pickup`, or `in-store`. Only orders of that type will be returned if this parameter is passed in.",
+            "description": "Only orders of that type will be returned if this parameter is sent.",
             "required": false,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "enum": ["delivery", "pickup", "in-store"]
             }
           }
         ],
