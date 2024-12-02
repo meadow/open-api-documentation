@@ -36,6 +36,17 @@ When an error is returned, it will be in the following format
 
 Below is a list of error codes that Meadow may return on various requests. This list does not contain every single error that is possible, so we encourage you to handle unknown codes that you have not seen before.
 
+### `INSUFFICIENT_PERMISSIONS`
+The `X-Client-Key` is valid but does not have the proper permissions for that endpoint
+```json
+{
+  "error": {
+    "message": "This API client key does not have permissions to perform this request.",
+    "code": "INSUFFICIENT_PERMISSIONS"
+  }
+}
+```
+
 ### `INVALID_API_CREDENTIALS`
 Thrown when either the `X-Consumer-Key` or `X-Client-Key` provided is invalid
 ```json
@@ -58,29 +69,13 @@ Thrown when data submitted is not owned by the parent resource specified (Exampl
 }
 ```
 
-### `INSUFFICIENT_PERMISSIONS`
-The `X-Client-Key` is valid but does not have the proper permissions for that endpoint
+### `INVALID_IDEMPOTENCY_KEY`
+The`idempotencyKey` submitted is not a valid uuid v4. We recommend using the `idempotencyKey` returned from pricing so you do not run into this error.
 ```json
 {
   "error": {
-    "message": "This API client key does not have permissions to perform this request.",
-    "code": "INSUFFICIENT_PERMISSIONS"
-  }
-}
-```
-
-### `MISSING_PARAMS`
-The request body is missing a required parameter
-```json
-{
-  "error": {
-    "message": "Please enter your address.",
-    "code": "MISSING_PARAMS",
-    "meta": {
-      "missing": [
-        "address"
-      ]
-    }
+    "message": "idempotencyKey must be a uuid v4",
+    "code": "INVALID_IDEMPOTENCY_KEY"
   }
 }
 ```
@@ -129,13 +124,67 @@ Throw when an order type (example: `pickup`) is submitted but the organization d
 }
 ```
 
-### `INVALID_IDEMPOTENCY_KEY`
-The`idempotencyKey` submitted is not a valid uuid v4. We recommend using the `idempotencyKey` returned from pricing so you do not run into this error.
+### `MISSING_PARAMS`
+The request body is missing a required parameter
 ```json
 {
   "error": {
-    "message": "idempotencyKey must be a uuid v4",
-    "code": "INVALID_IDEMPOTENCY_KEY"
+    "message": "Please enter your address.",
+    "code": "MISSING_PARAMS",
+    "meta": {
+      "missing": [
+        "address"
+      ]
+    }
+  }
+}
+```
+
+### `ORDER_MINIMUM_NOT_MET`
+Organizations may set minimums for orders. This is thrown if the final total is under the minimum.
+```json
+{
+  "error": {
+    "message": "The amount you submitted is under the order minimum for this organization.",
+    "code": "ORDER_MINIMUM_NOT_MET",
+    "meta": {
+      "minimum": "$75"
+    }
+  }
+}
+```
+
+### `OUT_OF_STOCK`
+Thrown when there is not enough inventory of a product or product option to create an order
+```json
+{
+  "error": {
+    "message": "An order line exceeds current inventory.",
+    "code": "OUT_OF_STOCK",
+    "meta": {
+      "lineItem": {
+        "productOptionId": 2307,
+        "quantity": 1,
+        "specifiedPackageId": null
+      },
+      "product": {
+        "name": "Blue Dream"
+      }
+    }
+  }
+}
+```
+
+### `PRODUCT_IS_INACTIVE`
+Thrown when an organization has removed a product from their menu, but an order was submitted with it.
+```json
+{
+  "error": {
+    "message": "One of the products you submitted is currently inactive.",
+    "code": "PRODUCT_IS_INACTIVE",
+    "meta": {
+      "productId": 994
+    }
   }
 }
 ```
@@ -161,34 +210,6 @@ Each state has its own set of purchase limits. When an order would put a custome
 }
 ```
 
-### `ORDER_MINIMUM_NOT_MET`
-Organizations may set minimums for orders. This is thrown if the final total is under the minimum.
-```json
-{
-  "error": {
-    "message": "The amount you submitted is under the order minimum for this organization.",
-    "code": "ORDER_MINIMUM_NOT_MET",
-    "meta": {
-      "minimum": "$75"
-    }
-  }
-}
-```
-
-### `PRODUCT_IS_INACTIVE`
-Thrown when an organization has removed a product from their menu, but an order was submitted with it.
-```json
-{
-  "error": {
-    "message": "One of the products you submitted is currently inactive.",
-    "code": "PRODUCT_IS_INACTIVE",
-    "meta": {
-      "productId": 994
-    }
-  }
-}
-```
-
 ### `TRANSACTION_RETRY_EXCEEDED`
 This error should be very rare, but if it is thrown, show a generic error to the customer with a button to submit the order again.
 ```json
@@ -196,27 +217,6 @@ This error should be very rare, but if it is thrown, show a generic error to the
   "error": {
     "message": "Retry limit exceeded for concurrent transactions. Retry the request.",
     "code": "TRANSACTION_RETRY_EXCEEDED"
-  }
-}
-```
-
-### `OUT_OF_STOCK`
-Thrown when there is not enough inventory of a product or product option to create an order
-```json
-{
-  "error": {
-    "message": "An order line exceeds current inventory.",
-    "code": "OUT_OF_STOCK",
-    "meta": {
-      "lineItem": {
-        "productOptionId": 2307,
-        "quantity": 1,
-        "specifiedPackageId": null
-      },
-      "product": {
-        "name": "Blue Dream"
-      }
-    }
   }
 }
 ```
