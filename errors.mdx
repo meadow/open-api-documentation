@@ -47,6 +47,17 @@ Thrown when either the `X-Consumer-Key` or `X-Client-Key` provided is invalid
 }
 ```
 
+### `INVALID_CHILD_RESOURCE`
+Thrown when data submitted is not owned by the parent resource specified (Example: Submitting options that belong to another product)
+```json
+{
+  "error": {
+    "message": "That child resource does not belong to the specified parent.",
+    "code": "INVALID_CHILD_RESOURCE"
+  }
+}
+```
+
 ### `INSUFFICIENT_PERMISSIONS`
 The `X-Client-Key` is valid but does not have the proper permissions for that endpoint
 ```json

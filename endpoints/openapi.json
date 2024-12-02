@@ -3735,7 +3735,8 @@
                           },
                           "name": {
                             "type": "string",
-                            "description": "The name for this option"
+                            "description": "The name for this option",
+                            "nullable": true
                           },
                           "amount": {
                             "type": "number",
