@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Starter Kit",
+  "name": "Meadow API",
   "logo": {
     "dark": "/images/logo-white.png",
     "light": "/images/logo-purple.png"

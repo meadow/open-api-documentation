@@ -36,4 +36,10 @@ For endpoints that return multiple items, they will be formatted like this:
 
 Almost all prices/monetary amounts contained in the Meadow API will be represented as a JSON Number in cents. I.E. `24310` is equivalent to $243.10
 
-One notable exception to this rule is product and product option `movingAverageCostPerUnit` because they contain more decimal places than 2. These properties will be returned as strings.
+One notable exception to this rule is product and product option `movingAverageCostPerUnit` because they contain more decimal places than 2. These properties will be returned as strings representing dollars. Here is an example:
+
+```json
+{
+  "movingAverageCostPerUnit": "43.097334",
+}
+```

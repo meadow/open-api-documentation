@@ -212,8 +212,7 @@
             "description": "ID of order to retrieve",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int64"
+              "type": "string"
             }
           }
         ],
@@ -1533,8 +1532,7 @@
             "description": "ID of order to retrieve",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int64"
+              "type": "string"
             }
           }
         ],
@@ -3749,7 +3747,8 @@
                           },
                           "upc": {
                             "type": "string",
-                            "description": "The upc for this option"
+                            "description": "The upc for this option",
+                            "nullable": true
                           }
                         }
                       }
@@ -4525,7 +4524,8 @@
           },
           "voidedReason": {
             "type": "string",
-            "description": "The reason this return was voided"
+            "description": "The reason this return was voided",
+            "nullable": true
           },
           "createdAt": {
             "type": "string",
