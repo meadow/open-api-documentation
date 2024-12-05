@@ -18,3 +18,11 @@ mintlify dev
 
 - Mintlify dev isn't running - Run `mintlify install` it'll re-install dependencies.
 - Page loads as a 404 - Make sure you are running in a folder with `mint.json`
+
+#### Resources
+
+https://mintlify.com/docs/quickstart
+
+https://swagger.io/docs/specification/v3_0/describing-responses/
+
+https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md
