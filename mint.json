@@ -52,7 +52,7 @@
         "endpoints/orders/customer-matching",
         "endpoints/orders/retrieve-status",
         "endpoints/orders/retrieve-pricing",
-        "endpoints/orders/create"
+        "endpoints/orders/create-order"
       ]
     },
     {

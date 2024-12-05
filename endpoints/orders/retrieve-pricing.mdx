@@ -2,3 +2,21 @@
 title: 'Retrieve cart pricing'
 openapi: 'POST /api/v1/orders/pricing'
 ---
+
+# How to display to a customer
+
+When displaying the pricing information to a customer, here is how Meadow displays:
+
+Subtotal: `totalPrice`
+
+`credits[].description`: `credits[].amountUsed`
+`discounts[].description`: `discounts[].amountUsed`
+`adjustments[].description`: `adjustments[].amount`
+`taxes[].description`: `taxes[].amount`
+
+Total: `customerGrandTotal`
+
+Screenshot from our backend app:
+<Frame>
+  <img src="/images/pricing-example.webp" />
+</Frame>

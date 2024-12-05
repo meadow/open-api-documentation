@@ -280,7 +280,7 @@
                       "properties": {
                         "productOptionId": {
                           "type": "number",
-                          "description": "The ID from the [menu api response](/endpoints/menu/list-menu) (`https://daffodil.getmeadow.com`) `data[].options[].id`"
+                          "description": "The ID from the [menu api response](/endpoints/menu/list-menu) `data[].options[].id`"
                         },
                         "quantity": {
                           "type": "number",
@@ -1051,7 +1051,7 @@
                       "properties": {
                         "productOptionId": {
                           "type": "number",
-                          "description": "The ID from the [menu api response](/endpoints/menu/list-menu) (`https://daffodil.getmeadow.com`) `data[].options[].id`"
+                          "description": "The ID from the [menu api response](/endpoints/menu/list-menu) `data[].options[].id`"
                         },
                         "quantity": {
                           "type": "number",
@@ -1062,7 +1062,7 @@
                   },
                   "customer": {
                     "type": "object",
-                    "description": "The customer for this order. This object is optional, but if provided, must have a `firstName`, `lastName` and either an `email` or `phone`.",
+                    "description": "The customer for this order.",
                     "required": ["firstName", "lastName"],
                     "properties": {
                       "firstName": {
