@@ -3172,31 +3172,38 @@
                     },
                     "thcAmount": {
                       "type": "string",
-                      "description": "The amount of THC in the product"
+                      "description": "The amount of THC in the product",
+                      "nullable": true
                     },
                     "thcAmountEach": {
                       "type": "string",
-                      "description": "The amount of THC per each of the product"
+                      "description": "The amount of THC per each of the product",
+                      "nullable": true
                     },
                     "thcUnit": {
                       "type": "string",
-                      "description": "Either `%` or `mg`"
+                      "description": "Either `%` or `mg`",
+                      "nullable": true
                     },
                     "cbdAmount": {
                       "type": "string",
-                      "description": "The amount of CBD in the product"
+                      "description": "The amount of CBD in the product",
+                      "nullable": true
                     },
                     "cbdAmountEach": {
                       "type": "string",
-                      "description": "The amount of CBD per each of the product"
+                      "description": "The amount of CBD per each of the product",
+                      "nullable": true
                     },
                     "cbdUnit": {
                       "type": "string",
-                      "description": "Either `%` or `mg`"
+                      "description": "Either `%` or `mg`",
+                      "nullable": true
                     },
                     "description": {
                       "type": "string",
-                      "description": "A text description about the product"
+                      "description": "A text description about the product",
+                      "nullable": true
                     },
                     "isFeatured": {
                       "type": "boolean",
@@ -3218,7 +3225,8 @@
                           },
                           "name": {
                             "type": "string",
-                            "description": "The name of this option"
+                            "description": "The name of this option",
+                            "nullable": true
                           },
                           "amount": {
                             "type": "number",
@@ -3230,11 +3238,13 @@
                           },
                           "salesPrice": {
                             "type": "number",
-                            "description": "The sales price if one exists"
+                            "description": "The sales price if one exists",
+                            "nullable": true
                           },
                           "upc": {
                             "type": "string",
-                            "description": "The UPC code for this option"
+                            "description": "The UPC code for this option",
+                            "nullable": true
                           },
                           "maxQuantity": {
                             "type": "number",
@@ -3593,7 +3603,7 @@
                     },
                     "productIds": {
                       "type": "array",
-                      "description": "An array of IDs that will correspond to the id property of each product from the [Retrieve Menu](/endpoints/menu/list-menu) endpoint. This value can be null if it does not have any products associated with it.",
+                      "description": "An array of IDs that will correspond to the `id` property of each product from the [Retrieve Menu](/endpoints/menu/list-menu) endpoint. This value can be `null` if it does not have any products associated with it.",
                       "items": {
                         "type": "number"
                       },
