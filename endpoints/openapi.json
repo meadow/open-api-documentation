@@ -49,7 +49,8 @@
             "description": "Accepts a single value of `updatedAt` if you would like the customers list to be sorted by when each customer was last updated in reverse chronological order (i.e. most recently updated first). Example on how to use: `?sortBy=updatedAt`",
             "required": false,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "enum": ["updatedAt"]
             }
           }
         ],
@@ -639,8 +640,7 @@
             "description": "The `id` for an order that you want to retrieve all orders after this one. Pass in the last `id` in a response to retrieve the next page.",
             "required": false,
             "schema": {
-              "type": "integer",
-              "format": "int64"
+              "type": "string"
             }
           },
           {
@@ -2092,7 +2092,8 @@
                     },
                     "tz": {
                       "type": "string",
-                      "description": "The timezone name of the organization. This value should be used to adjust UTC times found throughout the API"
+                      "description": "The timezone name of the organization. This value should be used to adjust UTC times found throughout the API",
+                      "enum": ["America/Los_Angeles", "US/Mountain", "US/Central", "US/Eastern"]
                     }
                   }
                 },
@@ -2239,31 +2240,38 @@
                     },
                     "thcAmount": {
                       "type": "string",
-                      "description": "The amount of THC in the product"
+                      "description": "The amount of THC in the product",
+                      "nullable": true
                     },
                     "thcAmountEach": {
                       "type": "string",
-                      "description": "The amount of THC per each of the product"
+                      "description": "The amount of THC per each of the product",
+                      "nullable": true
                     },
                     "thcUnit": {
                       "type": "string",
-                      "description": "Either `%` or `mg`"
+                      "description": "Either `%` or `mg`",
+                      "nullable": true
                     },
                     "cbdAmount": {
                       "type": "string",
-                      "description": "The amount of CBD in the product"
+                      "description": "The amount of CBD in the product",
+                      "nullable": true
                     },
                     "cbdAmountEach": {
                       "type": "string",
-                      "description": "The amount of CBD per each of the product"
+                      "description": "The amount of CBD per each of the product",
+                      "nullable": true
                     },
                     "cbdUnit": {
                       "type": "string",
-                      "description": "Either `%` or `mg`"
+                      "description": "Either `%` or `mg`",
+                      "nullable": true
                     },
                     "description": {
                       "type": "string",
-                      "description": "A text description about the product"
+                      "description": "A text description about the product",
+                      "nullable": true
                     },
                     "inventoryType": {
                       "type": "string",
@@ -2279,7 +2287,8 @@
                     },
                     "movingAverageCostPerUnit": {
                       "type": "string",
-                      "description": "The moving average cost per unit for this product if this products `inventoryType` is product"
+                      "description": "The moving average cost per unit for this product if this products `inventoryType` is product",
+                      "nullable": true
                     },
                     "locationInventory": {
                       "type": "array",
@@ -2309,7 +2318,8 @@
                           },
                           "name": {
                             "type": "string",
-                            "description": "The name of this option"
+                            "description": "The name of this option",
+                            "nullable": true
                           },
                           "amount": {
                             "type": "number",
@@ -2321,15 +2331,18 @@
                           },
                           "salesPrice": {
                             "type": "number",
-                            "description": "The sales price in cents if one exists"
+                            "description": "The sales price in cents if one exists",
+                            "nullable": true
                           },
                           "upc": {
                             "type": "string",
-                            "description": "The UPC code for this option"
+                            "description": "The UPC code for this option",
+                            "nullable": true
                           },
                           "movingAverageCostPerUnit": {
                             "type": "string",
-                            "description": "The moving average cost per unit for this product option"
+                            "description": "The moving average cost per unit for this product option",
+                            "nullable": true
                           },
                           "locationInventory": {
                             "type": "array",
@@ -2743,7 +2756,8 @@
                     },
                     "notes": {
                       "type": "string",
-                      "description": "User entered notes for this purchase order"
+                      "description": "User entered notes for this purchase order",
+                      "nullable": true
                     },
                     "expectedAt": {
                       "type": "string",
@@ -2799,7 +2813,8 @@
                     },
                     "externalInvoiceNumber": {
                       "type": "string",
-                      "description": "The external invoice number"
+                      "description": "The external invoice number",
+                      "nullable": true
                     },
                     "createdAt": {
                       "type": "string",
@@ -4010,27 +4025,33 @@
           },
           "packedAt": {
             "type": "string",
-            "description": "The datetime the order was packed on"
+            "description": "The datetime the order was packed on",
+            "nullable": true
           },
           "fulfilledAt": {
             "type": "string",
-            "description": "The date the order was fulfilled"
+            "description": "The date the order was fulfilled",
+            "nullable": true
           },
           "type": {
             "type": "string",
-            "description": "One of `delivery`, `pickup`, or `in-store`"
+            "description": "The type of this order",
+            "enum": ["delivery", "pickup", "in-store"]
           },
           "status": {
             "type": "string",
-            "description": "The status of the order. One of `draft`, `new`, `packed`, `fulfilled`, `canceled`\n\n- `draft` is an order submitted without inventory taken out\n- `new` is an order that has had inventory associated with it\n- `packed` signifies an order has been processed and is waiting for pickup/delivery\n- `fulfilled` is an order that has been fully completed\n- `canceled` is an order that has been canceled"
+            "description": "The status of the order.\n\n- `draft` is an order submitted without inventory taken out\n- `new` is an order that has had inventory associated with it\n- `packed` signifies an order has been processed and is waiting for pickup/delivery\n- `fulfilled` is an order that has been fully completed\n- `canceled` is an order that has been canceled",
+            "enum": ["draft", "new", "packed", "fulfilled", "canceled"]
           },
           "cancelationReason": {
             "type": "string",
-            "description": "A description of why the order was canceled"
+            "description": "A description of why the order was canceled",
+            "nullable": true
           },
           "canceledAt": {
             "type": "string",
-            "description": "When the order was canceled"
+            "description": "When the order was canceled",
+            "nullable": true
           },
           "taxExempt": {
             "type": "boolean",
@@ -4046,7 +4067,8 @@
           },
           "customerName": {
             "type": "string",
-            "description": "The name of the customer for express pickup or kiosk orders."
+            "description": "The name of the customer for express pickup or kiosk orders.",
+            "nullable": true
           },
           "deliveryFee": {
             "type": "number",
@@ -4054,7 +4076,8 @@
           },
           "deliveryFeeDescription": {
             "type": "string",
-            "description": "A description of the delivery fee that can be shown to the customer"
+            "description": "A description of the delivery fee that can be shown to the customer",
+            "nullable": true
           },
           "lineItems": {
             "type": "array",
@@ -4080,11 +4103,12 @@
                 },
                 "optionId": {
                   "type": "number",
-                  "description": "he id of the product option purchased"
+                  "description": "The id of the product option purchased"
                 },
                 "optionName": {
                   "type": "string",
-                  "description": "The name of the product option"
+                  "description": "The name of the product option",
+                  "nullable": true
                 },
                 "optionPrice": {
                   "type": "number",
@@ -4092,15 +4116,18 @@
                 },
                 "optionSalesPrice": {
                   "type": "number",
-                  "description": "The price of the product option at time of purchase if it was on sale"
+                  "description": "The sales price of the product option at time of purchase if it was on sale",
+                  "nullable": true
                 },
                 "productBrandId": {
                   "type": "number",
-                  "description": "The brand id of the product"
+                  "description": "The brand id of the product",
+                  "nullable": true
                 },
                 "productBrand": {
                   "type": "string",
-                  "description": "The name of the brand of the product"
+                  "description": "The name of the brand of the product",
+                  "nullable": true
                 },
                 "unitPrice": {
                   "type": "number",
@@ -4116,15 +4143,18 @@
                 },
                 "productMovingAverageCostPerUnit": {
                   "type": "number",
-                  "description": "The moving average cost per unit of the product"
+                  "description": "The moving average cost per unit of the product",
+                  "nullable": true
                 },
                 "optionMovingAverageCostPerUnit": {
                   "type": "string",
-                  "description": "The moving average cost per unit of the product option"
+                  "description": "The moving average cost per unit of the product option",
+                  "nullable": true
                 },
                 "packageLineCost": {
                   "type": "string",
-                  "description": "The total cost for all metrc packages used to fulfill this line item"
+                  "description": "The total cost for all metrc packages used to fulfill this line item",
+                  "nullable": true
                 },
                 "primaryCategory": {
                   "type": "object",
@@ -4192,7 +4222,8 @@
                             "type": "string",
                             "description": "The cost per unit of this package"
                           }
-                        }
+                        },
+                        "nullable": true
                       },
                       "optionSum": {
                         "type": "number",
@@ -4230,15 +4261,18 @@
               },
               "email": {
                 "type": "string",
-                "description": "The email of the customer"
+                "description": "The email of the customer",
+                "nullable": true
               },
               "phone": {
                 "type": "string",
-                "description": "The phone of the customer"
+                "description": "The phone of the customer",
+                "nullable": true
               },
               "birthday": {
                 "type": "string",
-                "description": "The birthday of the customer"
+                "description": "The birthday of the customer",
+                "nullable": true
               },
               "hashId": {
                 "type": "string",
@@ -4250,15 +4284,18 @@
               },
               "zip": {
                 "type": "string",
-                "description": "The postal code for the customer"
+                "description": "The postal code for the customer",
+                "nullable": true
               },
               "licenseExpiry": {
                 "type": "string",
-                "description": "The expiration date of this customer’s drivers license or `null` if it is not recorded."
+                "description": "The expiration date of this customer’s drivers license or `null` if it is not recorded.",
+                "nullable": true
               },
               "medicalExpiration": {
                 "type": "string",
-                "description": "The expiration date of this customer’s medical recommendation or `null` if they are an adult use customer"
+                "description": "The expiration date of this customer’s medical recommendation or `null` if they are an adult use customer",
+                "nullable": true
               }
             }
           },
@@ -4322,7 +4359,7 @@
                 },
                 "isTaxExemption": {
                   "type": "boolean",
-                  "description": "Set to true if this adjustment was automatically added to offset taxes that were included in the price of a product when a customer is tax exempt"
+                  "description": "Set to `true` if this adjustment was automatically added to offset taxes that were included in the price of a product when a customer is tax exempt"
                 },
                 "taxid": {
                   "type": "number",
@@ -4518,7 +4555,8 @@
           },
           "adjustmentDescription": {
             "type": "string",
-            "description": "A description for the adjustment if there is one"
+            "description": "A description for the adjustment if there is one",
+            "nullable": true
           },
           "paymentTypeName": {
             "type": "string",
@@ -4617,7 +4655,7 @@
             "properties": {
               "id": {
                 "type": "number",
-                "description": "The id of the employee who created tihs return"
+                "description": "The id of the employee who created this return"
               },
               "email": {
                 "type": "string",
@@ -4639,7 +4677,7 @@
             "properties": {
               "id": {
                 "type": "number",
-                "description": "The id of the employee who created tihs return"
+                "description": "The id of the employee who voided this return"
               },
               "email": {
                 "type": "string",
