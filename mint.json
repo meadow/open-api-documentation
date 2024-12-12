@@ -72,6 +72,7 @@
       "group": "Endpoints: Products & Inventory",
       "pages": [
         "endpoints/products/create-product",
+        "endpoints/products/update-product",
         "endpoints/products/update-upcs"
       ]
     }

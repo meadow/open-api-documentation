@@ -3590,7 +3590,6 @@
     },
     "/api/v1/products": {
       "post": {
-        "description": "Create a new product",
         "requestBody": {
           "content": {
             "application/json": {
@@ -3776,6 +3775,156 @@
                       }
                     }
                   }
+                },
+                "example": {
+                  "data": {
+                    "id": 11867,
+                    "organizationId": 25,
+                    "brand": {
+                      "id": 2238,
+                      "name": "Awesome Cannabis",
+                      "createdAt": "2024-12-12T03:08:58.012Z",
+                      "updatedAt": "2024-12-12T03:08:58.012Z",
+                      "description": null
+                    },
+                    "subCategories": [
+                      {
+                        "id": 30325,
+                        "organizationId": 25,
+                        "name": "top-shelf",
+                        "createdAt": "2024-12-12T03:01:11.823Z",
+                        "updatedAt": "2024-12-12T03:01:11.823Z"
+                      }
+                    ],
+                    "inventoryType": "option",
+                    "createdAt": "2024-12-12T04:08:00.429Z",
+                    "updatedAt": "2024-12-12T04:08:00.429Z",
+                    "isActive": false,
+                    "isFeatured": false,
+                    "photos": [
+                      "https://meadow.imgix.net/2024/10/1aef02cf-9150-481e-9625-760693b4186b.jpeg",
+                      "https://meadow.imgix.net/2022/11/67de83f8-1d72-4713-991a-87c3b29d4e93.jpeg"
+                    ],
+                    "name": "Blue Dream",
+                    "strainType": "hybrid-sativa",
+                    "isCompliant": true,
+                    "unit": "gram",
+                    "primaryCategory": {
+                      "id": 286,
+                      "name": "Flower",
+                      "createdAt": "2023-12-16T02:51:28.738Z",
+                      "updatedAt": "2023-12-16T02:51:28.738Z",
+                      "cannabisType": "non-concentrated"
+                    },
+                    "options": [
+                      {
+                        "id": 15472,
+                        "name": "Eighth",
+                        "amount": 3.5,
+                        "price": 4500,
+                        "salesPrice": null,
+                        "createdAt": "2024-12-12T04:08:00.433Z",
+                        "updatedAt": "2024-12-12T04:08:00.433Z",
+                        "upc": null,
+                        "content": "3.5"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/products/{productId}": {
+      "put": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "The name of the product, excluding any brand names."
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "A description for the product shown on menus. (Supports markdown)"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": ["gram", "item"],
+                    "description": "Set to `gram` when this product is in a category which is weighed out (i.e. \"Flowers\"), otherwise set to `item`"
+                  },
+                  "strainType": {
+                    "type": "string",
+                    "enum": ["sativa", "indica", "hybrid", "hybrid-sativa", "hybrid-indica", "cbd", "mixed", "none"],
+                    "description": "The strain type of the cannabis product, `none` otherwise."
+                  },
+                  "category": {
+                    "type": "string",
+                    "description": "A category name from the [List categories endpoint](/endpoints/products/list-categories). Please note that different client organizations may customize category names, for example renaming \"Flowers\" to \"Flower.\""
+                  },
+                  "subCategories": {
+                    "type": "array",
+                    "description": "A list of sub category names from the [List sub-categories endpoint](/endpoints/products/list-sub-categories), or a new sub category name. Pass an empty array `[]` to have no sub categories.",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "brandName": {
+                    "type": "string",
+                    "description": "The brand of the product. Meadow will match this to an existing brand or create a new brand if it does not exist."
+                  },
+                  "photos": {
+                    "type": "array",
+                    "description": "URLs for the image to associate with this product. Meadow will download with a background job. Max photo size is 15MB.",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "inventoryType": {
+                    "type": "string",
+                    "description": "The inventory type of this product. Please see the [Inventory Guide](/guides/inventory) for more information.",
+                    "enum": ["option", "product", "none"]
+                  },
+                  "deletedAt": {
+                    "type": "string",
+                    "description": "Set to current ISO 8601 timestamp to delete product"
+                  }
+                }
+              },
+              "example": {
+                "name": "Blue Dream",
+                "unit": "gram",
+                "strainType": "hybrid-sativa",
+                "category": "Flower",
+                "subCategories": ["top-shelf"],
+                "brandName": "Awesome Cannabis",
+                "photos": ["https://meadow.imgix.net/2024/10/1aef02cf-9150-481e-9625-760693b4186b.jpeg", "https://meadow.imgix.net/2022/11/67de83f8-1d72-4713-991a-87c3b29d4e93.jpeg"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Update product response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductsResponse"
                 },
                 "example": {
                   "data": {
@@ -4951,6 +5100,86 @@
                 "type": "string",
                 "description": "The last name of the employee"
               }
+            }
+          }
+        }
+      },
+      "ProductsResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The ID of the new product"
+          },
+          "organizationId": {
+            "type": "string",
+            "description": "The client organization's ID"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the product"
+          },
+          "description": {
+            "type": "string",
+            "description": "The description of the product",
+            "nullable": true
+          },
+          "unit": {
+            "type": "string",
+            "description": "Either `gram` or `item`"
+          },
+          "isActive": {
+            "type": "boolean",
+            "description": "Whether this product is shown on the menu. Client organizations must update this via Meadow."
+          },
+          "isFeatured": {
+            "type": "boolean",
+            "description": "Whether this product is shown as featured. Client organizations must update this via Meadow."
+          },
+          "brand": {
+            "type": "object",
+            "description": "The brand of this product",
+            "nullable": true,
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The name of the brand"
+              }
+            }
+          },
+          "primaryCategory": {
+            "type": "object",
+            "description": "The category of this product",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The name of the category"
+              },
+              "cannabisType": {
+                "type": "string",
+                "description": "The cannabis type of the products in this category used for purchase order calculations.",
+                "enum": ["non-concentrated", "concentrated", "mi-infused-solids", "mi-infused-fluids", "edibles", "immature-plant", "none"]
+              }
+            }
+          },
+          "subCategories": {
+            "type": "array",
+            "description": "The names of all the sub-categories of this product (may be empty `[]`)",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "The name of the sub-category"
+                }
+              }
+            }
+          },
+          "photos": {
+            "type": "array",
+            "description": "Photo URLs submitted in the request",
+            "items": {
+              "type": "string"
             }
           }
         }
