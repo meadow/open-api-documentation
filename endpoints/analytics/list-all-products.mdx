@@ -7,14 +7,6 @@ openapi: 'GET /api/v1/products/all'
 
 <Note>This endpoint will return all products. No pagination is necessary</Note>
 
-# Inventory Type
+# Inventory
 
-Products in Meadow can track their inventory in 1 of 2 ways that will be determined via the `inventoryType` property
-
-### `product` tracking
-
-Products have inventory and costs (`movingAverageCostPerUnit`) set at the product level as opposed to the product option level. An example of this would be flower product where there is a raw amount of inventory (I.E. 750 grams). When a product option is purchased, the amount of inventory used is `option.amount` * `quantity`. For example, if you bought 2 eighths of a product option with amount 3.5, it would subtract 7 from the inventory.
-
-### `option` tracking
-
-For these types of products, inventory and costs (`movingAverageCostPerUnit`) is attached to the product options as opposed to the product itself. With this case, the `option.amount` property is disregarded as everything is tracked by units. So the `quantity` of a line item in an order is exactly how much inventory will be subtracted from that product option.
+Please see our [Inventory Guide](/guides/inventory) for more information.

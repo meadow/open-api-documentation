@@ -32,6 +32,12 @@
       ]
     },
     {
+      "group": "Guides",
+      "pages": [
+        "guides/inventory"
+      ]
+    },
+    {
       "group": "Endpoints: Analytics",
       "pages": [
         "endpoints/analytics/list-customers",
@@ -65,6 +71,7 @@
     {
       "group": "Endpoints: Products & Inventory",
       "pages": [
+        "endpoints/products/create-product",
         "endpoints/products/update-upcs"
       ]
     }
