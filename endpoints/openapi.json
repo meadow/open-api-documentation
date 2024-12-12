@@ -3230,7 +3230,7 @@
                         },
                         "productOptionId": {
                           "type": "number",
-                          "description": "The ID of the option that belongs to the product submitted as `productId`. This property is required if the product's `inventoryType` is set to `option`."
+                          "description": "The ID of the option that belongs to the product submitted as `productId`. This property is required if the product's `inventoryType` is set to `option`.\n\nView more information in our [Inventory Guide](/guides/inventory)"
                         },
                         "amount": {
                           "type": "string",
@@ -3391,7 +3391,7 @@
                         },
                         "productOptionId": {
                           "type": "number",
-                          "description": "The ID of the option that belongs to the product submitted as `productId`. This property is required if the product's `inventoryType` is set to `option`."
+                          "description": "The ID of the option that belongs to the product submitted as `productId`. This property is required if the product's `inventoryType` is set to `option`.\n\nView more information in our [Inventory Guide](/guides/inventory)"
                         },
                         "amount": {
                           "type": "string",
