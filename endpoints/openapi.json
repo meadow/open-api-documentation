@@ -3697,139 +3697,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "description": "The ID of the new product"
-                    },
-                    "organizationId": {
-                      "type": "string",
-                      "description": "The client organization's ID"
-                    },
-                    "name": {
-                      "type": "string",
-                      "description": "The name of the product"
-                    },
-                    "description": {
-                      "type": "string",
-                      "description": "The description of the product",
-                      "nullable": true
-                    },
-                    "unit": {
-                      "type": "string",
-                      "description": "Either `gram` or `item`"
-                    },
-                    "isActive": {
-                      "type": "boolean",
-                      "description": "Whether this product is shown on the menu. Client organizations must update this via Meadow."
-                    },
-                    "isFeatured": {
-                      "type": "boolean",
-                      "description": "Whether this product is shown as featured. Client organizations must update this via Meadow."
-                    },
-                    "brand": {
-                      "type": "object",
-                      "description": "The brand of this product",
-                      "nullable": true,
-                      "properties": {
-                        "name": {
-                          "type": "string",
-                          "description": "The name of the brand"
-                        }
-                      }
-                    },
-                    "primaryCategory": {
-                      "type": "object",
-                      "description": "The category of this product",
-                      "properties": {
-                        "name": {
-                          "type": "string",
-                          "description": "The name of the category"
-                        },
-                        "cannabisType": {
-                          "type": "string",
-                          "description": "The cannabis type of the products in this category used for purchase order calculations.",
-                          "enum": ["non-concentrated", "concentrated", "mi-infused-solids", "mi-infused-fluids", "edibles", "immature-plant", "none"]
-                        }
-                      }
-                    },
-                    "subCategories": {
-                      "type": "array",
-                      "description": "The names of all the sub-categories of this product (may be empty `[]`)",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "name": {
-                            "type": "string",
-                            "description": "The name of the sub-category"
-                          }
-                        }
-                      }
-                    },
-                    "photos": {
-                      "type": "array",
-                      "description": "Photo URLs submitted in the request",
-                      "items": {
-                        "type": "string"
-                      }
-                    }
-                  }
-                },
-                "example": {
-                  "data": {
-                    "id": 11867,
-                    "organizationId": 25,
-                    "brand": {
-                      "id": 2238,
-                      "name": "Awesome Cannabis",
-                      "createdAt": "2024-12-12T03:08:58.012Z",
-                      "updatedAt": "2024-12-12T03:08:58.012Z",
-                      "description": null
-                    },
-                    "subCategories": [
-                      {
-                        "id": 30325,
-                        "organizationId": 25,
-                        "name": "top-shelf",
-                        "createdAt": "2024-12-12T03:01:11.823Z",
-                        "updatedAt": "2024-12-12T03:01:11.823Z"
-                      }
-                    ],
-                    "inventoryType": "option",
-                    "createdAt": "2024-12-12T04:08:00.429Z",
-                    "updatedAt": "2024-12-12T04:08:00.429Z",
-                    "isActive": false,
-                    "isFeatured": false,
-                    "photos": [
-                      "https://meadow.imgix.net/2024/10/1aef02cf-9150-481e-9625-760693b4186b.jpeg",
-                      "https://meadow.imgix.net/2022/11/67de83f8-1d72-4713-991a-87c3b29d4e93.jpeg"
-                    ],
-                    "name": "Blue Dream",
-                    "strainType": "hybrid-sativa",
-                    "isCompliant": true,
-                    "unit": "gram",
-                    "primaryCategory": {
-                      "id": 286,
-                      "name": "Flower",
-                      "createdAt": "2023-12-16T02:51:28.738Z",
-                      "updatedAt": "2023-12-16T02:51:28.738Z",
-                      "cannabisType": "non-concentrated"
-                    },
-                    "options": [
-                      {
-                        "id": 15472,
-                        "name": "Eighth",
-                        "amount": 3.5,
-                        "price": 4500,
-                        "salesPrice": null,
-                        "createdAt": "2024-12-12T04:08:00.433Z",
-                        "updatedAt": "2024-12-12T04:08:00.433Z",
-                        "upc": null,
-                        "content": "3.5"
-                      }
-                    ]
-                  }
+                  "$ref": "#/components/schemas/ProductsResponse"
                 }
               }
             }
@@ -3925,61 +3793,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProductsResponse"
-                },
-                "example": {
-                  "data": {
-                    "id": 11867,
-                    "organizationId": 25,
-                    "brand": {
-                      "id": 2238,
-                      "name": "Awesome Cannabis",
-                      "createdAt": "2024-12-12T03:08:58.012Z",
-                      "updatedAt": "2024-12-12T03:08:58.012Z",
-                      "description": null
-                    },
-                    "subCategories": [
-                      {
-                        "id": 30325,
-                        "organizationId": 25,
-                        "name": "top-shelf",
-                        "createdAt": "2024-12-12T03:01:11.823Z",
-                        "updatedAt": "2024-12-12T03:01:11.823Z"
-                      }
-                    ],
-                    "inventoryType": "option",
-                    "createdAt": "2024-12-12T04:08:00.429Z",
-                    "updatedAt": "2024-12-12T04:08:00.429Z",
-                    "isActive": false,
-                    "isFeatured": false,
-                    "photos": [
-                      "https://meadow.imgix.net/2024/10/1aef02cf-9150-481e-9625-760693b4186b.jpeg",
-                      "https://meadow.imgix.net/2022/11/67de83f8-1d72-4713-991a-87c3b29d4e93.jpeg"
-                    ],
-                    "name": "Blue Dream",
-                    "strainType": "hybrid-sativa",
-                    "isCompliant": true,
-                    "unit": "gram",
-                    "primaryCategory": {
-                      "id": 286,
-                      "name": "Flower",
-                      "createdAt": "2023-12-16T02:51:28.738Z",
-                      "updatedAt": "2023-12-16T02:51:28.738Z",
-                      "cannabisType": "non-concentrated"
-                    },
-                    "options": [
-                      {
-                        "id": 15472,
-                        "name": "Eighth",
-                        "amount": 3.5,
-                        "price": 4500,
-                        "salesPrice": null,
-                        "createdAt": "2024-12-12T04:08:00.433Z",
-                        "updatedAt": "2024-12-12T04:08:00.433Z",
-                        "upc": null,
-                        "content": "3.5"
-                      }
-                    ]
-                  }
                 }
               }
             }
@@ -5181,6 +4994,61 @@
             "items": {
               "type": "string"
             }
+          }
+        },
+        "example": {
+          "data": {
+            "id": 11867,
+            "organizationId": 25,
+            "brand": {
+              "id": 2238,
+              "name": "Awesome Cannabis",
+              "createdAt": "2024-12-12T03:08:58.012Z",
+              "updatedAt": "2024-12-12T03:08:58.012Z",
+              "description": null
+            },
+            "subCategories": [
+              {
+                "id": 30325,
+                "organizationId": 25,
+                "name": "top-shelf",
+                "createdAt": "2024-12-12T03:01:11.823Z",
+                "updatedAt": "2024-12-12T03:01:11.823Z"
+              }
+            ],
+            "inventoryType": "option",
+            "createdAt": "2024-12-12T04:08:00.429Z",
+            "updatedAt": "2024-12-12T04:08:00.429Z",
+            "isActive": false,
+            "isFeatured": false,
+            "photos": [
+              "https://meadow.imgix.net/2024/10/1aef02cf-9150-481e-9625-760693b4186b.jpeg",
+              "https://meadow.imgix.net/2022/11/67de83f8-1d72-4713-991a-87c3b29d4e93.jpeg"
+            ],
+            "name": "Blue Dream",
+            "strainType": "hybrid-sativa",
+            "isCompliant": true,
+            "unit": "gram",
+            "primaryCategory": {
+              "id": 286,
+              "name": "Flower",
+              "createdAt": "2023-12-16T02:51:28.738Z",
+              "updatedAt": "2023-12-16T02:51:28.738Z",
+              "cannabisType": "non-concentrated"
+            },
+            "options": [
+              {
+                "id": 15472,
+                "name": "Eighth",
+                "amount": 3.5,
+                "price": 4500,
+                "salesPrice": null,
+                "createdAt": "2024-12-12T04:08:00.433Z",
+                "updatedAt": "2024-12-12T04:08:00.433Z",
+                "upc": null,
+                "content": "3.5"
+              }
+            ]
           }
         }
       },
