@@ -3284,6 +3284,167 @@
         }
       }
     },
+    "/api/v1/purchase-orders/{purchaseOrderId}": {
+      "put": {
+        "parameters": [
+          {
+            "name": "purchaseOrderId",
+            "in": "path",
+            "description": "ID of the purchase order to update",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "notes": {
+                    "type": "string",
+                    "description": "Any relevant notes"
+                  },
+                  "paymentTerms": {
+                    "type": "string",
+                    "enum": ["net15", "net30", "net60", "cod", "custom"],
+                  },
+                  "paymentTermsDueDate": {
+                    "type": "string",
+                    "description": "If payment terms is custom then this field is required. Date formatted as `YYYY-MM-DD` for when payment is due."
+                  },
+                  "expectedAt": {
+                    "type": "string",
+                    "description": "Expected delivery date formatted as `YYYY-MM-DD`"
+                  },
+                  "externalInvoiceNumber": {
+                    "type": "string",
+                    "description": "Use this to store a 3rd party ID for the PO"
+                  },
+                  "inventoryVendorId": {
+                    "type": "number",
+                    "description": "The inventory vendor ID obtained from list or create PO. Alternatively you can use `inventoryVendor.name`"
+                  },
+                  "inventoryVendor": {
+                    "type": "object",
+                    "required": ["name"],
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "name of the vendor. We will match to an existing vendor or create with the below properties if it does not exist."
+                      },
+                      "email": {
+                        "type": "string",
+                        "description": "The email for this vendor"
+                      },
+                      "phone": {
+                        "type": "string",
+                        "description": "The phone for this vendor"
+                      },
+                      "sellerPermitNumber": {
+                        "type": "string",
+                        "description": ""
+                      },
+                      "notes": {
+                        "type": "string",
+                        "description": ""
+                      },
+                      "street1": {
+                        "type": "string",
+                        "description": ""
+                      },
+                      "street2": {
+                        "type": "string",
+                        "description": ""
+                      },
+                      "postalCode": {
+                        "type": "string",
+                        "description": ""
+                      },
+                      "city": {
+                        "type": "string",
+                        "description": ""
+                      },
+                      "state": {
+                        "type": "string",
+                        "description": ""
+                      }
+                    }
+                  },
+                  "lineItems": {
+                    "type": "array",
+                    "description": "The products for this purchase order, This endpoint will update/delete/create ALL of the line items for this purchase order. For that reason, any existing line items you would like to keep must have the id property submitted. Any existing line items, which are not submitted with this endpoint will be deleted.",
+                    "items": {
+                      "type": "object",
+                      "required": ["productId", "amount", "costPerUnit"],
+                      "properties": {
+                        "id": {
+                          "type": "number",
+                          "description": "If updating an existing line item pass the line item ID from the create, update or list purchase order endpoints."
+                        },
+                        "productId": {
+                          "type": "number",
+                          "description": "The ID of the product to add to the purchase order"
+                        },
+                        "productOptionId": {
+                          "type": "number",
+                          "description": "The ID of the option that belongs to the product submitted as `productId`. This property is required if the product's `inventoryType` is set to `option`."
+                        },
+                        "amount": {
+                          "type": "string",
+                          "description": "The number of units purchased. Submit as string to avoid floating point errors."
+                        },
+                        "costPerUnit": {
+                          "type": "string",
+                          "description": "The cost per unit in dollars. Submit as string to avoid floating point errors."
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "example": {
+                "lineItems": [{
+                  "productId": 11867,
+                  "productOptionId": 15472,
+                  "amount": "35",
+                  "costPerUnit": "20.35"
+                }],
+                "inventoryVendor": {
+                  "name": "Awesome Distribution, Inc."
+                },
+                "expectedAt": "2024-12-25"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Update product response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PurchaseOrderResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/menu": {
       "get": {
         "description": "Fetch the menu for an organization",
