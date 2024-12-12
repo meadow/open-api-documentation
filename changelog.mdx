@@ -3,6 +3,18 @@ title: Changelog
 description: 'New updates and improvements to the Meadow API'
 ---
 
+<Update label="Dec 12, 2024">
+  We've added a slew of new endpoints to our Products & Inventory section. This will allow you to create purchase orders for a client along with all of their associated product information.
+
+  - Adds [POST /api/v1/products](/endpoints/products/create-product)
+  - Adds [PUT /api/v1/products/\{productId\}](/endpoints/products/update-product)
+  - Adds [PUT /api/v1/products/\{productId\}/options](/endpoints/products/update-product-options)
+  - Adds [GET /api/v1/product-categories](/endpoints/products/list-categories)
+  - Adds [GET /api/v1/product-sub-categories](/endpoints/products/list-sub-categories)
+  - Adds [POST /api/v1/purchase-orders](/endpoints/products/create-purchase-order)
+  - Adds [PUT /api/v1/purchase-orders/\{purchaseOrderId\}](/endpoints/products/update-purchase-order)
+</Update>
+
 <Update label="May 30, 2024">
   - Adds `type` query parameter to [GET /api/v1/orders](/endpoints/analytics/list-orders)
 </Update>
