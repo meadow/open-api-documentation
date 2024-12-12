@@ -4084,6 +4084,161 @@
           }
         }
       }
+    },
+    "/api/v1/product-categories": {
+      "get": {
+        "description": "Retrieve all of the product categories for the organization.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Product categories response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "description": "The ID of the category"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the category"
+                    },
+                    "cannabisType": {
+                      "type": "string",
+                      "description": "The type of cannabis content all products in this category have. This is used to calculate purchase limits.\n\n- `non-concentrated` - Used for flower. Cannabis content will be measured in grams (g) \n - `concentrated` - Used for derived, concentrated products such as edibles or concentrates. Content measured in milligrams (mg) \n - `mi-infused-solids` - Used for infused solids only in the state of Michigan. Content measured in ounces (oz) \n - `mi-infused-fluids` - Used for infused fluids such as drinks only in the state of Michigan. Content measured in fluid ounces (oz) \n - `edibles` - All edibles (used in New Jersey & Massachusetts). Content measured in milligrams (mg) \n - `immature-plant` - Used for cannabis plants (i.e. clones). \n - `none` - This category does not contain cannabis products.",
+                      "enum": ["non-concentrated", "concentrated", "mi-infused-solids", "mi-infused-fluids", "edibles", "immature-plant", "none"]
+                    }
+                  }
+                },
+                "example": {
+                  "data": [
+                    {
+                      "id": 286,
+                      "name": "Flower",
+                      "createdAt": "2023-12-16T02:51:28.738Z",
+                      "updatedAt": "2023-12-16T02:51:28.738Z",
+                      "cannabisType": "non-concentrated"
+                    },
+                    {
+                      "id": 287,
+                      "name": "Prerolls",
+                      "createdAt": "2023-12-16T02:51:28.739Z",
+                      "updatedAt": "2023-12-16T02:51:28.739Z",
+                      "cannabisType": "non-concentrated"
+                    },
+                    {
+                      "id": 288,
+                      "name": "Edibles",
+                      "createdAt": "2023-12-16T02:51:28.741Z",
+                      "updatedAt": "2023-12-16T02:51:28.741Z",
+                      "cannabisType": "concentrated"
+                    },
+                    {
+                      "id": 289,
+                      "name": "Concentrates",
+                      "createdAt": "2023-12-16T02:51:28.742Z",
+                      "updatedAt": "2023-12-16T02:51:28.742Z",
+                      "cannabisType": "concentrated"
+                    },
+                    {
+                      "id": 291,
+                      "name": "Accessories",
+                      "createdAt": "2023-12-16T02:51:28.745Z",
+                      "updatedAt": "2023-12-16T02:51:28.745Z",
+                      "cannabisType": "none"
+                    },
+                    {
+                      "id": 295,
+                      "name": "Clones",
+                      "createdAt": "2023-12-16T02:51:49.228Z",
+                      "updatedAt": "2023-12-16T02:51:49.228Z",
+                      "cannabisType": "immature-plant"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIError"
+                }
+              }
+            }
+          }
+        }
+      },
+    },
+    "/api/v1/product-sub-categories": {
+      "get": {
+        "description": "Retrieve all of the product sub-categories for the organization.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Product sub-categories response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "description": "The ID of the sub-category"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the sub-category"
+                    }
+                  }
+                },
+                "example": {
+                  "data": [
+                    {
+                      "id": 30034,
+                      "name": "Badder",
+                      "createdAt": "2023-12-16T02:52:05.054Z",
+                      "updatedAt": "2023-12-16T02:52:05.054Z"
+                    },
+                    {
+                      "id": 30035,
+                      "name": "Drink",
+                      "createdAt": "2023-12-16T02:52:05.214Z",
+                      "updatedAt": "2023-12-16T02:52:05.214Z"
+                    },
+                    {
+                      "id": 30026,
+                      "name": "Happy",
+                      "createdAt": "2023-12-16T02:51:52.741Z",
+                      "updatedAt": "2023-12-16T02:51:52.741Z"
+                    },
+                    {
+                      "id": 30022,
+                      "name": "Top Shelf",
+                      "createdAt": "2023-12-16T02:51:50.313Z",
+                      "updatedAt": "2023-12-16T02:51:50.313Z"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIError"
+                }
+              }
+            }
+          }
+        }
+      },
     }
   },
   "components": {
