@@ -140,6 +140,16 @@ The request body is missing a required parameter
 }
 ```
 
+### `NON_ZERO_INVENTORY`
+This product has non zero inventory and the product (or option) cannot be deleted.  Ask the client organization to zero out the inventory.
+```json
+{
+"error": {
+  "message": "This operation may not be performed while a product has inventory.",
+  "code": "NON_ZERO_INVENTORY"
+}
+```
+
 ### `ORDER_MINIMUM_NOT_MET`
 Organizations may set minimums for orders. This is thrown if the final total is under the minimum.
 ```json
@@ -171,6 +181,17 @@ Thrown when there is not enough inventory of a product or product option to crea
         "name": "Blue Dream"
       }
     }
+  }
+}
+```
+
+### `PRODUCT_CATEGORY_NOT_FOUND`
+We could not find the category. Please use the product categories API to get a list of valid category names.
+```json
+{
+  "error": {
+    "message": "A primary category with that name was not found.",
+    "code": "PRODUCT_CATEGORY_NOT_FOUND"
   }
 }
 ```
