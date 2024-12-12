@@ -76,6 +76,7 @@
         "endpoints/products/update-product-options",
         "endpoints/products/list-categories",
         "endpoints/products/list-sub-categories",
+        "endpoints/products/create-purchase-order",
         "endpoints/products/update-upcs"
       ]
     }

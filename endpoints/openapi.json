@@ -3138,6 +3138,151 @@
           }
         }
       },
+      "post": {
+        "description": "Create a purchase order in order to receive inventory",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["lineItems"],
+                "properties": {
+                  "notes": {
+                    "type": "string",
+                    "description": "Any relevant notes"
+                  },
+                  "paymentTerms": {
+                    "type": "string",
+                    "enum": ["net15", "net30", "net60", "cod", "custom"],
+                  },
+                  "paymentTermsDueDate": {
+                    "type": "string",
+                    "description": "If payment terms is custom then this field is required. Date formatted as `YYYY-MM-DD` for when payment is due."
+                  },
+                  "expectedAt": {
+                    "type": "string",
+                    "description": "Expected delivery date formatted as `YYYY-MM-DD`"
+                  },
+                  "externalInvoiceNumber": {
+                    "type": "string",
+                    "description": "Use this to store a 3rd party ID for the PO"
+                  },
+                  "inventoryVendorId": {
+                    "type": "number",
+                    "description": "The inventory vendor ID obtained from list or create PO. Alternatively you can use `inventoryVendor.name`"
+                  },
+                  "inventoryVendor": {
+                    "type": "object",
+                    "required": ["name"],
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "name of the vendor. We will match to an existing vendor or create with the below properties if it does not exist."
+                      },
+                      "email": {
+                        "type": "string",
+                        "description": "The email for this vendor"
+                      },
+                      "phone": {
+                        "type": "string",
+                        "description": "The phone for this vendor"
+                      },
+                      "sellerPermitNumber": {
+                        "type": "string",
+                        "description": ""
+                      },
+                      "notes": {
+                        "type": "string",
+                        "description": ""
+                      },
+                      "street1": {
+                        "type": "string",
+                        "description": ""
+                      },
+                      "street2": {
+                        "type": "string",
+                        "description": ""
+                      },
+                      "postalCode": {
+                        "type": "string",
+                        "description": ""
+                      },
+                      "city": {
+                        "type": "string",
+                        "description": ""
+                      },
+                      "state": {
+                        "type": "string",
+                        "description": ""
+                      }
+                    }
+                  },
+                  "lineItems": {
+                    "type": "array",
+                    "description": "The products for this purchase order",
+                    "items": {
+                      "type": "object",
+                      "required": ["productId", "amount", "costPerUnit"],
+                      "properties": {
+                        "productId": {
+                          "type": "number",
+                          "description": "The ID of the product to add to the purchase order"
+                        },
+                        "productOptionId": {
+                          "type": "number",
+                          "description": "The ID of the option that belongs to the product submitted as `productId`. This property is required if the product's `inventoryType` is set to `option`."
+                        },
+                        "amount": {
+                          "type": "string",
+                          "description": "The number of units purchased. Submit as string to avoid floating point errors."
+                        },
+                        "costPerUnit": {
+                          "type": "string",
+                          "description": "The cost per unit in dollars. Submit as string to avoid floating point errors."
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "example": {
+                "lineItems": [{
+                  "productId": 11867,
+                  "productOptionId": 15472,
+                  "amount": "35",
+                  "costPerUnit": "20.35"
+                }],
+                "inventoryVendor": {
+                  "name": "Awesome Distribution, Inc."
+                },
+                "expectedAt": "2024-12-25"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Create product response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PurchaseOrderResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIError"
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "/api/v1/menu": {
       "get": {
@@ -3717,6 +3862,18 @@
     },
     "/api/v1/products/{productId}": {
       "put": {
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "description": "ID of the product to update",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -3812,6 +3969,18 @@
     },
     "/api/v1/products/{productId}/options": {
       "put": {
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "description": "ID of the product to update",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -5395,6 +5564,137 @@
                 "content": "3.5"
               }
             ]
+          }
+        }
+      },
+      "PurchaseOrderResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "description": "The ID of the purchase order"
+          },
+          "organizationId": {
+            "type": "number",
+            "description": "The client organization ID"
+          },
+          "status": {
+            "type": "string",
+            "description": "If `closed` no more edits can be made to this PO.",
+            "enum": ["open", "closed"]
+          },
+          "finalTotal": {
+            "type": "number",
+            "description": "Total in cents for the PO"
+          },
+          "subtotal": {
+            "type": "number",
+            "description": "Total in cents for the PO minus any shipping & handling"
+          },
+          "inventoryVendorId": {
+            "type": "number",
+            "description": "The ID of the inventory vendor"
+          },
+          "lineItems": {
+            "type": "array",
+            "description": "The line items of the purchase order",
+            "items": {
+              "type": "object",
+              "properties": {
+                "product": {
+                  "type": "object",
+                  "description": "The product for the line item"
+                },
+                "productOption": {
+                  "type": "object",
+                  "description": "The product option for the line item."
+                },
+                "finalTotal": {
+                  "type": "number",
+                  "description": "The total in cents for this line item"
+                }
+              }
+            }
+          }
+        },
+        "example": {
+          "data": {
+            "createdAt": "2024-12-12T07:53:37.793Z",
+            "expectedAt": "2024-12-25",
+            "finalTotal": 71225,
+            "id": 6741,
+            "inventoryVendor": {
+              "id": 308,
+              "organizationId": 25,
+              "name": "Awesome Distribution, Inc.",
+              "phone": null,
+              "notes": null,
+              "createdAt": "2024-12-12T07:53:37.776Z",
+              "updatedAt": "2024-12-12T07:53:37.776Z",
+              "archivedAt": null,
+              "email": null,
+              "sellerPermitNumber": null,
+              "street1": null,
+              "street2": null,
+              "city": null,
+              "state": null,
+              "postalCode": null
+            },
+            "inventoryVendorId": 308,
+            "lineItems": [
+              {
+                "amount": "35",
+                "caExcisePerUnit": "0",
+                "costPerUnit": "20.35",
+                "createdAt": "2024-12-12T07:53:37.797Z",
+                "finalTotal": 71225,
+                "id": 33555,
+                "product": {
+                  "id": 11867,
+                  "organizationId": 25,
+                  "brand": {
+                    "id": 2238,
+                    "name": "Awesome Cannabis",
+                    "createdAt": "2024-12-12T03:08:58.012Z",
+                    "updatedAt": "2024-12-12T03:08:58.012Z",
+                    "description": null
+                  },
+                  "inventoryType": "option",
+                  "createdAt": "2024-12-12T04:08:00.429Z",
+                  "updatedAt": "2024-12-12T05:06:35.447Z",
+                  "deletedAt": null,
+                  "description": null,
+                  "isActive": false,
+                  "isFeatured": false,
+                  "name": "Blue Dream",
+                  "strainType": "hybrid-sativa",
+                  "isCompliant": false,
+                  "unit": "gram"
+                },
+                "productId": 11867,
+                "productOption": {
+                  "id": 15472,
+                  "name": "Eighth",
+                  "amount": 3.5,
+                  "price": 4700,
+                  "salesPrice": null,
+                  "createdAt": "2024-12-12T04:08:00.433Z",
+                  "updatedAt": "2024-12-12T07:09:11.770Z",
+                  "upc": null,
+                  "content": "3.5"
+                },
+                "productOptionId": 15472,
+                "subtotal": 71225,
+                "updatedAt": "2024-12-12T07:53:37.797Z"
+              }
+            ],
+            "organizationId": 25,
+            "paymentTermsDueDate": null,
+            "shippingHandlingFee": 0,
+            "status": "open",
+            "subtotal": 71225,
+            "totalAmount": "35",
+            "updatedAt": "2024-12-12T07:53:37.812Z"
           }
         }
       },
