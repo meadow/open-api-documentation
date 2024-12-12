@@ -80,6 +80,17 @@ The`idempotencyKey` submitted is not a valid uuid v4. We recommend using the `id
 }
 ```
 
+### `INVALID_INVENTORY_TYPE`
+A product option ID was or was not passed when it was supposed to. Check the `inventoryType` of the product. If it is `option` then `productOptionId` should be passed, otherwise do not include this ID in the purchase order line item.
+```json
+{
+  "error": {
+    "message": "Incorrect inventory type submitted.",
+    "code": "INVALID_INVENTORY_TYPE"
+  }
+}
+```
+
 ### `INVALID_PARAMS`
 One or more of the properties in the request body is invalid.
 ```json
@@ -227,6 +238,39 @@ Each state has its own set of purchase limits. When an order would put a custome
         }
       ]
     }
+  }
+}
+```
+
+### `PURCHASE_ORDER_CLOSED`
+The purchase order status is closed and no more updates can be made. You can ask the organization to reopen from Meadow.
+```json
+{
+  "error": {
+    "message": "This purchase order is already closed. You may only set paymentStatus to paid.",
+    "code": "PURCHASE_ORDER_CLOSED"
+  }
+}
+```
+
+### `PURCHASE_ORDER_LINE_ITEM_RECEIVED`
+This line item has been received and cannot be edited or deleted.
+```json
+{
+  "error": {
+    "message": "Purchase Order Line Items that already have receptions may not be edited.",
+    "code": "PURCHASE_ORDER_LINE_ITEM_RECEIVED"
+  }
+}
+```
+
+### `PURCHASE_ORDER_MISSING_CUSTOM_DATE`
+For customer payment terms, `paymentTermsDueDate` must be submitted.
+```json
+{
+  "error": {
+    "message": "Purchase Orders with paymentTerms: Custom must have a paymentTermsDueDate",
+    "code": "PURCHASE_ORDER_MISSING_CUSTOM_DATE"
   }
 }
 ```
