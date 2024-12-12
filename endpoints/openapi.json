@@ -3976,6 +3976,48 @@
                         }
                       }
                     }
+                  },
+                  "thcAmount": {
+                    "type": "string",
+                    "description": "The total amount of THC present in this product"
+                  },
+                  "thcAmountEach": {
+                    "type": "string",
+                    "description": "The amount of THC per each unit of the product (i.e. 10mg per pre-roll in a pack of 15 pre-rolls)"
+                  },
+                  "thcAmountRangeLow": {
+                    "type": "string",
+                    "description": "The low value of a range if this product has a range of THC value."
+                  },
+                  "thcAmountRangeHigh": {
+                    "type": "string",
+                    "description": "The high value of a range if this product has a range of THC value."
+                  },
+                  "thcUnit": {
+                    "type": "string",
+                    "description": "The unit for the THC values submitted.",
+                    "enum": ["%", "mg"]
+                  },
+                  "cbdAmount": {
+                    "type": "string",
+                    "description": "The total amount of CBD present in this product"
+                  },
+                  "cbdAmountEach": {
+                    "type": "string",
+                    "description": "The amount of CBD per each unit of the product (i.e. 10mg per pre-roll in a pack of 15 pre-rolls)"
+                  },
+                  "cbdAmountRangeLow": {
+                    "type": "string",
+                    "description": "The low value of a range if this product has a range of CBD value."
+                  },
+                  "cbdAmountRangeHigh": {
+                    "type": "string",
+                    "description": "The high value of a range if this product has a range of CBD value."
+                  },
+                  "cbdUnit": {
+                    "type": "string",
+                    "description": "The unit for the CBD values submitted.",
+                    "enum": ["%", "mg"]
                   }
                 }
               },
@@ -4089,6 +4131,48 @@
                   "deletedAt": {
                     "type": "string",
                     "description": "Set to current ISO 8601 timestamp to delete product"
+                  },
+                  "thcAmount": {
+                    "type": "string",
+                    "description": "The total amount of THC present in this product"
+                  },
+                  "thcAmountEach": {
+                    "type": "string",
+                    "description": "The amount of THC per each unit of the product (i.e. 10mg per pre-roll in a pack of 15 pre-rolls)"
+                  },
+                  "thcAmountRangeLow": {
+                    "type": "string",
+                    "description": "The low value of a range if this product has a range of THC value."
+                  },
+                  "thcAmountRangeHigh": {
+                    "type": "string",
+                    "description": "The high value of a range if this product has a range of THC value."
+                  },
+                  "thcUnit": {
+                    "type": "string",
+                    "description": "The unit for the THC values submitted.",
+                    "enum": ["%", "mg"]
+                  },
+                  "cbdAmount": {
+                    "type": "string",
+                    "description": "The total amount of CBD present in this product"
+                  },
+                  "cbdAmountEach": {
+                    "type": "string",
+                    "description": "The amount of CBD per each unit of the product (i.e. 10mg per pre-roll in a pack of 15 pre-rolls)"
+                  },
+                  "cbdAmountRangeLow": {
+                    "type": "string",
+                    "description": "The low value of a range if this product has a range of CBD value."
+                  },
+                  "cbdAmountRangeHigh": {
+                    "type": "string",
+                    "description": "The high value of a range if this product has a range of CBD value."
+                  },
+                  "cbdUnit": {
+                    "type": "string",
+                    "description": "The unit for the CBD values submitted.",
+                    "enum": ["%", "mg"]
                   }
                 }
               },
