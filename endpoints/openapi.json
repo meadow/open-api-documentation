@@ -3810,6 +3810,161 @@
         }
       }
     },
+    "/api/v1/products/{productId}/options": {
+      "put": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "options": {
+                    "type": "array",
+                    "description": "The purchaseable options of this product. This endpoint will update/delete/create ALL of the options for this product. For that reason, any existing options you would like to keep must have the `id` property submitted. Any existing options, which are not submitted with this endpoint will be deleted.",
+                    "items": {
+                      "type": "object",
+                      "required": ["amount", "price"],
+                      "properties": {
+                        "id": {
+                          "type": "number",
+                          "description": "The ID of an existing option"
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "The optional name for this option. When name is not specified, it will show up on the menu as \"1 item\" or \"3.5 grams\" using the `amount` of the option and the `unit` of the product."
+                        },
+                        "amount": {
+                          "type": "number",
+                          "description": "The amount of the underlying unit of this product. When `inventoryType` is set to `product`, this will be how much inventory is taken out for each quantity of this option purchased. When `inventoryType` is set to `option`, this value is only used to describe the product on the menu. For example, 3.5 for an Eighth or 1 for a single vape cartridge."
+                        },
+                        "price": {
+                          "type": "number",
+                          "description": "The price of this option in cents."
+                        },
+                        "salesPrice": {
+                          "type": "number",
+                          "description": "The discounted sales price of this option in cents if one exists."
+                        },
+                        "content": {
+                          "type": "string",
+                          "description": "The amount of cannabis content this option has based on the `cannabisType` field from the product category. Based on the `cannabisType` this value should be sent as a numeric string based on the following unit:\n\n- `non-concentrated` - grams (g) \n- `concentrated` - milligrams (mg) \n - `mi-infused-solids` - ounces (oz) \n - `mi-infused-fluids` - fluid ounces (fl oz) \n - `edibles` - milligrams (mg) \n - `immature-plant` - plants (i.e. # of plants)\n\nWhen the category's `cannabisType` is set to `none`, you do not need to send a value. For all other types, the values must be greater than 0."
+                        },
+                        "upc": {
+                          "type": "string",
+                          "description": "A UPC code for this option"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "example": {
+                "options": [{
+                  "id": 15472,
+                  "name": "Eighth",
+                  "amount": 3.5,
+                  "price": 4700
+                }, {
+                 "amount": 7,
+                 "price": 8500,
+                 "content": "7"
+                }]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Update product response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductsResponse"
+                },
+                "example": {
+                  "data": {
+                    "id": 11867,
+                    "organizationId": 25,
+                    "brand": {
+                      "id": 2238,
+                      "name": "Awesome Cannabis",
+                      "createdAt": "2024-12-12T03:08:58.012Z",
+                      "updatedAt": "2024-12-12T03:08:58.012Z",
+                      "description": null
+                    },
+                    "subCategories": [
+                      {
+                        "id": 30325,
+                        "organizationId": 25,
+                        "name": "top-shelf",
+                        "createdAt": "2024-12-12T03:01:11.823Z",
+                        "updatedAt": "2024-12-12T03:01:11.823Z"
+                      }
+                    ],
+                    "inventoryType": "option",
+                    "createdAt": "2024-12-12T04:08:00.429Z",
+                    "updatedAt": "2024-12-12T05:06:35.447Z",
+                    "deletedAt": null,
+                    "description": null,
+                    "isActive": false,
+                    "isFeatured": false,
+                    "photos": [
+                      "https://meadow.imgix.net/2022/11/67de83f8-1d72-4713-991a-87c3b29d4e93.jpeg",
+                      "https://meadow.imgix.net/2024/10/1aef02cf-9150-481e-9625-760693b4186b.jpeg"
+                    ],
+                    "name": "Blue Dream",
+                    "strainType": "hybrid-sativa",
+                    "isCompliant": false,
+                    "unit": "gram",
+                    "primaryCategory": {
+                      "id": 286,
+                      "name": "Flower",
+                      "createdAt": "2023-12-16T02:51:28.738Z",
+                      "updatedAt": "2023-12-16T02:51:28.738Z",
+                      "cannabisType": "non-concentrated"
+                    },
+                    "options": [
+                      {
+                        "id": 15472,
+                        "name": "Eighth",
+                        "amount": 3.5,
+                        "price": 4700,
+                        "salesPrice": null,
+                        "createdAt": "2024-12-12T04:08:00.433Z",
+                        "updatedAt": "2024-12-12T07:09:11.770Z",
+                        "upc": null,
+                        "content": "3.5"
+                      },
+                      {
+                        "id": 15475,
+                        "name": null,
+                        "amount": 7,
+                        "price": 8500,
+                        "salesPrice": null,
+                        "createdAt": "2024-12-12T07:12:48.923Z",
+                        "updatedAt": "2024-12-12T07:12:48.923Z",
+                        "upc": null,
+                        "content": "7"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/products/tags": {
       "get": {
         "description": "Fetch all of the product tags for an organziation",
@@ -5148,6 +5303,42 @@
             "description": "Photo URLs submitted in the request",
             "items": {
               "type": "string"
+            }
+          },
+          "options": {
+            "type": "array",
+            "description": "The purchaseable options for this product",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "description": "The ID of this option"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "The name of this option",
+                  "nullable": true
+                },
+                "price": {
+                  "type": "number",
+                  "description": "The price of this option in cents"
+                },
+                "salesPrice": {
+                  "type": "number",
+                  "description": "The sales price of this option in cents",
+                  "nullable": true
+                },
+                "content": {
+                  "type": "string",
+                  "description": "The cannabis content of this option"
+                },
+                "upc": {
+                  "type": "string",
+                  "description": "The UPC for this option",
+                  "nullable": true
+                }
+              }
             }
           }
         },
