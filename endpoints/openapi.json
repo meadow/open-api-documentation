@@ -4036,7 +4036,7 @@
                 "unit": "gram",
                 "strainType": "hybrid-sativa",
                 "category": "Flower",
-                "subCategories": ["top-shelf"],
+                "subCategories": ["Top Shelf"],
                 "brandName": "Awesome Cannabis",
                 "photos": ["https://meadow.imgix.net/2024/10/1aef02cf-9150-481e-9625-760693b4186b.jpeg", "https://meadow.imgix.net/2022/11/67de83f8-1d72-4713-991a-87c3b29d4e93.jpeg"],
                 "options": [{
@@ -4201,7 +4201,7 @@
                 "unit": "gram",
                 "strainType": "hybrid-sativa",
                 "category": "Flower",
-                "subCategories": ["top-shelf"],
+                "subCategories": ["Top Shelf"],
                 "brandName": "Awesome Cannabis",
                 "photos": ["https://meadow.imgix.net/2024/10/1aef02cf-9150-481e-9625-760693b4186b.jpeg", "https://meadow.imgix.net/2022/11/67de83f8-1d72-4713-991a-87c3b29d4e93.jpeg"]
               }
@@ -4330,7 +4330,7 @@
                       {
                         "id": 30325,
                         "organizationId": 25,
-                        "name": "top-shelf",
+                        "name": "Top Shelf",
                         "createdAt": "2024-12-12T03:01:11.823Z",
                         "updatedAt": "2024-12-12T03:01:11.823Z"
                       }
@@ -5843,7 +5843,7 @@
               {
                 "id": 30325,
                 "organizationId": 25,
-                "name": "top-shelf",
+                "name": "Top Shelf",
                 "createdAt": "2024-12-12T03:01:11.823Z",
                 "updatedAt": "2024-12-12T03:01:11.823Z"
               }
