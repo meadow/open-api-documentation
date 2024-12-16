@@ -32,6 +32,12 @@
       ]
     },
     {
+      "group": "Guides",
+      "pages": [
+        "guides/inventory"
+      ]
+    },
+    {
       "group": "Endpoints: Analytics",
       "pages": [
         "endpoints/analytics/list-customers",
@@ -65,6 +71,13 @@
     {
       "group": "Endpoints: Products & Inventory",
       "pages": [
+        "endpoints/products/create-product",
+        "endpoints/products/update-product",
+        "endpoints/products/update-product-options",
+        "endpoints/products/list-categories",
+        "endpoints/products/list-sub-categories",
+        "endpoints/products/create-purchase-order",
+        "endpoints/products/update-purchase-order",
         "endpoints/products/update-upcs"
       ]
     }

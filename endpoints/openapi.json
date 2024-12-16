@@ -3138,6 +3138,312 @@
           }
         }
       },
+      "post": {
+        "description": "Create a purchase order in order to receive inventory",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["lineItems"],
+                "properties": {
+                  "notes": {
+                    "type": "string",
+                    "description": "Any relevant notes"
+                  },
+                  "paymentTerms": {
+                    "type": "string",
+                    "enum": ["net15", "net30", "net60", "cod", "custom"],
+                  },
+                  "paymentTermsDueDate": {
+                    "type": "string",
+                    "description": "If payment terms is custom then this field is required. Date formatted as `YYYY-MM-DD` for when payment is due."
+                  },
+                  "expectedAt": {
+                    "type": "string",
+                    "description": "Expected delivery date formatted as `YYYY-MM-DD`"
+                  },
+                  "externalInvoiceNumber": {
+                    "type": "string",
+                    "description": "Use this to store a 3rd party ID for the PO"
+                  },
+                  "inventoryVendorId": {
+                    "type": "number",
+                    "description": "The inventory vendor ID obtained from list or create PO. Alternatively you can use `inventoryVendor.name`"
+                  },
+                  "inventoryVendor": {
+                    "type": "object",
+                    "required": ["name"],
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "name of the vendor. We will match to an existing vendor or create with the below properties if it does not exist."
+                      },
+                      "email": {
+                        "type": "string",
+                        "description": "The email for this vendor"
+                      },
+                      "phone": {
+                        "type": "string",
+                        "description": "The phone for this vendor"
+                      },
+                      "sellerPermitNumber": {
+                        "type": "string",
+                        "description": ""
+                      },
+                      "notes": {
+                        "type": "string",
+                        "description": ""
+                      },
+                      "street1": {
+                        "type": "string",
+                        "description": ""
+                      },
+                      "street2": {
+                        "type": "string",
+                        "description": ""
+                      },
+                      "postalCode": {
+                        "type": "string",
+                        "description": ""
+                      },
+                      "city": {
+                        "type": "string",
+                        "description": ""
+                      },
+                      "state": {
+                        "type": "string",
+                        "description": ""
+                      }
+                    }
+                  },
+                  "lineItems": {
+                    "type": "array",
+                    "description": "The products for this purchase order",
+                    "items": {
+                      "type": "object",
+                      "required": ["productId", "amount", "costPerUnit"],
+                      "properties": {
+                        "productId": {
+                          "type": "number",
+                          "description": "The ID of the product to add to the purchase order"
+                        },
+                        "productOptionId": {
+                          "type": "number",
+                          "description": "The ID of the option that belongs to the product submitted as `productId`. This property is required if the product's `inventoryType` is set to `option`.\n\nView more information in our [Inventory Guide](/guides/inventory)"
+                        },
+                        "amount": {
+                          "type": "string",
+                          "description": "The number of units purchased. Submit as string to avoid floating point errors."
+                        },
+                        "costPerUnit": {
+                          "type": "string",
+                          "description": "The cost per unit in dollars. Submit as string to avoid floating point errors."
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "example": {
+                "lineItems": [{
+                  "productId": 11867,
+                  "productOptionId": 15472,
+                  "amount": "35",
+                  "costPerUnit": "20.35"
+                }],
+                "inventoryVendor": {
+                  "name": "Awesome Distribution, Inc."
+                },
+                "expectedAt": "2024-12-25"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Create product response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PurchaseOrderResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/purchase-orders/{purchaseOrderId}": {
+      "put": {
+        "parameters": [
+          {
+            "name": "purchaseOrderId",
+            "in": "path",
+            "description": "ID of the purchase order to update",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "notes": {
+                    "type": "string",
+                    "description": "Any relevant notes"
+                  },
+                  "paymentTerms": {
+                    "type": "string",
+                    "enum": ["net15", "net30", "net60", "cod", "custom"],
+                  },
+                  "paymentTermsDueDate": {
+                    "type": "string",
+                    "description": "If payment terms is custom then this field is required. Date formatted as `YYYY-MM-DD` for when payment is due."
+                  },
+                  "expectedAt": {
+                    "type": "string",
+                    "description": "Expected delivery date formatted as `YYYY-MM-DD`"
+                  },
+                  "externalInvoiceNumber": {
+                    "type": "string",
+                    "description": "Use this to store a 3rd party ID for the PO"
+                  },
+                  "inventoryVendorId": {
+                    "type": "number",
+                    "description": "The inventory vendor ID obtained from list or create PO. Alternatively you can use `inventoryVendor.name`"
+                  },
+                  "inventoryVendor": {
+                    "type": "object",
+                    "required": ["name"],
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "name of the vendor. We will match to an existing vendor or create with the below properties if it does not exist."
+                      },
+                      "email": {
+                        "type": "string",
+                        "description": "The email for this vendor"
+                      },
+                      "phone": {
+                        "type": "string",
+                        "description": "The phone for this vendor"
+                      },
+                      "sellerPermitNumber": {
+                        "type": "string",
+                        "description": ""
+                      },
+                      "notes": {
+                        "type": "string",
+                        "description": ""
+                      },
+                      "street1": {
+                        "type": "string",
+                        "description": ""
+                      },
+                      "street2": {
+                        "type": "string",
+                        "description": ""
+                      },
+                      "postalCode": {
+                        "type": "string",
+                        "description": ""
+                      },
+                      "city": {
+                        "type": "string",
+                        "description": ""
+                      },
+                      "state": {
+                        "type": "string",
+                        "description": ""
+                      }
+                    }
+                  },
+                  "lineItems": {
+                    "type": "array",
+                    "description": "The products for this purchase order, This endpoint will update/delete/create ALL of the line items for this purchase order. For that reason, any existing line items you would like to keep must have the id property submitted. Any existing line items, which are not submitted with this endpoint will be deleted.",
+                    "items": {
+                      "type": "object",
+                      "required": ["productId", "amount", "costPerUnit"],
+                      "properties": {
+                        "id": {
+                          "type": "number",
+                          "description": "If updating an existing line item pass the line item ID from the create, update or list purchase order endpoints."
+                        },
+                        "productId": {
+                          "type": "number",
+                          "description": "The ID of the product to add to the purchase order"
+                        },
+                        "productOptionId": {
+                          "type": "number",
+                          "description": "The ID of the option that belongs to the product submitted as `productId`. This property is required if the product's `inventoryType` is set to `option`.\n\nView more information in our [Inventory Guide](/guides/inventory)"
+                        },
+                        "amount": {
+                          "type": "string",
+                          "description": "The number of units purchased. Submit as string to avoid floating point errors."
+                        },
+                        "costPerUnit": {
+                          "type": "string",
+                          "description": "The cost per unit in dollars. Submit as string to avoid floating point errors."
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "example": {
+                "lineItems": [{
+                  "productId": 11867,
+                  "productOptionId": 15472,
+                  "amount": "35",
+                  "costPerUnit": "20.35"
+                }],
+                "inventoryVendor": {
+                  "name": "Awesome Distribution, Inc."
+                },
+                "expectedAt": "2024-12-25"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Update product response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PurchaseOrderResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIError"
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "/api/v1/menu": {
       "get": {
@@ -3588,6 +3894,511 @@
         }
       }
     },
+    "/api/v1/products": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name", "unit", "strainType", "category", "subCategories", "photos", "options"],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "The name of the product, excluding any brand names."
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "A description for the product shown on menus. (Supports markdown)"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": ["gram", "item"],
+                    "description": "Set to `gram` when this product is in a category which is weighed out (i.e. \"Flowers\"), otherwise set to `item`"
+                  },
+                  "strainType": {
+                    "type": "string",
+                    "enum": ["sativa", "indica", "hybrid", "hybrid-sativa", "hybrid-indica", "cbd", "mixed", "none"],
+                    "description": "The strain type of the cannabis product, `none` otherwise."
+                  },
+                  "category": {
+                    "type": "string",
+                    "description": "A category name from the [List categories endpoint](/endpoints/products/list-categories). Please note that different client organizations may customize category names, for example renaming \"Flowers\" to \"Flower.\""
+                  },
+                  "subCategories": {
+                    "type": "array",
+                    "description": "A list of sub category names from the [List sub-categories endpoint](/endpoints/products/list-sub-categories), or a new sub category name. Pass an empty array `[]` to have no sub categories.",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "brandName": {
+                    "type": "string",
+                    "description": "The brand of the product. Meadow will match this to an existing brand or create a new brand if it does not exist."
+                  },
+                  "photos": {
+                    "type": "array",
+                    "description": "URLs for the image to associate with this product. Meadow will download with a background job. Max photo size is 15MB.",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "options": {
+                    "type": "array",
+                    "description": "The purchaseable options of this product",
+                    "items": {
+                      "type": "object",
+                      "required": ["amount", "price"],
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "The optional name for this option. When name is not specified, it will show up on the menu as \"1 item\" or \"3.5 grams\" using the `amount` of the option and the `unit` of the product."
+                        },
+                        "amount": {
+                          "type": "number",
+                          "description": "The amount of the underlying unit of this product. When `inventoryType` is set to `product`, this will be how much inventory is taken out for each quantity of this option purchased. When `inventoryType` is set to `option`, this value is only used to describe the product on the menu. For example, 3.5 for an Eighth or 1 for a single vape cartridge."
+                        },
+                        "price": {
+                          "type": "number",
+                          "description": "The price of this option in cents."
+                        },
+                        "salesPrice": {
+                          "type": "number",
+                          "description": "The discounted sales price of this option in cents if one exists."
+                        },
+                        "content": {
+                          "type": "string",
+                          "description": "The amount of cannabis content this option has based on the `cannabisType` field from the product category. Based on the `cannabisType` this value should be sent as a numeric string based on the following unit:\n\n- `non-concentrated` - grams (g) \n- `concentrated` - milligrams (mg) \n - `mi-infused-solids` - ounces (oz) \n - `mi-infused-fluids` - fluid ounces (fl oz) \n - `edibles` - milligrams (mg) \n - `immature-plant` - plants (i.e. # of plants)\n\nWhen the category's `cannabisType` is set to `none`, you do not need to send a value. For all other types, the values must be greater than 0."
+                        },
+                        "upc": {
+                          "type": "string",
+                          "description": "A UPC code for this option"
+                        }
+                      }
+                    }
+                  },
+                  "thcAmount": {
+                    "type": "string",
+                    "description": "The total amount of THC present in this product",
+                    "nullable": true
+                  },
+                  "thcAmountEach": {
+                    "type": "string",
+                    "description": "The amount of THC per each unit of the product (i.e. 10mg per pre-roll in a pack of 15 pre-rolls)",
+                    "nullable": true
+                  },
+                  "thcAmountRangeLow": {
+                    "type": "string",
+                    "description": "The low value of a range if this product has a range of THC value.",
+                    "nullable": true
+                  },
+                  "thcAmountRangeHigh": {
+                    "type": "string",
+                    "description": "The high value of a range if this product has a range of THC value.",
+                    "nullable": true
+                  },
+                  "thcUnit": {
+                    "type": "string",
+                    "description": "The unit for the THC values submitted. Must be specified if any of the THC amount fields are provided.",
+                    "enum": ["%", "mg"],
+                    "nullable": true
+                  },
+                  "cbdAmount": {
+                    "type": "string",
+                    "description": "The total amount of CBD present in this product",
+                    "nullable": true
+                  },
+                  "cbdAmountEach": {
+                    "type": "string",
+                    "description": "The amount of CBD per each unit of the product (i.e. 10mg per pre-roll in a pack of 15 pre-rolls)",
+                    "nullable": true
+                  },
+                  "cbdAmountRangeLow": {
+                    "type": "string",
+                    "description": "The low value of a range if this product has a range of CBD value.",
+                    "nullable": true
+                  },
+                  "cbdAmountRangeHigh": {
+                    "type": "string",
+                    "description": "The high value of a range if this product has a range of CBD value.",
+                    "nullable": true
+                  },
+                  "cbdUnit": {
+                    "type": "string",
+                    "description": "The unit for the CBD values submitted. Must be specified if any of the CBD amount fields are provided.",
+                    "enum": ["%", "mg"],
+                    "nullable": true
+                  }
+                }
+              },
+              "example": {
+                "name": "Blue Dream",
+                "unit": "gram",
+                "strainType": "hybrid-sativa",
+                "category": "Flower",
+                "subCategories": ["top-shelf"],
+                "brandName": "Awesome Cannabis",
+                "photos": ["https://meadow.imgix.net/2024/10/1aef02cf-9150-481e-9625-760693b4186b.jpeg", "https://meadow.imgix.net/2022/11/67de83f8-1d72-4713-991a-87c3b29d4e93.jpeg"],
+                "options": [{
+                  "name": "Eighth",
+                  "amount": 3.5,
+                  "price": 4500,
+                  "content": "3.5"
+                }]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Create product response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductsResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/products/{productId}": {
+      "put": {
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "description": "ID of the product to update",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "The name of the product, excluding any brand names."
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "A description for the product shown on menus. (Supports markdown)"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": ["gram", "item"],
+                    "description": "Set to `gram` when this product is in a category which is weighed out (i.e. \"Flowers\"), otherwise set to `item`"
+                  },
+                  "strainType": {
+                    "type": "string",
+                    "enum": ["sativa", "indica", "hybrid", "hybrid-sativa", "hybrid-indica", "cbd", "mixed", "none"],
+                    "description": "The strain type of the cannabis product, `none` otherwise."
+                  },
+                  "category": {
+                    "type": "string",
+                    "description": "A category name from the [List categories endpoint](/endpoints/products/list-categories). Please note that different client organizations may customize category names, for example renaming \"Flowers\" to \"Flower.\""
+                  },
+                  "subCategories": {
+                    "type": "array",
+                    "description": "A list of sub category names from the [List sub-categories endpoint](/endpoints/products/list-sub-categories), or a new sub category name. Pass an empty array `[]` to have no sub categories.",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "brandName": {
+                    "type": "string",
+                    "description": "The brand of the product. Meadow will match this to an existing brand or create a new brand if it does not exist."
+                  },
+                  "photos": {
+                    "type": "array",
+                    "description": "URLs for the image to associate with this product. Meadow will download with a background job. Max photo size is 15MB.",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "inventoryType": {
+                    "type": "string",
+                    "description": "The inventory type of this product. Please see the [Inventory Guide](/guides/inventory) for more information.",
+                    "enum": ["option", "product", "none"]
+                  },
+                  "deletedAt": {
+                    "type": "string",
+                    "description": "Set to current ISO 8601 timestamp to delete product"
+                  },
+                  "thcAmount": {
+                    "type": "string",
+                    "description": "The total amount of THC present in this product",
+                    "nullable": true
+                  },
+                  "thcAmountEach": {
+                    "type": "string",
+                    "description": "The amount of THC per each unit of the product (i.e. 10mg per pre-roll in a pack of 15 pre-rolls)",
+                    "nullable": true
+                  },
+                  "thcAmountRangeLow": {
+                    "type": "string",
+                    "description": "The low value of a range if this product has a range of THC value.",
+                    "nullable": true
+                  },
+                  "thcAmountRangeHigh": {
+                    "type": "string",
+                    "description": "The high value of a range if this product has a range of THC value.",
+                    "nullable": true
+                  },
+                  "thcUnit": {
+                    "type": "string",
+                    "description": "The unit for the THC values submitted. Must be specified if any of the THC amount fields are provided.",
+                    "enum": ["%", "mg"],
+                    "nullable": true
+                  },
+                  "cbdAmount": {
+                    "type": "string",
+                    "description": "The total amount of CBD present in this product",
+                    "nullable": true
+                  },
+                  "cbdAmountEach": {
+                    "type": "string",
+                    "description": "The amount of CBD per each unit of the product (i.e. 10mg per pre-roll in a pack of 15 pre-rolls)",
+                    "nullable": true
+                  },
+                  "cbdAmountRangeLow": {
+                    "type": "string",
+                    "description": "The low value of a range if this product has a range of CBD value.",
+                    "nullable": true
+                  },
+                  "cbdAmountRangeHigh": {
+                    "type": "string",
+                    "description": "The high value of a range if this product has a range of CBD value.",
+                    "nullable": true
+                  },
+                  "cbdUnit": {
+                    "type": "string",
+                    "description": "The unit for the CBD values submitted. Must be specified if any of the CBD amount fields are provided.",
+                    "enum": ["%", "mg"],
+                    "nullable": true
+                  }
+                }
+              },
+              "example": {
+                "name": "Blue Dream",
+                "unit": "gram",
+                "strainType": "hybrid-sativa",
+                "category": "Flower",
+                "subCategories": ["top-shelf"],
+                "brandName": "Awesome Cannabis",
+                "photos": ["https://meadow.imgix.net/2024/10/1aef02cf-9150-481e-9625-760693b4186b.jpeg", "https://meadow.imgix.net/2022/11/67de83f8-1d72-4713-991a-87c3b29d4e93.jpeg"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Update product response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductsResponse"
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/products/{productId}/options": {
+      "put": {
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "description": "ID of the product to update",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "options": {
+                    "type": "array",
+                    "description": "The purchaseable options of this product. This endpoint will update/delete/create ALL of the options for this product. For that reason, any existing options you would like to keep must have the `id` property submitted. Any existing options, which are not submitted with this endpoint will be deleted.",
+                    "items": {
+                      "type": "object",
+                      "required": ["amount", "price"],
+                      "properties": {
+                        "id": {
+                          "type": "number",
+                          "description": "The ID of an existing option"
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "The optional name for this option. When name is not specified, it will show up on the menu as \"1 item\" or \"3.5 grams\" using the `amount` of the option and the `unit` of the product."
+                        },
+                        "amount": {
+                          "type": "number",
+                          "description": "The amount of the underlying unit of this product. When `inventoryType` is set to `product`, this will be how much inventory is taken out for each quantity of this option purchased. When `inventoryType` is set to `option`, this value is only used to describe the product on the menu. For example, 3.5 for an Eighth or 1 for a single vape cartridge."
+                        },
+                        "price": {
+                          "type": "number",
+                          "description": "The price of this option in cents."
+                        },
+                        "salesPrice": {
+                          "type": "number",
+                          "description": "The discounted sales price of this option in cents if one exists."
+                        },
+                        "content": {
+                          "type": "string",
+                          "description": "The amount of cannabis content this option has based on the `cannabisType` field from the product category. Based on the `cannabisType` this value should be sent as a numeric string based on the following unit:\n\n- `non-concentrated` - grams (g) \n- `concentrated` - milligrams (mg) \n - `mi-infused-solids` - ounces (oz) \n - `mi-infused-fluids` - fluid ounces (fl oz) \n - `edibles` - milligrams (mg) \n - `immature-plant` - plants (i.e. # of plants)\n\nWhen the category's `cannabisType` is set to `none`, you do not need to send a value. For all other types, the values must be greater than 0."
+                        },
+                        "upc": {
+                          "type": "string",
+                          "description": "A UPC code for this option"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "example": {
+                "options": [{
+                  "id": 15472,
+                  "name": "Eighth",
+                  "amount": 3.5,
+                  "price": 4700
+                }, {
+                 "amount": 7,
+                 "price": 8500,
+                 "content": "7"
+                }]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Update product response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductsResponse"
+                },
+                "example": {
+                  "data": {
+                    "id": 11867,
+                    "organizationId": 25,
+                    "brand": {
+                      "id": 2238,
+                      "name": "Awesome Cannabis",
+                      "createdAt": "2024-12-12T03:08:58.012Z",
+                      "updatedAt": "2024-12-12T03:08:58.012Z",
+                      "description": null
+                    },
+                    "subCategories": [
+                      {
+                        "id": 30325,
+                        "organizationId": 25,
+                        "name": "top-shelf",
+                        "createdAt": "2024-12-12T03:01:11.823Z",
+                        "updatedAt": "2024-12-12T03:01:11.823Z"
+                      }
+                    ],
+                    "inventoryType": "option",
+                    "createdAt": "2024-12-12T04:08:00.429Z",
+                    "updatedAt": "2024-12-12T05:06:35.447Z",
+                    "deletedAt": null,
+                    "description": null,
+                    "isActive": false,
+                    "isFeatured": false,
+                    "photos": [
+                      "https://meadow.imgix.net/2022/11/67de83f8-1d72-4713-991a-87c3b29d4e93.jpeg",
+                      "https://meadow.imgix.net/2024/10/1aef02cf-9150-481e-9625-760693b4186b.jpeg"
+                    ],
+                    "name": "Blue Dream",
+                    "strainType": "hybrid-sativa",
+                    "isCompliant": false,
+                    "unit": "gram",
+                    "primaryCategory": {
+                      "id": 286,
+                      "name": "Flower",
+                      "createdAt": "2023-12-16T02:51:28.738Z",
+                      "updatedAt": "2023-12-16T02:51:28.738Z",
+                      "cannabisType": "non-concentrated"
+                    },
+                    "options": [
+                      {
+                        "id": 15472,
+                        "name": "Eighth",
+                        "amount": 3.5,
+                        "price": 4700,
+                        "salesPrice": null,
+                        "createdAt": "2024-12-12T04:08:00.433Z",
+                        "updatedAt": "2024-12-12T07:09:11.770Z",
+                        "upc": null,
+                        "content": "3.5"
+                      },
+                      {
+                        "id": 15475,
+                        "name": null,
+                        "amount": 7,
+                        "price": 8500,
+                        "salesPrice": null,
+                        "createdAt": "2024-12-12T07:12:48.923Z",
+                        "updatedAt": "2024-12-12T07:12:48.923Z",
+                        "upc": null,
+                        "content": "7"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/products/tags": {
       "get": {
         "description": "Fetch all of the product tags for an organziation",
@@ -3862,6 +4673,161 @@
           }
         }
       }
+    },
+    "/api/v1/product-categories": {
+      "get": {
+        "description": "Retrieve all of the product categories for the organization.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Product categories response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "description": "The ID of the category"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the category"
+                    },
+                    "cannabisType": {
+                      "type": "string",
+                      "description": "The type of cannabis content all products in this category have. This is used to calculate purchase limits.\n\n- `non-concentrated` - Used for flower. Cannabis content will be measured in grams (g) \n - `concentrated` - Used for derived, concentrated products such as edibles or concentrates. Content measured in milligrams (mg) \n - `mi-infused-solids` - Used for infused solids only in the state of Michigan. Content measured in ounces (oz) \n - `mi-infused-fluids` - Used for infused fluids such as drinks only in the state of Michigan. Content measured in fluid ounces (oz) \n - `edibles` - All edibles (used in New Jersey & Massachusetts). Content measured in milligrams (mg) \n - `immature-plant` - Used for cannabis plants (i.e. clones). \n - `none` - This category does not contain cannabis products.",
+                      "enum": ["non-concentrated", "concentrated", "mi-infused-solids", "mi-infused-fluids", "edibles", "immature-plant", "none"]
+                    }
+                  }
+                },
+                "example": {
+                  "data": [
+                    {
+                      "id": 286,
+                      "name": "Flower",
+                      "createdAt": "2023-12-16T02:51:28.738Z",
+                      "updatedAt": "2023-12-16T02:51:28.738Z",
+                      "cannabisType": "non-concentrated"
+                    },
+                    {
+                      "id": 287,
+                      "name": "Prerolls",
+                      "createdAt": "2023-12-16T02:51:28.739Z",
+                      "updatedAt": "2023-12-16T02:51:28.739Z",
+                      "cannabisType": "non-concentrated"
+                    },
+                    {
+                      "id": 288,
+                      "name": "Edibles",
+                      "createdAt": "2023-12-16T02:51:28.741Z",
+                      "updatedAt": "2023-12-16T02:51:28.741Z",
+                      "cannabisType": "concentrated"
+                    },
+                    {
+                      "id": 289,
+                      "name": "Concentrates",
+                      "createdAt": "2023-12-16T02:51:28.742Z",
+                      "updatedAt": "2023-12-16T02:51:28.742Z",
+                      "cannabisType": "concentrated"
+                    },
+                    {
+                      "id": 291,
+                      "name": "Accessories",
+                      "createdAt": "2023-12-16T02:51:28.745Z",
+                      "updatedAt": "2023-12-16T02:51:28.745Z",
+                      "cannabisType": "none"
+                    },
+                    {
+                      "id": 295,
+                      "name": "Clones",
+                      "createdAt": "2023-12-16T02:51:49.228Z",
+                      "updatedAt": "2023-12-16T02:51:49.228Z",
+                      "cannabisType": "immature-plant"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIError"
+                }
+              }
+            }
+          }
+        }
+      },
+    },
+    "/api/v1/product-sub-categories": {
+      "get": {
+        "description": "Retrieve all of the product sub-categories for the organization.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Product sub-categories response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "description": "The ID of the sub-category"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the sub-category"
+                    }
+                  }
+                },
+                "example": {
+                  "data": [
+                    {
+                      "id": 30034,
+                      "name": "Badder",
+                      "createdAt": "2023-12-16T02:52:05.054Z",
+                      "updatedAt": "2023-12-16T02:52:05.054Z"
+                    },
+                    {
+                      "id": 30035,
+                      "name": "Drink",
+                      "createdAt": "2023-12-16T02:52:05.214Z",
+                      "updatedAt": "2023-12-16T02:52:05.214Z"
+                    },
+                    {
+                      "id": 30026,
+                      "name": "Happy",
+                      "createdAt": "2023-12-16T02:51:52.741Z",
+                      "updatedAt": "2023-12-16T02:51:52.741Z"
+                    },
+                    {
+                      "id": 30022,
+                      "name": "Top Shelf",
+                      "createdAt": "2023-12-16T02:51:50.313Z",
+                      "updatedAt": "2023-12-16T02:51:50.313Z"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIError"
+                }
+              }
+            }
+          }
+        }
+      },
     }
   },
   "components": {
@@ -4692,6 +5658,370 @@
                 "description": "The last name of the employee"
               }
             }
+          }
+        }
+      },
+      "ProductsResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The ID of the new product"
+          },
+          "organizationId": {
+            "type": "string",
+            "description": "The client organization's ID"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the product"
+          },
+          "description": {
+            "type": "string",
+            "description": "The description of the product",
+            "nullable": true
+          },
+          "unit": {
+            "type": "string",
+            "description": "Either `gram` or `item`"
+          },
+          "isActive": {
+            "type": "boolean",
+            "description": "Whether this product is shown on the menu. Client organizations must update this via Meadow."
+          },
+          "isFeatured": {
+            "type": "boolean",
+            "description": "Whether this product is shown as featured. Client organizations must update this via Meadow."
+          },
+          "brand": {
+            "type": "object",
+            "description": "The brand of this product",
+            "nullable": true,
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The name of the brand"
+              }
+            }
+          },
+          "primaryCategory": {
+            "type": "object",
+            "description": "The category of this product",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The name of the category"
+              },
+              "cannabisType": {
+                "type": "string",
+                "description": "The cannabis type of the products in this category used for purchase order calculations.",
+                "enum": ["non-concentrated", "concentrated", "mi-infused-solids", "mi-infused-fluids", "edibles", "immature-plant", "none"]
+              }
+            }
+          },
+          "subCategories": {
+            "type": "array",
+            "description": "The names of all the sub-categories of this product (may be empty `[]`)",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "The name of the sub-category"
+                }
+              }
+            }
+          },
+          "photos": {
+            "type": "array",
+            "description": "Photo URLs submitted in the request",
+            "items": {
+              "type": "string"
+            }
+          },
+          "options": {
+            "type": "array",
+            "description": "The purchaseable options for this product",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "description": "The ID of this option"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "The name of this option",
+                  "nullable": true
+                },
+                "price": {
+                  "type": "number",
+                  "description": "The price of this option in cents"
+                },
+                "salesPrice": {
+                  "type": "number",
+                  "description": "The sales price of this option in cents",
+                  "nullable": true
+                },
+                "content": {
+                  "type": "string",
+                  "description": "The cannabis content of this option"
+                },
+                "upc": {
+                  "type": "string",
+                  "description": "The UPC for this option",
+                  "nullable": true
+                }
+              }
+            }
+          },
+          "thcAmount": {
+            "type": "string",
+            "description": "The total amount of THC present in this product",
+            "nullable": true
+          },
+          "thcAmountEach": {
+            "type": "string",
+            "description": "The amount of THC per each unit of the product (i.e. 10mg per pre-roll in a pack of 15 pre-rolls)",
+            "nullable": true
+          },
+          "thcAmountRangeLow": {
+            "type": "string",
+            "description": "The low value of a range if this product has a range of THC value.",
+            "nullable": true
+          },
+          "thcAmountRangeHigh": {
+            "type": "string",
+            "description": "The high value of a range if this product has a range of THC value.",
+            "nullable": true
+          },
+          "thcUnit": {
+            "type": "string",
+            "description": "The unit for the THC values submitted.",
+            "enum": ["%", "mg"],
+            "nullable": true
+          },
+          "cbdAmount": {
+            "type": "string",
+            "description": "The total amount of CBD present in this product",
+            "nullable": true
+          },
+          "cbdAmountEach": {
+            "type": "string",
+            "description": "The amount of CBD per each unit of the product (i.e. 10mg per pre-roll in a pack of 15 pre-rolls)",
+            "nullable": true
+          },
+          "cbdAmountRangeLow": {
+            "type": "string",
+            "description": "The low value of a range if this product has a range of CBD value.",
+            "nullable": true
+          },
+          "cbdAmountRangeHigh": {
+            "type": "string",
+            "description": "The high value of a range if this product has a range of CBD value.",
+            "nullable": true
+          },
+          "cbdUnit": {
+            "type": "string",
+            "description": "The unit for the CBD values submitted.",
+            "enum": ["%", "mg"],
+            "nullable": true
+          }
+        },
+        "example": {
+          "data": {
+            "id": 11867,
+            "organizationId": 25,
+            "brand": {
+              "id": 2238,
+              "name": "Awesome Cannabis",
+              "createdAt": "2024-12-12T03:08:58.012Z",
+              "updatedAt": "2024-12-12T03:08:58.012Z",
+              "description": null
+            },
+            "subCategories": [
+              {
+                "id": 30325,
+                "organizationId": 25,
+                "name": "top-shelf",
+                "createdAt": "2024-12-12T03:01:11.823Z",
+                "updatedAt": "2024-12-12T03:01:11.823Z"
+              }
+            ],
+            "inventoryType": "option",
+            "createdAt": "2024-12-12T04:08:00.429Z",
+            "updatedAt": "2024-12-12T04:08:00.429Z",
+            "isActive": false,
+            "isFeatured": false,
+            "photos": [
+              "https://meadow.imgix.net/2024/10/1aef02cf-9150-481e-9625-760693b4186b.jpeg",
+              "https://meadow.imgix.net/2022/11/67de83f8-1d72-4713-991a-87c3b29d4e93.jpeg"
+            ],
+            "name": "Blue Dream",
+            "strainType": "hybrid-sativa",
+            "isCompliant": true,
+            "unit": "gram",
+            "primaryCategory": {
+              "id": 286,
+              "name": "Flower",
+              "createdAt": "2023-12-16T02:51:28.738Z",
+              "updatedAt": "2023-12-16T02:51:28.738Z",
+              "cannabisType": "non-concentrated"
+            },
+            "options": [
+              {
+                "id": 15472,
+                "name": "Eighth",
+                "amount": 3.5,
+                "price": 4500,
+                "salesPrice": null,
+                "createdAt": "2024-12-12T04:08:00.433Z",
+                "updatedAt": "2024-12-12T04:08:00.433Z",
+                "upc": null,
+                "content": "3.5"
+              }
+            ],
+            "thcAmount": "12",
+            "thcAmountEach": "12",
+            "thcAmountRangeLow": null,
+            "thcAmountRangeHigh": null,
+            "thcUnit": "mg",
+            "cbdAmount": null,
+            "cbdAmountEach": null,
+            "cbdAmountRangeLow": null,
+            "cbdAmountRangeHigh": null,
+            "cbdUnit": null
+          }
+        }
+      },
+      "PurchaseOrderResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "description": "The ID of the purchase order"
+          },
+          "organizationId": {
+            "type": "number",
+            "description": "The client organization ID"
+          },
+          "status": {
+            "type": "string",
+            "description": "If `closed` no more edits can be made to this PO.",
+            "enum": ["open", "closed"]
+          },
+          "finalTotal": {
+            "type": "number",
+            "description": "Total in cents for the PO"
+          },
+          "subtotal": {
+            "type": "number",
+            "description": "Total in cents for the PO minus any shipping & handling"
+          },
+          "inventoryVendorId": {
+            "type": "number",
+            "description": "The ID of the inventory vendor"
+          },
+          "lineItems": {
+            "type": "array",
+            "description": "The line items of the purchase order",
+            "items": {
+              "type": "object",
+              "properties": {
+                "product": {
+                  "type": "object",
+                  "description": "The product for the line item"
+                },
+                "productOption": {
+                  "type": "object",
+                  "description": "The product option for the line item."
+                },
+                "finalTotal": {
+                  "type": "number",
+                  "description": "The total in cents for this line item"
+                }
+              }
+            }
+          }
+        },
+        "example": {
+          "data": {
+            "createdAt": "2024-12-12T07:53:37.793Z",
+            "expectedAt": "2024-12-25",
+            "finalTotal": 71225,
+            "id": 6741,
+            "inventoryVendor": {
+              "id": 308,
+              "organizationId": 25,
+              "name": "Awesome Distribution, Inc.",
+              "phone": null,
+              "notes": null,
+              "createdAt": "2024-12-12T07:53:37.776Z",
+              "updatedAt": "2024-12-12T07:53:37.776Z",
+              "archivedAt": null,
+              "email": null,
+              "sellerPermitNumber": null,
+              "street1": null,
+              "street2": null,
+              "city": null,
+              "state": null,
+              "postalCode": null
+            },
+            "inventoryVendorId": 308,
+            "lineItems": [
+              {
+                "amount": "35",
+                "caExcisePerUnit": "0",
+                "costPerUnit": "20.35",
+                "createdAt": "2024-12-12T07:53:37.797Z",
+                "finalTotal": 71225,
+                "id": 33555,
+                "product": {
+                  "id": 11867,
+                  "organizationId": 25,
+                  "brand": {
+                    "id": 2238,
+                    "name": "Awesome Cannabis",
+                    "createdAt": "2024-12-12T03:08:58.012Z",
+                    "updatedAt": "2024-12-12T03:08:58.012Z",
+                    "description": null
+                  },
+                  "inventoryType": "option",
+                  "createdAt": "2024-12-12T04:08:00.429Z",
+                  "updatedAt": "2024-12-12T05:06:35.447Z",
+                  "deletedAt": null,
+                  "description": null,
+                  "isActive": false,
+                  "isFeatured": false,
+                  "name": "Blue Dream",
+                  "strainType": "hybrid-sativa",
+                  "isCompliant": false,
+                  "unit": "gram"
+                },
+                "productId": 11867,
+                "productOption": {
+                  "id": 15472,
+                  "name": "Eighth",
+                  "amount": 3.5,
+                  "price": 4700,
+                  "salesPrice": null,
+                  "createdAt": "2024-12-12T04:08:00.433Z",
+                  "updatedAt": "2024-12-12T07:09:11.770Z",
+                  "upc": null,
+                  "content": "3.5"
+                },
+                "productOptionId": 15472,
+                "subtotal": 71225,
+                "updatedAt": "2024-12-12T07:53:37.797Z"
+              }
+            ],
+            "organizationId": 25,
+            "paymentTermsDueDate": null,
+            "shippingHandlingFee": 0,
+            "status": "open",
+            "subtotal": 71225,
+            "totalAmount": "35",
+            "updatedAt": "2024-12-12T07:53:37.812Z"
           }
         }
       },
