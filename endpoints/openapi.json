@@ -690,10 +690,6 @@
                       "createdAt": "2022-12-15T21:13:14.500Z",
                       "packedAt": null,
                       "fulfilledAt": null,
-                      "paymentTypeId": null,
-                      "paymentTypeName": null,
-                      "paymentTypeFee": null,
-                      "paymentTypeFeeDescription": null,
                       "customerGrandTotal": 3140,
                       "type": "in-store",
                       "source": "web-admin",
@@ -754,6 +750,19 @@
                               "description": "$ 5 Discount"
                             }
                           ]
+                        }
+                      ],
+                      "payments": [
+                        {
+                          "id": 1547,
+                          "paymentTypeId": 1,
+                          "amount": 3140,
+                          "finalAmount": 3140,
+                          "name": "Cash",
+                          "fee": 0,
+                          "feePercent": "0",
+                          "feeAmount": 0,
+                          "feeDescription": null
                         }
                       ],
                       "customer": {},
@@ -906,10 +915,6 @@
                       "createdAt": "2022-09-22T00:16:39.982Z",
                       "packedAt": null,
                       "fulfilledAt": null,
-                      "paymentTypeId": null,
-                      "paymentTypeName": null,
-                      "paymentTypeFee": null,
-                      "paymentTypeFeeDescription": null,
                       "customerGrandTotal": 26819,
                       "type": "delivery",
                       "source": "open-api",
@@ -951,6 +956,19 @@
                           },
                           "fulfillAs": [],
                           "discounts": []
+                        }
+                      ],
+                      "payments": [
+                        {
+                          "id": 1548,
+                          "paymentTypeId": 1,
+                          "amount": 26319,
+                          "finalAmount": 26819,
+                          "name": "Cash",
+                          "fee": 500,
+                          "feePercent": "0",
+                          "feeAmount": 500,
+                          "feeDescription": null
                         }
                       ],
                       "customer": {
@@ -1553,10 +1571,6 @@
                     "createdAt": "2022-12-15T21:13:14.500Z",
                     "packedAt": null,
                     "fulfilledAt": null,
-                    "paymentTypeId": null,
-                    "paymentTypeName": null,
-                    "paymentTypeFee": null,
-                    "paymentTypeFeeDescription": null,
                     "customerGrandTotal": 3140,
                     "type": "in-store",
                     "source": "web-admin",
@@ -1617,6 +1631,19 @@
                             "description": "$ 5 Discount"
                           }
                         ]
+                      }
+                    ],
+                    "payments": [
+                      {
+                        "id": 1547,
+                        "paymentTypeId": 1,
+                        "amount": 3140,
+                        "finalAmount": 3140,
+                        "name": "Cash",
+                        "fee": 0,
+                        "feePercent": "0",
+                        "feeAmount": 0,
+                        "feeDescription": null
                       }
                     ],
                     "customer": {},
@@ -5205,6 +5232,52 @@
                       }
                     }
                   }
+                }
+              }
+            }
+          },
+          "payments": {
+            "type": "array",
+            "description": "All of the payments applied to this order",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "description": "The ID of this payment"
+                },
+                "paymentTypeId": {
+                  "type": "number",
+                  "description": "The ID of the payment type used for this payment"
+                },
+                "amount": {
+                  "type": "number",
+                  "description": "The amount of the payment before fees in cents"
+                },
+                "finalAmount": {
+                  "type": "number",
+                  "description": "The final amount of the payment after fees are included"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "The name of the payment type being used to make this payment"
+                },
+                "fee": {
+                  "type": "number",
+                  "description": "The amount of a flat fee in cents added to this payment"
+                },
+                "feePercent": {
+                  "type": "string",
+                  "description": "The % fee that this payment type has for all payments"
+                },
+                "feeAmount": {
+                  "type": "number",
+                  "description": "The fee in cents the customer is paying. This is the flat `fee` + the `feePercent` multiplied by the payment amount."
+                },
+                "feeDescription": {
+                  "type": "string",
+                  "description": "The description of the fee that was shown to the customer.",
+                  "nullable": true
                 }
               }
             }
