@@ -670,6 +670,15 @@
               "type": "string",
               "enum": ["delivery", "pickup", "in-store"]
             }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "Retrieves orders by user. You can get user IDs from [List customers](/endpoints/analytics/list-customers).",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
           }
         ],
         "responses": {
