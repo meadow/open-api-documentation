@@ -670,6 +670,15 @@
               "type": "string",
               "enum": ["delivery", "pickup", "in-store"]
             }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "Retrieves orders by user. You can get user IDs from [List customers](/endpoints/analytics/list-customers) or after [Creating an order](/endpoints/orders/create-order).",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
           }
         ],
         "responses": {
@@ -1321,6 +1330,20 @@
                           }
                         }
                       }
+                    },
+                    "customer": {
+                      "type": "object",
+                      "description": "The matched customer for this order",
+                      "properties": {
+                        "id": {
+                          "type": "number",
+                          "description": "The ID of the user in Meadow"
+                        },
+                        "fullName": {
+                          "type": "string",
+                          "description": "The full name of the user "
+                        }
+                      }
                     }
                   }
                 },
@@ -1521,7 +1544,11 @@
                         "taxId": 134,
                         "adminId": null
                       }
-                    ]
+                    ],
+                    "customer": {
+                      "id": 18273,
+                      "fullName": "Perrin Aybara"
+                    }
                   }
                 }
               }
