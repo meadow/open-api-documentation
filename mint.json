@@ -40,8 +40,6 @@
     {
       "group": "Endpoints: Analytics",
       "pages": [
-        "endpoints/analytics/list-customers",
-        "endpoints/analytics/retrieve-customer",
         "endpoints/analytics/list-orders",
         "endpoints/analytics/retrieve-order",
         "endpoints/analytics/list-order-returns",
@@ -64,6 +62,8 @@
     {
       "group": "Endpoints: Customers",
       "pages": [
+        "endpoints/customers/list-customers",
+        "endpoints/customers/retrieve-customer",
         "endpoints/customers/list-customer-groups",
         "endpoints/customers/add-customer-to-group",
         "endpoints/customers/remove-customer-from-group"
