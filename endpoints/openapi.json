@@ -26,7 +26,7 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "List customers response",
+            "description": "List customer groups response",
             "content": {
               "application/json": {
                 "schema": {
@@ -192,7 +192,7 @@
         },
         "responses": {
           "200": {
-            "description": "Add customer to group response",
+            "description": "Remove customer from group response",
             "content": {
               "application/json": {
                 "schema": {
