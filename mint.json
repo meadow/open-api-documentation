@@ -64,7 +64,9 @@
     {
       "group": "Endpoints: Customers",
       "pages": [
-        "endpoints/customers/list-customer-groups"
+        "endpoints/customers/list-customer-groups",
+        "endpoints/customers/add-customer-to-group",
+        "endpoints/customers/remove-customer-from-group"
       ]
     },
     {

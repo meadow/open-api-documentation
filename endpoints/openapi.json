@@ -66,6 +66,184 @@
         }
       },
     },
+    "/api/v1/customer-groups/{customerGroupId}/add-customer": {
+      "put": {
+        "description": "Add customer to a customer group",
+        "parameters": [
+          {
+            "name": "customerGroupId",
+            "in": "path",
+            "description": "ID of the customer group to add this customer to",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["emailOrPhone"],
+                "properties": {
+                  "emailOrPhone": {
+                    "type": "string",
+                    "description": "Either an email address or a phone number of the customer to add to the group",
+                  }
+                }
+              },
+              "example": {
+                "emailOrPhone": "650-555-1234"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Add customer to group response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer"
+                },
+                "example": {
+                  "data": {
+                    "id": 2987,
+                    "hashId": "b6a97e",
+                    "firstName": "Perrin",
+                    "lastName": "Aybara",
+                    "email": "perrin@getmeadow.com",
+                    "phone": null,
+                    "joinedAt": "2022-09-22T00:13:41.824Z",
+                    "updatedAt": "2022-09-22T00:13:41.841Z",
+                    "birthday": "1990-11-08",
+                    "sex": "male",
+                    "zip": "96150",
+                    "licenseExpiry": null,
+                    "marketingOptIn": false,
+                    "marketingOptInAt": null,
+                    "customerGroups": [
+                      "Veterans"
+                    ],
+                    "loyalty": {
+                      "pointsAmount": 0
+                    },
+                    "mostRecentAddress": {
+                      "street1": "123 Main St",
+                      "street2": null,
+                      "city": "San Francisco",
+                      "state": "California",
+                      "postalCode": "94103"
+                    },
+                    "medicalExpiration": null
+                  }
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/customer-groups/{customerGroupId}/remove-customer": {
+      "put": {
+        "description": "Remove customer from a customer group",
+        "parameters": [
+          {
+            "name": "customerGroupId",
+            "in": "path",
+            "description": "ID of the customer group to remove this customer from",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["emailOrPhone"],
+                "properties": {
+                  "emailOrPhone": {
+                    "type": "string",
+                    "description": "Either an email address or a phone number of the customer to remove from the group",
+                  }
+                }
+              },
+              "example": {
+                "emailOrPhone": "650-555-1234"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Add customer to group response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer"
+                },
+                "example": {
+                  "data": {
+                    "id": 2987,
+                    "hashId": "b6a97e",
+                    "firstName": "Perrin",
+                    "lastName": "Aybara",
+                    "email": "perrin@getmeadow.com",
+                    "phone": null,
+                    "joinedAt": "2022-09-22T00:13:41.824Z",
+                    "updatedAt": "2022-09-22T00:13:41.841Z",
+                    "birthday": "1990-11-08",
+                    "sex": "male",
+                    "zip": "96150",
+                    "licenseExpiry": null,
+                    "marketingOptIn": false,
+                    "marketingOptInAt": null,
+                    "customerGroups": [],
+                    "loyalty": {
+                      "pointsAmount": 0
+                    },
+                    "mostRecentAddress": {
+                      "street1": "123 Main St",
+                      "street2": null,
+                      "city": "San Francisco",
+                      "state": "California",
+                      "postalCode": "94103"
+                    },
+                    "medicalExpiration": null
+                  }
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/customers": {
       "get": {
         "description": "Retrieve all customers for an organization in reverse chronological order. 50 customers will be returned at a time and may be paginated using the `startingAfter` query parameter.",
