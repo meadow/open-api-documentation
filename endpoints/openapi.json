@@ -20,6 +20,52 @@
     }
   ],
   "paths": {
+    "/api/v1/customer-groups": {
+      "get": {
+        "description": "Retrieve all customer groups for an organization.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List customers response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerGroup"
+                },
+                "example": {
+                  "data": [
+                    {
+                      "id": 134,
+                      "name": "Veterans",
+                      "description": null,
+                      "createdAt": "2025-04-27T04:17:58.399Z",
+                      "updatedAt": "2025-04-27T04:17:58.399Z"
+                    },
+                    {
+                      "id": 133,
+                      "name": "Seniors",
+                      "description": "All customers over age 65",
+                      "createdAt": "2025-04-27T04:17:58.399Z",
+                      "updatedAt": "2025-04-27T04:17:58.399Z"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIError"
+                }
+              }
+            }
+          }
+        }
+      },
+    },
     "/api/v1/customers": {
       "get": {
         "description": "Retrieve all customers for an organization in reverse chronological order. 50 customers will be returned at a time and may be paginated using the `startingAfter` query parameter.",
@@ -5018,6 +5064,32 @@
             "description": "The expiration date of this customer’s medical recommendation or `null` if they are an adult use customer",
             "nullable": true
           },
+        }
+      },
+      "CustomerGroup": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "description": "The id for the customer group"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the group"
+          },
+          "description": {
+            "type": "string",
+            "description": "The description of the group",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "The date this group was created"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "The date this group was last updated"
+          }
         }
       },
       "Order": {

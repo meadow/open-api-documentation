@@ -62,6 +62,12 @@
       ]
     },
     {
+      "group": "Endpoints: Customers",
+      "pages": [
+        "endpoints/customers/list-customer-groups"
+      ]
+    },
+    {
       "group": "Endpoints: Menu",
       "pages": [
         "endpoints/menu/list-menu",
