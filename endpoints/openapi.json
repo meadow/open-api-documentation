@@ -898,7 +898,7 @@
           {
             "name": "userId",
             "in": "query",
-            "description": "Retrieves orders by user. You can get user IDs from [List customers](/endpoints/analytics/list-customers) or after [Creating an order](/endpoints/orders/create-order).",
+            "description": "Retrieves orders by user. You can get user IDs from [List customers](/endpoints/customers/list-customers) or after [Creating an order](/endpoints/orders/create-order).",
             "required": false,
             "schema": {
               "type": "number"
