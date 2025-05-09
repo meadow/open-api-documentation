@@ -1,0 +1,42 @@
+---
+title: Stronghold Payments
+description: How to integration with Stronghold via Meadow
+---
+
+# Step 1 - Retrieve payment types
+
+Fetch all the payment types for an organization using [GET /api/v1/payment-types](/endpoints/orders/list-payment-types)
+
+# Step 2 - Create a payment with the order
+
+When retrieving pricing ([POST /api/v1/orders/pricing](/endpoints/orders/retrieve-pricing)) and creating an order ([POST /api/v1/orders](/endpoints/orders/create-order)), you will need to create a payment to be associated with that order using a Stronghold payment type. To do this, please submit a `payments[]` array alongside the rest of your request body like so:
+
+```
+{
+  "lineItems": [
+    {
+      "productOptionId": 1337,
+      "quantity": 2
+    }
+  ],
+  ...REST_OF_ORDER_PROPERTIES,
+  "payments": [
+    {
+      "paymentTypeId": 123,
+      "remaining": true
+    }
+  ]
+}
+```
+
+The value used for `paymentTypeId` needs to come from one of the payment methods fetched in Step 1. Please submit `"remaining": true` along with it to signal this payment is for the remaining amount of the order.
+
+# Step 3 - Create the Stronghold payment intent
+
+Create a Stronghold payment intent using [POST /api/v1/payment-intents](/endpoints/orders/create-payment-intent). You must retrieve the `orderPaymentId` to submit using the response from creating an order. You will find this ID in `data.payments[0].id`.
+
+# Step 4 - Show customer the Stronghold link
+
+After you create the payment intent, you will receive a `strongholdLink` as part of the response. This is a webpage where the customer can complete their payment. You may either redirect the customer to this page, or show them a button that when clicked will take them to this page.
+
+The rest of the Stronghold payment flow will be able to be completed in the Meadow backend.
