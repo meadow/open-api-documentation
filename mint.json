@@ -56,7 +56,8 @@
         "endpoints/orders/customer-matching",
         "endpoints/orders/retrieve-status",
         "endpoints/orders/retrieve-pricing",
-        "endpoints/orders/create-order"
+        "endpoints/orders/create-order",
+        "endpoints/orders/list-payment-types"
       ]
     },
     {

@@ -2253,6 +2253,56 @@
         }
       },
     },
+    "/api/v1/payment-types": {
+      "get": {
+        "description": "Retrieve all payment types for an organization.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List payment types response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentType"
+                },
+                "example": {
+                  "data": [
+                    {
+                      "id": 88,
+                      "name": "Cash",
+                      "fee": 0,
+                      "feeDescription": null,
+                      "method": "cash",
+                      "feePercent": "0",
+                      "createdAt": "2025-04-11T20:34:08.842Z"
+                    },
+                    {
+                      "id": 90,
+                      "name": "Debit Card",
+                      "fee": 100,
+                      "feeDescription": "Debit Card Fee",
+                      "method": "debit",
+                      "feePercent": "3.5",
+                      "createdAt": "2025-05-08T22:42:31.092Z"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIError"
+                }
+              }
+            }
+          }
+        }
+      },
+    },
     "/api/v1/instore-queues": {
       "get": {
         "description": "Retrieve waiting room information for the dispensary.",
@@ -6008,6 +6058,41 @@
                 "description": "The last name of the employee"
               }
             }
+          }
+        }
+      },
+      "PaymentType": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "description": "The id for the payment type"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the payment type"
+          },
+          "fee": {
+            "type": "number",
+            "description": "The flat fee for using this payment type in cents"
+          },
+          "feeDescription": {
+            "type": "string",
+            "description": "The description for the fee to show to the customer",
+            "nullable": true
+          },
+          "method": {
+            "type": "string",
+            "description": "The medium the payment type uses to collect money",
+            "enum": ["cash", "debit", "other", "stronghold"]
+          },
+          "feePercent": {
+            "type": "string",
+            "description": "The percentage fee for this payment type"
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "The date this payment type was created"
           }
         }
       },
