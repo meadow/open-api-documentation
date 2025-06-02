@@ -5988,7 +5988,34 @@
             "items": {
               "$ref": "#/components/schemas/OrderReturn"
             }
-          }
+          },
+          "address": {
+            "type": "object",
+            "description": "The address if this order is a delivery order. Otherwise, `null`",
+            "nullable": true,
+            "properties": {
+              "street1": {
+                "type": "string",
+                "description": ""
+              },
+              "street2": {
+                "type": "string",
+                "description": ""
+              },
+              "city": {
+                "type": "string",
+                "description": ""
+              },
+              "state": {
+                "type": "string",
+                "description": ""
+              },
+              "postalCode": {
+                "type": "string",
+                "description": ""
+              }
+            }
+          },
         }
       },
       "OrderReturn": {
