@@ -1137,7 +1137,8 @@
                             "lastName": "Harrison"
                           }
                         }
-                      ]
+                      ],
+                      "address": null
                     },
                     {
                       "id": "12352010",
@@ -1261,7 +1262,14 @@
                           "normalRate": "10"
                         }
                       ],
-                      "returns": []
+                      "returns": [],
+                      "address": {
+                        "street1": "123 Main St",
+                        "street2": null,
+                        "city": "San Francisco",
+                        "state": "California",
+                        "postalCode": "94103"
+                      }
                     }
                   ]
                 }
@@ -2036,7 +2044,8 @@
                           "lastName": "Harrison"
                         }
                       }
-                    ]
+                    ],
+                    "address": null
                   }
                 }
               }
@@ -5988,7 +5997,35 @@
             "items": {
               "$ref": "#/components/schemas/OrderReturn"
             }
-          }
+          },
+          "address": {
+            "type": "object",
+            "description": "The address if this order is a delivery order. Otherwise, `null`",
+            "nullable": true,
+            "properties": {
+              "street1": {
+                "type": "string",
+                "description": ""
+              },
+              "street2": {
+                "type": "string",
+                "description": "",
+                "nullable": true
+              },
+              "city": {
+                "type": "string",
+                "description": ""
+              },
+              "state": {
+                "type": "string",
+                "description": ""
+              },
+              "postalCode": {
+                "type": "string",
+                "description": ""
+              }
+            }
+          },
         }
       },
       "OrderReturn": {
