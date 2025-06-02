@@ -1137,7 +1137,8 @@
                             "lastName": "Harrison"
                           }
                         }
-                      ]
+                      ],
+                      "address": null
                     },
                     {
                       "id": "12352010",
@@ -1261,7 +1262,14 @@
                           "normalRate": "10"
                         }
                       ],
-                      "returns": []
+                      "returns": [],
+                      "address": {
+                        "street1": "123 Main St",
+                        "street2": null,
+                        "city": "San Francisco",
+                        "state": "California",
+                        "postalCode": "94103"
+                      }
                     }
                   ]
                 }
@@ -2036,7 +2044,8 @@
                           "lastName": "Harrison"
                         }
                       }
-                    ]
+                    ],
+                    "address": null
                   }
                 }
               }
@@ -6000,7 +6009,8 @@
               },
               "street2": {
                 "type": "string",
-                "description": ""
+                "description": "",
+                "nullable": true
               },
               "city": {
                 "type": "string",
