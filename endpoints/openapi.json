@@ -20,6 +20,349 @@
     }
   ],
   "paths": {
+    "/api/v1/compliance-transfers": {
+      "get": {
+        "description": "Retrieve all incoming transfers from a compliance system (metrc) for an organization in reverse chronological order. 50 transfers will be returned at a time and may be paginated using the `startingAfter` query parameter.",
+        "parameters": [
+          {
+            "name": "startingAfter",
+            "in": "query",
+            "description": "The `id` for a transfer that you want to retrieve all transfers after this one. Pass in the last `id` in a response to retrieve the next page.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List compliance transfers response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "description": "The ID of the compliance transfer"
+                    },
+                    "externalId": {
+                      "type": "string",
+                      "description": "The ID of the transfer in the compliance system (metrc)"
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "The compliance system this transfer came from"
+                    },
+                    "manifestNumber": {
+                      "type": "string",
+                      "description": "The manifest number of the transfer in the compliance system"
+                    },
+                    "shipperName": {
+                      "type": "string",
+                      "description": "The name of the shipper",
+                      "nullable": true
+                    },
+                    "shipperLicenseNumber": {
+                      "type": "string",
+                      "description": "The state license number of the shipper",
+                      "nullable": true
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "description": "When this transfer was imported into Meadow"
+                    },
+                    "packages": {
+                      "type": "array",
+                      "description": "The packages within this transfer",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "number",
+                            "description": "The id for this package"
+                          },
+                          "type": {
+                            "type": "string",
+                            "description": "The compliance system this package is from"
+                          },
+                          "externalId": {
+                            "type": "string",
+                            "description": "The ID of this package in the compliance system",
+                            "nullable": true
+                          },
+                          "externalProductName": {
+                            "type": "string",
+                            "description": "The name of the product for this package in the compliance system",
+                            "nullable": true
+                          },
+                          "label": {
+                            "type": "string",
+                            "description": "The unique identifier for this package"
+                          },
+                          "status": {
+                            "type": "string",
+                            "description": "The status of the package.\n\n- `ready` - The package has not been associated with a product in Meadow\n- `received` - Active inventory associated with a product and possibly a product option\n- `finished` - The package has 0 inventory and is not sellable.\n- `shipped` - This package has currently been shipped away from this licensee\n- `transferred` - This package has been sent and is in possession of another licensee\n- `transfer-returned` - This package has been transferred back, but has not been received into inventory yet",
+                            "enum": ["ready", "received", "finished", "shipped", "transferred", "transfer-returned"]
+                          },
+                          "initialAmount": {
+                            "type": "string",
+                            "description": "The amount this package contained when first transferred"
+                          },
+                          "unit": {
+                            "type": "string",
+                            "description": "The unit of the package from the compliance system"
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "description": "The datetime this package was created"
+                          },
+                          "onHold": {
+                            "type": "boolean",
+                            "description": "Whether this package is currently on administrative hold"
+                          },
+                          "tradeSample": {
+                            "type": "boolean",
+                            "description": "Whether this package is a trade sample"
+                          },
+                          "product": {
+                            "type": "object",
+                            "description": "The product this package has been associated with in Meadow or `null` if not associated yet",
+                            "nullable": true,
+                            "properties": {
+                              "id": {
+                                "type": "number",
+                                "description": "The ID of the product"
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "The name of the product in Meadow"
+                              },
+                              "unit": {
+                                "type": "string",
+                                "description": "Either `gram` or `item`"
+                              },
+                              "strainType": {
+                                "type": "string",
+                                "description": "",
+                                "enum": ["sativa", "indica", "hybrid", "hybrid-sativa", "hybrid-indica", "cbd", "mixed", "none"]
+                              },
+                              "archivedAt": {
+                                "type": "string",
+                                "description": "A datetime for when this product was archived or `null` if it is not archived"
+                              },
+                              "deletedAt": {
+                                "type": "string",
+                                "description": "A datetime for when this product was deleted or `null` if it is not deleted"
+                              }
+                            }
+                          },
+                          "productOption": {
+                            "type": "object",
+                            "description": "The product option this package has been associated with in Meadow or `null` if not associated with one.",
+                            "nullable": true,
+                            "properties": {
+                              "id": {
+                                "type": "number",
+                                "description": "The ID of the product option"
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "The name of the product option in Meadow",
+                                "nullable": true
+                              },
+                              "amount": {
+                                "type": "string",
+                                "description": "The amount of the underlying unit of this product"
+                              },
+                              "price": {
+                                "type": "string",
+                                "description": "The price in cents of this option"
+                              },
+                              "salesPrice": {
+                                "type": "string",
+                                "description": "The sales price if one exists",
+                                "nullable": true
+                              },
+                              "upc": {
+                                "type": "string",
+                                "description": "The UPC code for this option",
+                                "nullable": true
+                              },
+                              "deletedAt": {
+                                "type": "string",
+                                "description": "A datetime for when this product option was deleted or `null` if it is not deleted"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "data": [
+                    {
+                      "id": 2,
+                      "externalId": "26264",
+                      "type": "metrc",
+                      "manifestNumber": "000024264",
+                      "shipperName": null,
+                      "shipperLicenseNumber": null,
+                      "createdAt": "2019-03-05T23:16:40.432Z",
+                      "packages": [
+                        {
+                          "id": 6,
+                          "type": "metrc",
+                          "externalId": "7432723",
+                          "externalProductName": "Blue Dream",
+                          "label": "STAGING01234567000000006",
+                          "status": "received",
+                          "initialAmount": "175",
+                          "unit": "Grams",
+                          "createdAt": "2019-03-05T23:20:35.943Z",
+                          "onHold": false,
+                          "tradeSample": false,
+                          "product": {
+                            "id": 220,
+                            "name": "Blue Dream 3.5g",
+                            "unit": "gram",
+                            "strainType": "indica",
+                            "archivedAt": null,
+                            "deletedAt": null
+                          },
+                          "productOption": {
+                            "id": 569,
+                            "name": "",
+                            "amount": 3.5,
+                            "price": 3500,
+                            "salesPrice": null,
+                            "upc": null,
+                            "deletedAt": null
+                          }
+                        },
+                        {
+                          "id": 8,
+                          "type": "metrc",
+                          "externalId": "853834",
+                          "externalProductName": "Sour Tangie Grams",
+                          "label": "STAGING01234567000000008",
+                          "status": "received",
+                          "initialAmount": "20",
+                          "unit": "Each",
+                          "createdAt": "2019-03-05T23:23:03.528Z",
+                          "onHold": false,
+                          "tradeSample": false,
+                          "product": {
+                            "id": 46,
+                            "name": "Sour Tangie",
+                            "unit": "gram",
+                            "strainType": "sativa",
+                            "archivedAt": null,
+                            "deletedAt": null
+                          },
+                          "productOption": {
+                            "id": 144,
+                            "name": "Eighth",
+                            "amount": 3.5,
+                            "price": 4500,
+                            "salesPrice": null,
+                            "upc": null,
+                            "deletedAt": null
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": 1,
+                      "externalId": "18234",
+                      "type": "metrc",
+                      "manifestNumber": "000018234",
+                      "shipperName": null,
+                      "shipperLicenseNumber": null,
+                      "createdAt": "2019-03-05T23:16:34.520Z",
+                      "packages": [
+                        {
+                          "id": 1,
+                          "type": "metrc",
+                          "externalId": "7437437",
+                          "externalProductName": "Fire OG",
+                          "label": "STAGING01234567000000001",
+                          "status": "received",
+                          "initialAmount": "175",
+                          "unit": "Grams",
+                          "createdAt": "2019-03-05T23:18:16.289Z",
+                          "onHold": false,
+                          "tradeSample": false,
+                          "product": {
+                            "id": 69,
+                            "name": "Fire OG",
+                            "unit": "gram",
+                            "strainType": "hybrid-sativa",
+                            "archivedAt": null,
+                            "deletedAt": null
+                          },
+                          "productOption": {
+                            "id": 228,
+                            "name": "Eighth",
+                            "amount": 3.5,
+                            "price": 5000,
+                            "salesPrice": null,
+                            "upc": "0070330600171",
+                            "deletedAt": null
+                          }
+                        },
+                        {
+                          "id": 2,
+                          "type": "metrc",
+                          "externalId": "144743",
+                          "externalProductName": "Fire OG",
+                          "label": "STAGING01234567000000002",
+                          "status": "received",
+                          "initialAmount": "175",
+                          "unit": "Grams",
+                          "createdAt": "2019-03-05T23:18:28.137Z",
+                          "onHold": false,
+                          "tradeSample": false,
+                          "product": {
+                            "id": 69,
+                            "name": "Fire OG",
+                            "unit": "gram",
+                            "strainType": "hybrid-sativa",
+                            "archivedAt": null,
+                            "deletedAt": null
+                          },
+                          "productOption": {
+                            "id": 228,
+                            "name": "Eighth",
+                            "amount": 3.5,
+                            "price": 5000,
+                            "salesPrice": null,
+                            "upc": "0070330600171",
+                            "deletedAt": null
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/customer-groups": {
       "get": {
         "description": "Retrieve all customer groups for an organization.",

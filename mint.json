@@ -47,7 +47,8 @@
         "endpoints/analytics/list-inventory-locations",
         "endpoints/analytics/retrieve-organization",
         "endpoints/analytics/list-all-products",
-        "endpoints/analytics/list-purchase-orders"
+        "endpoints/analytics/list-purchase-orders",
+        "endpoints/analytics/list-compliance-transfers"
       ]
     },
     {
