@@ -1481,7 +1481,10 @@
                           }
                         }
                       ],
-                      "address": null
+                      "address": null,
+                      "shift": {
+                        "name": "POS Station 3"
+                      }
                     },
                     {
                       "id": "12352010",
@@ -1612,7 +1615,8 @@
                         "city": "San Francisco",
                         "state": "California",
                         "postalCode": "94103"
-                      }
+                      },
+                      "shift": null
                     }
                   ]
                 }
@@ -2388,7 +2392,10 @@
                         }
                       }
                     ],
-                    "address": null
+                    "address": null,
+                    "shift": {
+                      "name": "POS Station 3"
+                    }
                   }
                 }
               }
@@ -6369,6 +6376,18 @@
               }
             }
           },
+          "shift": {
+            "type": "object",
+            "description": "The shift this order is attached to. Otherwise `null`",
+            "nullable": true,
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The name of the shift. This will most commonly be attributed to the name of the iPad station.",
+                "nullable": true
+              }
+            }
+          }
         }
       },
       "OrderReturn": {
