@@ -770,6 +770,82 @@
         }
       },
     },
+    "/api/v1/loyalty-events": {
+      "post": {
+        "description": "Create a loyalty event that awards points to a customer",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["pointsAmount", "reason"],
+                "properties": {
+                  "customerId": {
+                    "type": "number",
+                    "description": "The customer id, as returned by customer endpoints."
+                  },
+                  "customerEmail": {
+                    "type": "string",
+                    "description": "The email address of the customer to receive the points."
+                  },
+                  "customerPhone": {
+                    "type": "string",
+                    "description": "The phone number of the customer to receive the points."
+                  },
+                  "pointsAmount": {
+                    "type": "number",
+                    "description": "The number of loyalty points to award to the customer."
+                  },
+                  "reason": {
+                    "type": "string",
+                    "description": "A note describing why the points are being awarded."
+                  }
+                }
+              },
+              "example": {
+                "customerEmail": "customer@example.com",
+                "pointsAmount": 55.7,
+                "reason": "New customer promotion"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Loyalty event response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoyaltyEvent"
+                },
+                "example": {
+                  "data": {
+                    "organizationId": 1,
+                    "userId": 4,
+                    "type": "open-api",
+                    "pointsAmount": 55.7,
+                    "reason": "New customer promotion",
+                    "updatedAt": "2025-10-13T15:53:44.336Z",
+                    "createdAt": "2025-10-13T15:53:44.336Z",
+                    "id": 1
+                  }
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/orders/{orderId}": {
       "get": {
         "description": "Retrieves the status of the order for that ID",
@@ -5779,6 +5855,35 @@
           "updatedAt": {
             "type": "string",
             "description": "The date this group was last updated"
+          }
+        }
+      },
+      "LoyaltyEvent": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "description": "The ID of the loyalty event"
+          },
+          "type": {
+            "type": "string",
+            "description": "The source of the loyalty event, will always be `open-api` for events created through this API"
+          },
+          "pointsAmount": {
+            "type": "number",
+            "description": "The number of points awarded in this event"
+          },
+          "reason": {
+            "type": "string",
+            "description": "A description explaining why the points were awarded"
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "When the loyalty event was created"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "When the loyalty event was last updated"
           }
         }
       },
