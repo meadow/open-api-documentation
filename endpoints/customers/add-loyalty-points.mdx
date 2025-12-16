@@ -3,11 +3,7 @@ title: 'Add loyalty points'
 openapi: 'POST /api/v1/loyalty-events'
 ---
 
-## Loyalty
-
-Use the `POST /api/v1/loyalty-events` endpoint to add loyalty points to a customer account.
-
-### Identify the customer
+## Identify the customer
 
 Include at least one of the following fields in the request body so Meadow can locate the customer that should receive the loyalty points:
 
@@ -15,11 +11,4 @@ Include at least one of the following fields in the request body so Meadow can l
 - `customerEmail`
 - `customerPhone`
 
-If the customer could not be found then the API will return a 404 response with an `error.code` of `PATIENT_NOT_FOUND`.
-
-### Request fields
-
-- `pointsAmount` (number, required) — the amount of loyalty points to add to the customer's balance.
-- `reason` (string, required) — a note describing why the points are being awarded.
-
-The API response returns the newly created loyalty event with auditing information, including who awarded the points and when the event was created.
+If the customer could not be found then the API will return a 404 response with an `error.code` of `USER_NOT_FOUND`.
