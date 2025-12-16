@@ -1,0 +1,14 @@
+---
+title: 'Add loyalty points'
+openapi: 'POST /api/v1/loyalty-events'
+---
+
+## Identify the customer
+
+Include at least one of the following fields in the request body so Meadow can locate the customer that should receive the loyalty points:
+
+- `customerId`
+- `customerEmail`
+- `customerPhone`
+
+If the customer could not be found then the API will return a 404 response with an `error.code` of `USER_NOT_FOUND`.

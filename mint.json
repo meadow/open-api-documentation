@@ -68,7 +68,8 @@
         "endpoints/customers/retrieve-customer",
         "endpoints/customers/list-customer-groups",
         "endpoints/customers/add-customer-to-group",
-        "endpoints/customers/remove-customer-from-group"
+        "endpoints/customers/remove-customer-from-group",
+        "endpoints/customers/add-loyalty-points"
       ]
     },
     {
