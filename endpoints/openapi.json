@@ -772,7 +772,7 @@
     },
     "/api/v1/documents/{customerId}/{documentType}": {
       "post": {
-        "description": "Upload a document for a customer",
+        "description": "POST /api/v1/documents/\\{customerId\\}/\\{documentType\\}",
         "parameters": [
           {
             "name": "customerId",
