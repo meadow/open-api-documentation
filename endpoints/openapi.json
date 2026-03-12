@@ -770,6 +770,72 @@
         }
       },
     },
+    "/api/v1/documents/{customerId}/{documentType}": {
+      "post": {
+        "description": "Upload a document for a customer",
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "path",
+            "description": "ID of customer for this document",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "documentType",
+            "in": "path",
+            "description": "The type of document. Must be either `license` or `recommendation`. `license` is for government identification such as a Driver's License. `recommendation` is for medical cannabis doctor's recommendations.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["license", "recommendation"]
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["documentBase64", "documentMime"],
+                "properties": {
+                  "documentBase64": {
+                    "type": "string",
+                    "description": "The file encoded as a [Base64](https://en.wikipedia.org/wiki/Base64) string."
+                  },
+                  "documentMime": {
+                    "type": "string",
+                    "description": "The mime of the document file. (Example: `image/jpeg`)"
+                  }
+                }
+              },
+              "example": {
+                "documentBase64": "BASE_64_STRING_HERE",
+                "documentMime": "image/jpeg"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Empty response for successful upload"
+          },
+          "4XX": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/loyalty-events": {
       "post": {
         "description": "Create a loyalty event that awards points to a customer",
