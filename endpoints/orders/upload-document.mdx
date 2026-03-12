@@ -1,0 +1,14 @@
+---
+title: 'Upload customer document'
+openapi: 'POST /api/v1/documents/{customerId}/{documentType}'
+---
+
+Upload a document to a customer profile. You will find the customer ID from the response of [create an order (POST /api/v1/orders)](/endpoints/orders/create-order) as `customer.id`.
+
+Meadow supports two document types: `license` and `recommendation`. The `license` type is used for government identification such as a driver's license and `recommendation` is used for medical cannabis recommendations.
+
+Documents are uploaded in the response body by turning them into a [Base64 encoded string](https://en.wikipedia.org/wiki/Base64). Please reach out if you have any questions about how to accomplish this.
+
+When a document upload is successful, the status code will be `204` and there will be no response body returned.
+
+The file size limit for documents is 2.5mb.
