@@ -1,0 +1,22 @@
+---
+title: 'List packages'
+openapi: 'GET /api/v1/packages'
+---
+
+This endpoint will return packages in ascending order by when they were most recently updated. A package update is when a property on a package changes such as it's `status` or when an inventory transaction has occurred so that this package has a new inventory amount.
+
+The reason we use ascending order is so that if a package is updated while you are querying this data, you will not miss that package and it will just be present in a later page.
+
+## Pagination
+
+In order to correctly paginate this endpoint, you should store the `updatedAt` and `id` property of the last package in the `data` array. Then, submit those values as `startingAfterUpdatedAt` and `startingAfterId` in order to get the next page of data.
+
+The reason we use two pagination properties is because it is possible for two packages to have the exact same `updatedAt` value. Therefore, we paginate via `updatedAt ASC` first and then subsequently `id ASC`.
+
+One note with `updatedAt` is that our API will return this value as a timestamp string to microsecond precision. We recommend storing this value as a string in case the environment you are in (such as Javascript) only supports millisecond precision and would truncate the date. If you store it as a string and then submit that same string as the query parameter, you will not have any issues.
+
+## Voided packages
+
+Packaged may be voided from time to time by the organization. When that happens, it will have its status set to `finished` and its `label` will be changed to have a unique value such as `void-STAGING01234567200000039-3154adaf`. Then, the package label (ex: `STAGING01234567200000039`) may show up again attached to a new package entity.
+
+This may happen when an organization accidentally receives a package to the wrong product. Then, you may find a package that has been voided as well as a new package with the same original label that is now attributed to a different product.

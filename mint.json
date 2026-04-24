@@ -48,7 +48,9 @@
         "endpoints/analytics/retrieve-organization",
         "endpoints/analytics/list-all-products",
         "endpoints/analytics/list-purchase-orders",
-        "endpoints/analytics/list-compliance-transfers"
+        "endpoints/analytics/list-compliance-transfers",
+        "endpoints/analytics/list-packages",
+        "endpoints/analytics/retrieve-package"
       ]
     },
     {
