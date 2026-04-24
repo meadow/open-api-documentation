@@ -5763,13 +5763,6 @@
     },
     "/api/v1/packages": {
       "get": {
-        "x-mint": {
-          "api": {
-            "params": {
-              "expanded": "all"
-            }
-          }
-        },
         "description": "Retrieve all packages for an organization in ascending order by when the package was most recently updated. 50 packages will be returned at a time and may be paginated using the `startingAfterUpdatedAt` and `startingAfterId` query parameters.",
         "parameters": [
           {
@@ -5940,6 +5933,114 @@
                       }
                     }
                   ]
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIError"
+                }
+              }
+            }
+          }
+        }
+      },
+    },
+    "/api/v1/packages/{label}": {
+      "get": {
+        "description": "Retrieve package information for a specific label/tag",
+        "parameters": [
+          {
+            "name": "label",
+            "in": "path",
+            "description": "The label of the package to retrieve",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Packages detail response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Package"
+                },
+                "example": {
+                  "data": {
+                    "id": 150,
+                    "organizationId": 1,
+                    "type": "metrc",
+                    "externalId": null,
+                    "externalProductName": "OG Kush - Eighth",
+                    "label": "STAGING01234567200000001",
+                    "status": "received",
+                    "initialAmount": "150",
+                    "unit": "Each",
+                    "createdAt": "2023-01-10T21:35:10.732Z",
+                    "updatedAt": "2023-05-05 10:17:56.561-07",
+                    "receivedAt": "2023-05-05T17:17:56.561Z",
+                    "finishedAt": null,
+                    "multiplier": "1",
+                    "expirationDate": "2024-03-07",
+                    "transferredAt": null,
+                    "transferReturnedAt": null,
+                    "shippedAt": null,
+                    "costPerUnit": "24.9567",
+                    "voidReason": null,
+                    "thcPercent": "24.5",
+                    "thcMg": null,
+                    "cbdPercent": "2.7",
+                    "cbdMg": null,
+                    "producerName": null,
+                    "producerLicense": null,
+                    "harvestDate": null,
+                    "harvestFacilityName": null,
+                    "harvestFacilityLicense": null,
+                    "labName": null,
+                    "labLicense": null,
+                    "labDate": null,
+                    "onHold": false,
+                    "tradeSample": false,
+                    "originalSourceLabel": null,
+                    "productOptionId": 1250,
+                    "inventory": {
+                      "amount": "146"
+                    },
+                    "product": {
+                      "id": 798,
+                      "name": "OG Kush",
+                      "unit": "item",
+                      "strainType": "hybrid-indica",
+                      "isActive": true,
+                      "isFeatured": false,
+                      "inventoryType": "option",
+                      "movingAverageCostPerUnit": null,
+                      "brandName": "Meadow Farms",
+                      "primaryCategory": {
+                        "id": 8,
+                        "name": "Flower",
+                        "cannabisType": "non-concentrated"
+                      },
+                      "options": [
+                        {
+                          "id": 1250,
+                          "name": "",
+                          "amount": 1,
+                          "price": 2400,
+                          "salesPrice": null,
+                          "content": 3.5,
+                          "movingAverageCostPerUnit": 0
+                        }
+                      ]
+                    }
+                  }
                 }
               }
             }
