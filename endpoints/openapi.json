@@ -7064,7 +7064,7 @@
           },
           "status": {
             "type": "string",
-            "description": "The status of the customer\n\n- `ready` is a package that has not been received into inventory yet.\n- `received` is a package that has been accepted into inventory for sale\n- `finished` is a package with 0 inventory and has been marked as finished\n- `shipped` is a package that is currently being shipped to another license and not available for sale\n- `transferred` is a package that was transferred out of this license and no longer has inventory\n- `transfer-returned` is a package that has been transferred back, but has not been received into inventory yet\n- `syncing` is a package that has been created, but not synced to Metrc yet",
+            "description": "The status of the package\n\n- `ready` is a package that has not been received into inventory yet.\n- `received` is a package that has been accepted into inventory for sale\n- `finished` is a package with 0 inventory and has been marked as finished\n- `shipped` is a package that is currently being shipped to another license and not available for sale\n- `transferred` is a package that was transferred out of this license and no longer has inventory\n- `transfer-returned` is a package that has been transferred back, but has not been received into inventory yet\n- `syncing` is a package that has been created, but not synced to Metrc yet",
             "enum": ["ready", "received", "finished", "shipped", "transferred", "transfer-returned", "syncing"]
           },
           "initialAmount": {
