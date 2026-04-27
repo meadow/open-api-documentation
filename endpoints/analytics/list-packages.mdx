@@ -3,7 +3,7 @@ title: 'List packages'
 openapi: 'GET /api/v1/packages'
 ---
 
-This endpoint will return packages in ascending order by when they were most recently updated. A package update is when a property on a package changes such as it's `status` or when an inventory transaction has occurred so that this package has a new inventory amount.
+This endpoint will return packages in ascending order by when they were most recently updated. A package update is when a property on a package changes such as its `status` or when an inventory transaction has occurred so that this package has a new inventory amount.
 
 The reason we use ascending order is so that if a package is updated while you are querying this data, you will not miss that package and it will just be present in a later page.
 
