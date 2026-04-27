@@ -5832,9 +5832,20 @@
                       "tradeSample": false,
                       "originalSourceLabel": null,
                       "productOptionId": 1250,
-                      "inventory": {
-                        "amount": "146"
-                      },
+                      "locationInventory": [
+                        {
+                          "inventoryLocationId": 3,
+                          "amount": "74"
+                        },
+                        {
+                          "inventoryLocationId": 4,
+                          "amount": "0.0"
+                        },
+                        {
+                          "inventoryLocationId": 41,
+                          "amount": "3"
+                        }
+                      ],
                       "product": {
                         "id": 798,
                         "name": "OG Kush",
@@ -5901,9 +5912,16 @@
                       "tradeSample": false,
                       "originalSourceLabel": null,
                       "productOptionId": 10369,
-                      "inventory": {
-                        "amount": "77.0"
-                      },
+                      "locationInventory": [
+                        {
+                          "inventoryLocationId": 3,
+                          "amount": "90"
+                        },
+                        {
+                          "inventoryLocationId": 41,
+                          "amount": "9"
+                        }
+                      ],
                       "product": {
                         "id": 9747,
                         "name": "Fire OG Pre-Pack",
@@ -6010,9 +6028,16 @@
                     "tradeSample": false,
                     "originalSourceLabel": null,
                     "productOptionId": 1250,
-                    "inventory": {
-                      "amount": "146"
-                    },
+                    "locationInventory": [
+                      {
+                        "inventoryLocationId": 3,
+                        "amount": "90"
+                      },
+                      {
+                        "inventoryLocationId": 41,
+                        "amount": "9"
+                      }
+                    ],
                     "product": {
                       "id": 798,
                       "name": "OG Kush",
@@ -7201,13 +7226,20 @@
             "description": "The original source label for this package's root parent. Provided by Metrc for use in Retail ID context",
             "nullable": true
           },
-          "inventory": {
-            "type": "object",
-            "description": "The Meadow inventory for this package",
-            "properties": {
-              "amount": {
-                "type": "number",
-                "description": "The amount of inventory available for sale"
+          "locationInventory": {
+            "type": "array",
+            "description": "The Meadow inventory for this package broken out by inventory location",
+            "items": {
+              "type": "object",
+              "properties": {
+                "inventoryLocationId": {
+                  "type": "number",
+                  "description": "The id for this inventory location"
+                },
+                "amount": {
+                  "type": "string",
+                  "description": "The amount of inventory available for sale"
+                }
               }
             }
           },
