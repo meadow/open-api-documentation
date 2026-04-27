@@ -7228,7 +7228,7 @@
           },
           "locationInventory": {
             "type": "array",
-            "description": "The Meadow inventory for this package broken out by inventory location",
+            "description": "The Meadow inventory for this package broken out by inventory location. An empty array `[]` means that this package does not have any inventory.",
             "items": {
               "type": "object",
               "properties": {
@@ -7245,7 +7245,8 @@
           },
           "product": {
             "type": "object",
-            "description": "Information about the product this package has inventory for",
+            "description": "Information about the product this package has inventory for. This will be `null` if the package has not had its inventory received to a Meadow product yet.",
+            "nullable": true,
             "properties": {
               "id": {
                 "type": "number",
