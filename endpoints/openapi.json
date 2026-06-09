@@ -1421,6 +1421,7 @@
                       "customerName": null,
                       "deliveryFee": null,
                       "deliveryFeeDescription": null,
+                      "apiConsumerName": null,
                       "lineItems": [
                         {
                           "id": 1234,
@@ -1626,7 +1627,8 @@
                       "address": null,
                       "shift": {
                         "name": "POS Station 3"
-                      }
+                      },
+                      "onfleetTask": null
                     },
                     {
                       "id": "12352010",
@@ -1650,6 +1652,7 @@
                       "customerName": null,
                       "deliveryFee": 500,
                       "deliveryFeeDescription": "300",
+                      "apiConsumerName": "Integrator Name",
                       "lineItems": [
                         {
                           "id": 36263,
@@ -1758,7 +1761,8 @@
                         "state": "California",
                         "postalCode": "94103"
                       },
-                      "shift": null
+                      "shift": null,
+                      "onfleetTask": null
                     }
                   ]
                 }
@@ -2332,6 +2336,7 @@
                     "customerName": null,
                     "deliveryFee": null,
                     "deliveryFeeDescription": null,
+                    "apiConsumerName": null,
                     "lineItems": [
                       {
                         "id": 1234,
@@ -2537,7 +2542,8 @@
                     "address": null,
                     "shift": {
                       "name": "POS Station 3"
-                    }
+                    },
+                    "onfleetTask": null
                   }
                 }
               }
@@ -6354,6 +6360,11 @@
             "description": "A description of the delivery fee that can be shown to the customer",
             "nullable": true
           },
+          "apiConsumerName": {
+            "type": "string",
+            "description": "The name of the integrator that created this order or `null`",
+            "nullable": true
+          },
           "lineItems": {
             "type": "array",
             "description": "All of the products purchased with this order",
@@ -6878,6 +6889,21 @@
                 "type": "string",
                 "description": "The name of the shift. This will most commonly be attributed to the name of the iPad station.",
                 "nullable": true
+              }
+            }
+          },
+          "onfleetTask": {
+            "type": "object",
+            "description": "The Onfleet task information for this order if it has one or `null`.",
+            "nullable": true,
+            "properties": {
+              "taskId": {
+                "type": "string",
+                "description": "The full ID of the Onfleet task. See Onfleet's documentation for more information."
+              },
+              "shortId": {
+                "type": "string",
+                "description": "The short ID of the Onfleet task. See Onfleet's documentation for more information."
               }
             }
           }
