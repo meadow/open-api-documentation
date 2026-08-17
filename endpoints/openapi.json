@@ -2884,6 +2884,7 @@
                       "feeDescription": null,
                       "method": "cash",
                       "feePercent": "0",
+                      "availableDelivery": true,
                       "createdAt": "2025-04-11T20:34:08.842Z"
                     },
                     {
@@ -2893,6 +2894,7 @@
                       "feeDescription": "Debit Card Fee",
                       "method": "debit",
                       "feePercent": "3.5",
+                      "availableDelivery": false,
                       "createdAt": "2025-05-08T22:42:31.092Z"
                     }
                   ]
@@ -7402,6 +7404,10 @@
           "feePercent": {
             "type": "string",
             "description": "The percentage fee for this payment type"
+          },
+          "availableDelivery": {
+            "type": "boolean",
+            "description": "Whether a customer can use this payment type for a `delivery` order."
           },
           "createdAt": {
             "type": "string",
