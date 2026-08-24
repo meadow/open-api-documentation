@@ -699,18 +699,27 @@
         }
       },
     },
-    "/api/v1/customers/{customerId}": {
+    "/api/v1/customers/{identifier}": {
       "get": {
         "description": "Retrieve details for a specific customer via ID",
         "parameters": [
           {
-            "name": "customerId",
+            "name": "identifier",
             "in": "path",
-            "description": "ID of customer to retrieve",
+            "description": "Find a customer by ID, email, or phone. If using email or phone, you must also pass in the `identifierType` query parameter.",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int64"
+              "type": "string"
+            }
+          },
+          {
+            "name": "identifierType",
+            "in": "query",
+            "description": "Accepts a single value of `emailOrPhone` if you would like to search for a customer by their email or phone instead of their ID. You must pass in that email or phone in the URL as the `identifier`\n\nExample URL: `/api/v1/customers/email@domain.com?identifierType=emailOrPhone`",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["emailOrPhone"]
             }
           }
         ],
