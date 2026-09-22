@@ -1231,11 +1231,11 @@
                           },
                           "unit": {
                             "type": "string",
-                            "description": "The unit that applies to the numeric values in this object. Example: `mg` for `concentrated` and `g` for `non-concentrated` (flower)"
+                            "description": "The unit that applies to the numeric values in this object. Example: `mg` for `concentrated` and `g` for `non-concentrated` (flower)."
                           },
                           "limit": {
                             "type": "string",
-                            "description": "The numeric limit that is purchaseable for this category"
+                            "description": "The numeric limit that is purchaseable for this category."
                           },
                           "total": {
                             "type": "string",
@@ -1243,7 +1243,7 @@
                           },
                           "percent": {
                             "type": "string",
-                            "description": "How much of the purchase limit is currently being used based on the `total` and `limit`. In a scale of 0 to 1"
+                            "description": "How much of the purchase limit is currently being used based on the `total` and `limit` in a scale of 0 to 1."
                           },
                           "overage": {
                             "type": "string",
