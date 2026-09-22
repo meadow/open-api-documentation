@@ -1212,6 +1212,45 @@
                     "idempotencyKey": {
                       "type": "string",
                       "description": "A string that should be used when creating an order to ensure idempotency and avoid double orders due to server miscommunication."
+                    },
+                    "purchaseLimits": {
+                      "type": "array",
+                      "description": "The purchase limits that apply for this customer if they were to purchase these line items. The types of limits vary state-by-state in the US (i.e. California vs New York)",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "description": "Whether this purchase limit applies to a product category, a specific line item, or the total of the order combined.",
+                            "enum": ["category", "lineItem", "total"]
+                          },
+                          "cannabisType": {
+                            "type": "string",
+                            "description": "The type of the cannabis limit for this object. Only applies when `type` is either `category` or `lineItem`, otherwise `undefined`.\n\nWhen present, it will be one of the following values:\n`non-concentrated` - Flower or other non-concentrated THC products\n`concentrated` - Concentrated THC products (Example: Edibles, Concentrates)\n`immature-plant` - Cannabis plants\n`none` - This product does not contain cannabis\n`mi-infused-solids` - Cannabis infused solids (only in Michigan) (Example: edibles)\n`mi-infused-fluids` - Cannabis infused fluids (only in Michigan) (Example: drinks)\n`edibles` - Edible product (only used in New Jersey & Massachusetts)",
+                            "nullable": true
+                          },
+                          "unit": {
+                            "type": "string",
+                            "description": "The unit that applies to the numeric values in this object. Example: `mg` for `concentrated` and `g` for `non-concentrated` (flower)"
+                          },
+                          "limit": {
+                            "type": "string",
+                            "description": "The numeric limit that is purchaseable for this category"
+                          },
+                          "total": {
+                            "type": "string",
+                            "description": "The amount for this limit based on the `lineItems` of this request and any previous purchases by this customer if applicable."
+                          },
+                          "percent": {
+                            "type": "string",
+                            "description": "How much of the purchase limit is currently being used based on the `total` and `limit`. In a scale of 0 to 1"
+                          },
+                          "overage": {
+                            "type": "string",
+                            "description": "The amount that the `total` is over the `limit` by. If this number is greater than 0, it means they are exceeding the purchase limit and `POST /api/v1/orders` will throw an error of `PURCHASE_LIMT_EXCEEDED`"
+                          }
+                        }
+                      }
                     }
                   }
                 },
@@ -1329,7 +1368,36 @@
                     "discountsTotal": 850,
                     "discountsOverBudtenderLimit": false,
                     "discountsOverManagerLimit": false,
-                    "idempotencyKey": "ddf6cc42-d9b2-4b8c-97cf-47d454445453"
+                    "idempotencyKey": "ddf6cc42-d9b2-4b8c-97cf-47d454445453",
+                    "purchaseLimits": [
+                      {
+                        "type": "category",
+                        "cannabisType": "non-concentrated",
+                        "unit": "g",
+                        "limit": "28.5",
+                        "total": "15",
+                        "percent": "0.53",
+                        "overage": "-13.5"
+                      },
+                      {
+                        "type": "category",
+                        "cannabisType": "concentrated",
+                        "unit": "mg",
+                        "limit": "8000",
+                        "total": "0",
+                        "percent": "0",
+                        "overage": "-8000"
+                      },
+                      {
+                        "type": "category",
+                        "cannabisType": "immature-plant",
+                        "unit": "",
+                        "limit": "6",
+                        "total": "0",
+                        "percent": "0",
+                        "overage": "-6"
+                      }
+                    ]
                   }
                 }
               }
