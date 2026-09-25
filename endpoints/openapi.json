@@ -1247,7 +1247,7 @@
                           },
                           "overage": {
                             "type": "string",
-                            "description": "The amount that the `total` is over the `limit` by. If this number is greater than 0, it means they are exceeding the purchase limit and `POST /api/v1/orders` will throw an error of `PURCHASE_LIMT_EXCEEDED`"
+                            "description": "The amount that the `total` is over the `limit` by. If this number is greater than 0, it means they are exceeding the purchase limit and `POST /api/v1/orders` will throw an error of `PURCHASE_LIMIT_EXCEEDED`"
                           }
                         }
                       }
