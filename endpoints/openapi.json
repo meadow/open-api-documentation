@@ -407,7 +407,7 @@
             }
           }
         }
-      },
+      }
     },
     "/api/v1/customer-groups/{customerGroupId}/add-customer": {
       "put": {
@@ -433,7 +433,7 @@
                 "properties": {
                   "emailOrPhone": {
                     "type": "string",
-                    "description": "Either an email address or a phone number of the customer to add to the group",
+                    "description": "Either an email address or a phone number of the customer to add to the group"
                   }
                 }
               },
@@ -523,7 +523,7 @@
                 "properties": {
                   "emailOrPhone": {
                     "type": "string",
-                    "description": "Either an email address or a phone number of the customer to remove from the group",
+                    "description": "Either an email address or a phone number of the customer to remove from the group"
                   }
                 }
               },
@@ -697,7 +697,7 @@
             }
           }
         }
-      },
+      }
     },
     "/api/v1/customers/{identifier}": {
       "get": {
@@ -777,7 +777,7 @@
             }
           }
         }
-      },
+      }
     },
     "/api/v1/documents/{customerId}/{documentType}": {
       "post": {
@@ -2637,7 +2637,7 @@
             }
           }
         }
-      },
+      }
     },
     "/api/v1/order-returns": {
       "get": {
@@ -2835,7 +2835,7 @@
             }
           }
         }
-      },
+      }
     },
     "/api/v1/payment-intents": {
       "post": {
@@ -2990,7 +2990,7 @@
             }
           }
         }
-      },
+      }
     },
     "/api/v1/instore-queues": {
       "get": {
@@ -3054,7 +3054,7 @@
             }
           }
         }
-      },
+      }
     },
     "/api/v1/organization": {
       "get": {
@@ -3142,7 +3142,7 @@
             }
           }
         }
-      },
+      }
     },
     "/api/v1/inventory-locations": {
       "get": {
@@ -3217,7 +3217,7 @@
             }
           }
         }
-      },
+      }
     },
     "/api/v1/products/all": {
       "get": {
@@ -3381,7 +3381,7 @@
                                 }
                               }
                             }
-                          },
+                          }
                         }
                       }
                     },
@@ -3738,7 +3738,7 @@
             }
           }
         }
-      },
+      }
     },
     "/api/v1/purchase-orders": {
       "get": {
@@ -4170,7 +4170,7 @@
                   },
                   "paymentTerms": {
                     "type": "string",
-                    "enum": ["net15", "net30", "net60", "cod", "custom"],
+                    "enum": ["net15", "net30", "net60", "cod", "custom"]
                   },
                   "paymentTermsDueDate": {
                     "type": "string",
@@ -4327,7 +4327,7 @@
                   },
                   "paymentTerms": {
                     "type": "string",
-                    "enum": ["net15", "net30", "net60", "cod", "custom"],
+                    "enum": ["net15", "net30", "net60", "cod", "custom"]
                   },
                   "paymentTermsDueDate": {
                     "type": "string",
@@ -5778,7 +5778,7 @@
             }
           }
         }
-      },
+      }
     },
     "/api/v1/product-sub-categories": {
       "get": {
@@ -5844,7 +5844,7 @@
             }
           }
         }
-      },
+      }
     },
     "/api/v1/packages": {
       "get": {
@@ -6051,7 +6051,7 @@
             }
           }
         }
-      },
+      }
     },
     "/api/v1/packages/{label}": {
       "get": {
@@ -6166,8 +6166,8 @@
             }
           }
         }
-      },
-    },
+      }
+    }
   },
   "components": {
     "schemas": {
@@ -6295,14 +6295,14 @@
               },
               "postalCode": {
                 "type": "string"
-              },
+              }
             }
           },
           "medicalExpiration": {
             "type": "string",
             "description": "The expiration date of this customer’s medical recommendation or `null` if they are an adult use customer",
             "nullable": true
-          },
+          }
         }
       },
       "CustomerGroup": {
@@ -7176,7 +7176,7 @@
           "type": {
             "type": "string",
             "description": "The compliance system for this package. Only `metrc` is supported currently.",
-            "enum": ["metrc"],
+            "enum": ["metrc"]
           },
           "externalId": {
             "type": "string",
