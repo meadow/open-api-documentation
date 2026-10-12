@@ -1,0 +1,8 @@
+---
+title: 'Update a cart'
+openapi: 'PUT /api/v1/carts/{cartId}'
+---
+
+The `lineItems` submitted replace all of the existing line items on the cart. No other properties of the cart can be changed. To change the customer, type, address or `returnUrl`, [create a new cart](/endpoints/carts/create-cart).
+
+A cart can only be checked out once. After checkout, updates return a [`CART_CHECKED_OUT`](/errors) error.

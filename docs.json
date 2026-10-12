@@ -34,7 +34,8 @@
       {
         "group": "Guides",
         "pages": [
-          "guides/inventory"
+          "guides/inventory",
+          "guides/hosted-checkout"
         ]
       },
       {
@@ -62,6 +63,14 @@
           "endpoints/orders/create-order",
           "endpoints/orders/list-payment-types",
           "endpoints/orders/upload-document"
+        ]
+      },
+      {
+        "group": "Endpoints: Cart",
+        "pages": [
+          "endpoints/carts/create-cart",
+          "endpoints/carts/retrieve-cart",
+          "endpoints/carts/update-cart"
         ]
       },
       {

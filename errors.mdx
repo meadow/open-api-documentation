@@ -36,6 +36,28 @@ When an error is returned, it will be in the following format
 
 Below is a list of error codes that Meadow may return on various requests. This list does not contain every single error that is possible, so we encourage you to handle unknown codes that you have not seen before.
 
+### `CART_CHECKED_OUT`
+Thrown when a [cart](/endpoints/carts/update-cart) is updated or checked out after it has already been checked out. A cart can only be checked out once.
+```json
+{
+  "error": {
+    "message": "This cart has already been checked out.",
+    "code": "CART_CHECKED_OUT"
+  }
+}
+```
+
+### `HOSTED_CHECKOUT_NOT_CONFIGURED`
+Thrown when [creating a cart](/endpoints/carts/create-cart) for an organization that has not turned on hosted checkout. The dispensary must set an authorized domain in **Settings > API Integrations > Hosted Checkout**.
+```json
+{
+  "error": {
+    "message": "Hosted checkout is not enabled. The dispensary must set an authorized domain in Settings > API Integrations > Hosted Checkout.",
+    "code": "HOSTED_CHECKOUT_NOT_CONFIGURED"
+  }
+}
+```
+
 ### `INSUFFICIENT_PERMISSIONS`
 The `X-Client-Key` is valid but does not have the proper permissions for that endpoint
 ```json

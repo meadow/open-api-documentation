@@ -1,0 +1,20 @@
+---
+title: 'Create a cart'
+openapi: 'POST /api/v1/carts'
+---
+
+<Note>
+  Hosted checkout must be turned on by the dispensary, by setting your domain as the authorized domain in **Settings > API Integrations > Hosted Checkout**. Until then this endpoint returns `HOSTED_CHECKOUT_NOT_CONFIGURED`.
+</Note>
+
+# Checking out
+
+Redirect the customer's browser to the `checkoutUrl` in the response. Meadow's hosted checkout page handles pricing, discounts, loyalty, payment and creating the order. See the [Hosted Checkout guide](/guides/hosted-checkout) for the full flow.
+
+<Warning>
+  Treat `checkoutUrl` as a secret. Anyone with the link can check out the cart as that customer. Do not log or share it, and create the cart right before redirecting the customer.
+</Warning>
+
+# Guest carts
+
+If `userId` is omitted, the cart is checked out as a guest order using `customerName`. Guest carts must have a `type` of `pickup`, otherwise `INVALID_PARAMS` is returned. The organization must also have anonymous pickup orders enabled for the cart to be checked out.
