@@ -1,0 +1,73 @@
+---
+title: Hosted Checkout
+description: Send customers to a Meadow hosted checkout page to complete their order
+---
+
+Hosted Checkout lets you build your own shopping experience and hand the customer off to Meadow to check out. Meadow's hosted checkout page handles pricing, discounts, loyalty, payment and creating the order, so you do not need to integrate payments or loyalty yourself.
+
+Hosted Checkout requires the **Create Orders** [permission](/permissions). Orders placed through Hosted Checkout are attributed to your integration, the same as orders created with [POST /api/v1/orders](/endpoints/orders/create-order).
+
+## Step 1 - Create a cart
+
+When the customer is ready to check out, create a cart with [POST /api/v1/carts](/endpoints/carts/create-cart). Use product option IDs from the [menu](/endpoints/menu/list-menu).
+
+```javascript
+{
+  "type": "pickup",
+  "userId": 4821,
+  "returnUrl": "https://example.com/checkout/complete",
+  "lineItems": [
+    {
+      "productOptionId": 1899,
+      "quantity": 3
+    }
+  ]
+}
+```
+
+If the customer changes their cart before being redirected, you can replace its line items with [PUT /api/v1/carts/\{cartId\}](/endpoints/carts/update-cart).
+
+## Step 2 - Redirect to the checkout page
+
+Redirect the customer's browser to the `checkoutUrl` from the response. It will look like:
+
+```
+https://embed.getmeadow.com/organizations/{organizationId}/h/checkout/{cartId}
+```
+
+The customer reviews their order, pays and places it on the Meadow page. A cart can only be checked out once.
+
+## Step 3 - Return to your site
+
+If you set a `returnUrl`, the customer is sent back to it after checkout. By default Meadow shows its order confirmation page with a link back to your site. If the dispensary turns on automatic redirects, the customer is sent straight back instead. Without a `returnUrl`, Meadow shows its order confirmation page.
+
+## Step 4 - Look up the order
+
+Retrieve the cart with [GET /api/v1/carts/\{cartId\}](/endpoints/carts/retrieve-cart). Once the customer has checked out, `orderId` will be set. Use it with [GET /api/v1/orders/\{orderId\}](/endpoints/orders/retrieve-status) to follow the order's status.
+
+# Dispensary settings
+
+Dispensaries configure hosted checkout in Meadow under **Settings > API Integrations > Hosted Checkout**:
+
+- **Authorized domain** (required) - hosted checkout is turned off until the dispensary sets this to your domain. Until then, creating a cart returns `HOSTED_CHECKOUT_NOT_CONFIGURED`. Once set, `returnUrl` must be on this domain or one of its subdomains (otherwise creating the cart returns `INVALID_PARAMS`), and the checkout page can only be opened from a page on this domain.
+- **Automatically redirect to the return URL** - off by default, and only available once an authorized domain is set. When on, customers are sent straight back to `returnUrl` after placing their order.
+- **Appearance** - the colors, corner radius and button style of the checkout page.
+
+# Customer vs. guest carts
+
+### Customer carts
+
+Pass `userId` with the ID of a customer in the organization (for example, from [GET /api/v1/customers/\{identifier\}](/endpoints/customers/retrieve-customer)). The order will be placed for that customer, and pricing will include their discounts and loyalty eligibility.
+
+### Guest carts
+
+If `userId` is omitted, the order is placed as a guest order using `customerName`. Guest carts must have a `type` of `pickup` (creating a guest `delivery` cart returns `INVALID_PARAMS`), and the organization must have anonymous pickup orders enabled for the cart to be checked out.
+
+# Security
+
+<Warning>
+  Treat `checkoutUrl` as a secret bearer link. Anyone with it can check out the cart as that customer.
+
+  - Do not log it or share it anywhere other than the customer's browser
+  - Create the cart right before redirecting the customer, not ahead of time
+</Warning>

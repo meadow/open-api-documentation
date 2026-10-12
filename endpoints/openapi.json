@@ -2639,6 +2639,331 @@
         }
       }
     },
+    "/api/v1/carts": {
+      "post": {
+        "description": "Create a cart for [hosted checkout](/guides/hosted-checkout). Redirect the customer to the returned `checkoutUrl` to complete their order on a Meadow hosted checkout page.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "type",
+                  "lineItems"
+                ],
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "description": "The type of the order",
+                    "enum": [
+                      "delivery",
+                      "pickup"
+                    ]
+                  },
+                  "lineItems": {
+                    "type": "array",
+                    "description": "An array of products to buy. Must contain between 1 and 100 items.",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "productOptionId",
+                        "quantity"
+                      ],
+                      "properties": {
+                        "productOptionId": {
+                          "type": "integer",
+                          "description": "The ID from the [menu api response](/endpoints/menu/list-menu) `data[].options[].id`"
+                        },
+                        "quantity": {
+                          "type": "integer",
+                          "description": "The quantity of this product option to purchase. Must be greater than 0."
+                        }
+                      }
+                    }
+                  },
+                  "userId": {
+                    "type": "integer",
+                    "description": "The ID of a customer in this organization, as returned by the [customer endpoints](/endpoints/customers/list-customers). The order will be placed for this customer and pricing will include their discounts and loyalty eligibility. Omit to create a guest cart, which must have a `type` of `pickup`."
+                  },
+                  "customerName": {
+                    "type": "string",
+                    "description": "The name to use for a guest order when no `userId` is provided"
+                  },
+                  "returnUrl": {
+                    "type": "string",
+                    "description": "An `http` or `https` URL (max 2048 characters) to send the customer back to after checkout. If the dispensary has set an authorized domain, the URL must be on that domain or one of its subdomains. If omitted, Meadow shows its own order confirmation page."
+                  },
+                  "address": {
+                    "type": "object",
+                    "description": "The delivery address for this order. Used for `delivery` carts.",
+                    "properties": {
+                      "street1": {
+                        "type": "string",
+                        "description": "The first line of the street address"
+                      },
+                      "street2": {
+                        "type": "string",
+                        "description": "The second line of the street address"
+                      },
+                      "city": {
+                        "type": "string",
+                        "description": "The city"
+                      },
+                      "state": {
+                        "type": "string",
+                        "description": "The state"
+                      },
+                      "postalCode": {
+                        "type": "string",
+                        "description": "The postal code"
+                      },
+                      "county": {
+                        "type": "string",
+                        "description": "The county"
+                      }
+                    }
+                  }
+                }
+              },
+              "example": {
+                "type": "pickup",
+                "userId": 4821,
+                "returnUrl": "https://example.com/checkout/complete",
+                "lineItems": [
+                  {
+                    "productOptionId": 1899,
+                    "quantity": 3
+                  },
+                  {
+                    "productOptionId": 2307,
+                    "quantity": 1
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Create cart response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Cart"
+                },
+                "example": {
+                  "data": {
+                    "id": "01999c4e-3a7b-7c2d-9e1f-4a5b6c7d8e9f",
+                    "type": "pickup",
+                    "userId": 4821,
+                    "customerName": null,
+                    "returnUrl": "https://example.com/checkout/complete",
+                    "address": null,
+                    "orderId": null,
+                    "checkoutUrl": "https://embed.getmeadow.com/organizations/12/h/checkout/01999c4e-3a7b-7c2d-9e1f-4a5b6c7d8e9f",
+                    "createdAt": "2026-09-30T15:53:44.336Z",
+                    "updatedAt": "2026-09-30T15:53:44.336Z",
+                    "lineItems": [
+                      {
+                        "id": 101,
+                        "productId": 994,
+                        "productOptionId": 1899,
+                        "quantity": 3
+                      },
+                      {
+                        "id": 102,
+                        "productId": 1021,
+                        "productOptionId": 2307,
+                        "quantity": 1
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/carts/{cartId}": {
+      "get": {
+        "description": "Retrieve a cart. Once the customer has checked out, `orderId` is set to the ID of the order that was created. Only carts created with your `X-Consumer-Key` can be retrieved.",
+        "parameters": [
+          {
+            "name": "cartId",
+            "in": "path",
+            "description": "ID of the cart",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cart response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Cart"
+                },
+                "example": {
+                  "data": {
+                    "id": "01999c4e-3a7b-7c2d-9e1f-4a5b6c7d8e9f",
+                    "type": "pickup",
+                    "userId": 4821,
+                    "customerName": null,
+                    "returnUrl": "https://example.com/checkout/complete",
+                    "address": null,
+                    "orderId": 18673982,
+                    "checkoutUrl": "https://embed.getmeadow.com/organizations/12/h/checkout/01999c4e-3a7b-7c2d-9e1f-4a5b6c7d8e9f",
+                    "createdAt": "2026-09-30T15:53:44.336Z",
+                    "updatedAt": "2026-09-30T16:05:31.847Z",
+                    "lineItems": [
+                      {
+                        "id": 101,
+                        "productId": 994,
+                        "productOptionId": 1899,
+                        "quantity": 3
+                      },
+                      {
+                        "id": 102,
+                        "productId": 1021,
+                        "productOptionId": 2307,
+                        "quantity": 1
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "description": "Replace all of the line items on a cart. Other properties of the cart cannot be changed. A cart cannot be updated once it has been checked out.",
+        "parameters": [
+          {
+            "name": "cartId",
+            "in": "path",
+            "description": "ID of the cart",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "lineItems"
+                ],
+                "properties": {
+                  "lineItems": {
+                    "type": "array",
+                    "description": "The new line items for the cart. These replace all existing line items. Must contain between 1 and 100 items.",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "productOptionId",
+                        "quantity"
+                      ],
+                      "properties": {
+                        "productOptionId": {
+                          "type": "integer",
+                          "description": "The ID from the [menu api response](/endpoints/menu/list-menu) `data[].options[].id`"
+                        },
+                        "quantity": {
+                          "type": "integer",
+                          "description": "The quantity of this product option to purchase. Must be greater than 0."
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "example": {
+                "lineItems": [
+                  {
+                    "productOptionId": 1899,
+                    "quantity": 2
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Update cart response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Cart"
+                },
+                "example": {
+                  "data": {
+                    "id": "01999c4e-3a7b-7c2d-9e1f-4a5b6c7d8e9f",
+                    "type": "pickup",
+                    "userId": 4821,
+                    "customerName": null,
+                    "returnUrl": "https://example.com/checkout/complete",
+                    "address": null,
+                    "orderId": null,
+                    "checkoutUrl": "https://embed.getmeadow.com/organizations/12/h/checkout/01999c4e-3a7b-7c2d-9e1f-4a5b6c7d8e9f",
+                    "createdAt": "2026-09-30T15:53:44.336Z",
+                    "updatedAt": "2026-09-30T16:02:10.112Z",
+                    "lineItems": [
+                      {
+                        "id": 103,
+                        "productId": 994,
+                        "productOptionId": 1899,
+                        "quantity": 2
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "4XX": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/order-returns": {
       "get": {
         "description": "Retrieve all order returns for an organization in reverse chronological order. 50 order returns will be returned at a time and may be paginated using the `startingAfter` query parameter.",
@@ -6188,6 +6513,101 @@
               "code": {
                 "type": "string",
                 "example": "CODE_OF_ERROR_WILL_BE_HERE"
+              }
+            }
+          }
+        }
+      },
+      "Cart": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The ID of the cart, a UUIDv7 so IDs sort by creation time"
+          },
+          "type": {
+            "type": "string",
+            "description": "The type of the order. One of `delivery`, `pickup`"
+          },
+          "userId": {
+            "type": "integer",
+            "nullable": true,
+            "description": "The ID of the customer the order will be placed for. `null` for guest carts."
+          },
+          "customerName": {
+            "type": "string",
+            "nullable": true,
+            "description": "The name used for a guest order"
+          },
+          "returnUrl": {
+            "type": "string",
+            "nullable": true,
+            "description": "The URL the customer is sent to after checkout"
+          },
+          "address": {
+            "type": "object",
+            "nullable": true,
+            "description": "The delivery address for this order",
+            "properties": {
+              "street1": {
+                "type": "string"
+              },
+              "street2": {
+                "type": "string"
+              },
+              "city": {
+                "type": "string"
+              },
+              "state": {
+                "type": "string"
+              },
+              "postalCode": {
+                "type": "string"
+              },
+              "county": {
+                "type": "string"
+              }
+            }
+          },
+          "orderId": {
+            "type": "integer",
+            "nullable": true,
+            "description": "`null` until the cart has been checked out, then the ID of the Meadow order that was created. Use with [GET /api/v1/orders/\\{orderId\\}](/endpoints/orders/retrieve-status)."
+          },
+          "checkoutUrl": {
+            "type": "string",
+            "description": "The Meadow hosted checkout page for this cart. Redirect the customer's browser here. Treat this URL as a secret: anyone with it can check out the cart."
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "When the cart was created"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "When the cart was last updated"
+          },
+          "lineItems": {
+            "type": "array",
+            "description": "The line items of this cart",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "description": "The ID of the line item"
+                },
+                "productId": {
+                  "type": "integer",
+                  "description": "The product ID for this line item"
+                },
+                "productOptionId": {
+                  "type": "integer",
+                  "description": "The product option ID for this line item"
+                },
+                "quantity": {
+                  "type": "integer",
+                  "description": "The quantity of this line item"
+                }
               }
             }
           }
