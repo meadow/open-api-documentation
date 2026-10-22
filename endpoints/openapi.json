@@ -4953,6 +4953,14 @@
                     "type": "string",
                     "description": "The brand of the product. Meadow will match this to an existing brand or create a new brand if it does not exist."
                   },
+                  "isActive": {
+                    "type": "boolean",
+                    "description": "Whether this product should be active and shown on the menu."
+                  },
+                  "isFeatured": {
+                    "type": "boolean",
+                    "description": "Whether this product should be included in the featured collection on the menu."
+                  },
                   "photos": {
                     "type": "array",
                     "description": "URLs for the image to associate with this product. Meadow will download with a background job. Max photo size is 15MB.",
@@ -5149,6 +5157,14 @@
                     "items": {
                       "type": "string"
                     }
+                  },
+                  "isActive": {
+                    "type": "boolean",
+                    "description": "Whether this product should be active and shown on the menu."
+                  },
+                  "isFeatured": {
+                    "type": "boolean",
+                    "description": "Whether this product should be included in the featured collection on the menu."
                   },
                   "inventoryType": {
                     "type": "string",
@@ -7518,11 +7534,11 @@
           },
           "isActive": {
             "type": "boolean",
-            "description": "Whether this product is shown on the menu. Client organizations must update this via Meadow."
+            "description": "Whether this product is shown on the menu."
           },
           "isFeatured": {
             "type": "boolean",
-            "description": "Whether this product is shown as featured. Client organizations must update this via Meadow."
+            "description": "Whether this product is shown as featured."
           },
           "brand": {
             "type": "object",
