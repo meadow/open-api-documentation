@@ -2641,7 +2641,7 @@
     },
     "/api/v1/carts": {
       "post": {
-        "description": "Create a cart for [hosted checkout](/guides/hosted-checkout). Redirect the customer to the returned `checkoutUrl` to complete their order on a Meadow hosted checkout page.",
+        "description": "Create a cart for [checkout handoff](/guides/checkout-handoff). Redirect the customer to the returned `checkoutUrl` to complete their order on a Meadow checkout page.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -6576,7 +6576,7 @@
           },
           "checkoutUrl": {
             "type": "string",
-            "description": "The Meadow hosted checkout page for this cart. Redirect the customer's browser here. Treat this URL as a secret: anyone with it can check out the cart."
+            "description": "The Meadow checkout page for this cart. Redirect the customer's browser here. Treat this URL as a secret: anyone with it can check out the cart."
           },
           "createdAt": {
             "type": "string",

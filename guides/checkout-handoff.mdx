@@ -1,11 +1,11 @@
 ---
-title: Hosted Checkout
-description: Send customers to a Meadow hosted checkout page to complete their order
+title: Checkout Handoff
+description: Send customers to a Meadow checkout page to complete their order
 ---
 
-Hosted Checkout lets you build your own shopping experience and hand the customer off to Meadow to check out. Meadow's hosted checkout page handles pricing, discounts, loyalty, payment and creating the order, so you do not need to integrate payments or loyalty yourself.
+Checkout Handoff lets you build your own shopping experience and hand the customer off to Meadow to check out. Meadow's checkout page handles pricing, discounts, loyalty, payment and creating the order, so you do not need to integrate payments or loyalty yourself.
 
-Hosted Checkout requires the **Create Orders** [permission](/permissions). Orders placed through Hosted Checkout are attributed to your integration, the same as orders created with [POST /api/v1/orders](/endpoints/orders/create-order).
+Checkout Handoff requires the **Create Orders** [permission](/permissions). Orders placed through Checkout Handoff are attributed to your integration, the same as orders created with [POST /api/v1/orders](/endpoints/orders/create-order).
 
 ## Step 1 - Create a cart
 
@@ -29,7 +29,7 @@ If the customer changes their cart before being redirected, you can replace its 
 
 ## Step 2 - Redirect to the checkout page
 
-Redirect the customer's browser to the `checkoutUrl` from the response. It will look like:
+Redirect the customer's browser to the `checkoutUrl` from the response, from a page on the dispensary's authorized domain. It will look like:
 
 ```
 https://embed.getmeadow.com/organizations/{organizationId}/h/checkout/{cartId}
@@ -47,9 +47,9 @@ Retrieve the cart with [GET /api/v1/carts/\{cartId\}](/endpoints/carts/retrieve-
 
 # Dispensary settings
 
-Dispensaries configure hosted checkout in Meadow under **Settings > API Integrations > Hosted Checkout**:
+Dispensaries configure checkout handoff in Meadow under **Settings > API Integrations > Checkout Handoff**:
 
-- **Authorized domain** (required) - hosted checkout is turned off until the dispensary sets this to your domain. Until then, creating a cart returns `HOSTED_CHECKOUT_NOT_CONFIGURED`. Once set, `returnUrl` must be on this domain or one of its subdomains (otherwise creating the cart returns `INVALID_PARAMS`), and the checkout page can only be opened from a page on this domain.
+- **Authorized domain** (required) - checkout handoff is turned off until the dispensary sets this to your domain. Until then, creating a cart returns `CHECKOUT_HANDOFF_NOT_CONFIGURED`. Once set, `returnUrl` must be on this domain or one of its subdomains (otherwise creating the cart returns `INVALID_PARAMS`), and customers must be sent to the checkout page from a page on this domain (see [Security](#security)).
 - **Automatically redirect to the return URL** - off by default, and only available once an authorized domain is set. When on, customers are sent straight back to `returnUrl` after placing their order.
 - **Appearance** - the colors, corner radius and button style of the checkout page.
 
@@ -71,3 +71,9 @@ If `userId` is omitted, the order is placed as a guest order using `customerName
   - Do not log it or share it anywhere other than the customer's browser
   - Create the cart right before redirecting the customer, not ahead of time
 </Warning>
+
+The checkout page only opens when the browser's referrer is on the authorized domain. Browsers send it by default, so do not open `checkoutUrl` with `rel="noreferrer"` or from a page with `Referrer-Policy: no-referrer`, otherwise the customer sees "Checkout unavailable".
+
+This check only stops other sites from sending customers to checkout pages. It does not protect a leaked `checkoutUrl`.
+
+Carts stop working if the dispensary deletes your integration or removes its **Create Orders** permission: the checkout page shows "Checkout not found" and the cart can no longer be priced or checked out. Create a new cart once access is restored.

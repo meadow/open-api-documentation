@@ -47,13 +47,13 @@ Thrown when a [cart](/endpoints/carts/update-cart) is updated or checked out aft
 }
 ```
 
-### `HOSTED_CHECKOUT_NOT_CONFIGURED`
-Thrown when [creating a cart](/endpoints/carts/create-cart) for an organization that has not turned on hosted checkout. The dispensary must set an authorized domain in **Settings > API Integrations > Hosted Checkout**.
+### `CHECKOUT_HANDOFF_NOT_CONFIGURED`
+Thrown when [creating a cart](/endpoints/carts/create-cart) for an organization that has not turned on checkout handoff. The dispensary must set an authorized domain in **Settings > API Integrations > Checkout Handoff**.
 ```json
 {
   "error": {
-    "message": "Hosted checkout is not enabled. The dispensary must set an authorized domain in Settings > API Integrations > Hosted Checkout.",
-    "code": "HOSTED_CHECKOUT_NOT_CONFIGURED"
+    "message": "Checkout handoff is not enabled. The dispensary must set an authorized domain in Settings > API Integrations > Checkout Handoff.",
+    "code": "CHECKOUT_HANDOFF_NOT_CONFIGURED"
   }
 }
 ```
