@@ -3990,6 +3990,44 @@
                                 }
                               }
                             }
+                          },
+                          "productOption": {
+                            "type": "object",
+                            "description": "The product option for the line item if the product's `inventoryType` is set to `option`, otherwise `null`",
+                            "nullable": true,
+                            "properties": {
+                              "id": {
+                                "type": "number",
+                                "description": "The ID of the product option"
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "The name of this option",
+                                "nullable": true
+                              },
+                              "amount": {
+                                "type": "number",
+                                "description": "The amount of the underlying unit of this product"
+                              },
+                              "price": {
+                                "type": "number",
+                                "description": "The price in cents of this option"
+                              },
+                              "salesPrice": {
+                                "type": "number",
+                                "description": "The sales price if one exists",
+                                "nullable": true
+                              },
+                              "upc": {
+                                "type": "string",
+                                "description": "The UPC code for this option",
+                                "nullable": true
+                              },
+                              "content": {
+                                "type": "string",
+                                "description": "The amount of cannabis content this option has based on the `cannabisType` field from the product category."
+                              }
+                            }
                           }
                         }
                       }
@@ -4061,6 +4099,16 @@
                               "cannabisType": "non-concentrated",
                               "createdAt": "2016-04-02T08:03:27.028Z"
                             }
+                          },
+                          "productOption": {
+                            "id": 10777,
+                            "name": "Eighth",
+                            "amount": 3.5,
+                            "price": 1530,
+                            "salesPrice": null,
+                            "createdAt": "2026-05-05T22:19:39.358Z",
+                            "upc": null,
+                            "content": "3.5"
                           }
                         },
                         {
@@ -4086,6 +4134,16 @@
                               "cannabisType": "concentrated",
                               "createdAt": "2023-04-14T21:25:36.473Z"
                             }
+                          },
+                          "productOption": {
+                            "id": 10778,
+                            "name": "",
+                            "amount": 3.5,
+                            "price": 1530,
+                            "salesPrice": null,
+                            "createdAt": "2026-05-05T22:19:39.358Z",
+                            "upc": null,
+                            "content": "3.5"
                           }
                         }
                       ]
@@ -4134,6 +4192,16 @@
                               "cannabisType": "non-concentrated",
                               "createdAt": "2016-04-02T08:03:27.028Z"
                             }
+                          },
+                          "productOption": {
+                            "id": 10779,
+                            "name": "",
+                            "amount": 3.5,
+                            "price": 1530,
+                            "salesPrice": null,
+                            "createdAt": "2026-05-05T22:19:39.358Z",
+                            "upc": null,
+                            "content": "3.5"
                           }
                         }
                       ]
