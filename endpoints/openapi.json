@@ -7845,11 +7845,54 @@
               "properties": {
                 "product": {
                   "type": "object",
-                  "description": "The product for the line item"
+                  "description": "The product for the line item",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "description": "The ID of the product"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the product"
+                    }
+                  }
                 },
                 "productOption": {
                   "type": "object",
-                  "description": "The product option for the line item."
+                  "description": "The product option for the line item if the product's `inventoryType` is set to `option`, otherwise `{}`",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "description": "The ID of the product option"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The name of this option",
+                      "nullable": true
+                    },
+                    "amount": {
+                      "type": "number",
+                      "description": "The amount of the underlying unit of this product"
+                    },
+                    "price": {
+                      "type": "number",
+                      "description": "The price in cents of this option"
+                    },
+                    "salesPrice": {
+                      "type": "number",
+                      "description": "The sales price if one exists",
+                      "nullable": true
+                    },
+                    "upc": {
+                      "type": "string",
+                      "description": "The UPC code for this option",
+                      "nullable": true
+                    },
+                    "content": {
+                      "type": "string",
+                      "description": "The amount of cannabis content this option has based on the `cannabisType` field from the product category."
+                    }
+                  }
                 },
                 "finalTotal": {
                   "type": "number",
