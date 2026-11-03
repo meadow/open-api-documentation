@@ -3,17 +3,11 @@ title: 'Create a cart'
 openapi: 'POST /api/v1/carts'
 ---
 
-<Note>
-  Checkout handoff must be turned on by the dispensary, by setting your domain as the authorized domain in **Settings > API Integrations > Checkout Handoff**. Until then this endpoint returns `CHECKOUT_HANDOFF_NOT_CONFIGURED`.
-</Note>
-
 # Checking out
 
-Redirect the customer's browser to the `checkoutUrl` in the response. Meadow's checkout page handles pricing, discounts, loyalty, payment and creating the order. See the [Checkout Handoff guide](/guides/checkout-handoff) for the full flow.
+When the customer checks out, mint a handoff token with [POST /api/v1/carts/\{cartId\}/access-token](/endpoints/carts/create-access-token) and redirect their browser to the `checkoutUrl` it returns. Meadow's checkout page handles pricing, discounts, loyalty, payment and creating the order. See the [Checkout Handoff guide](/guides/checkout-handoff) for the full flow.
 
-<Warning>
-  Treat `checkoutUrl` as a secret. Anyone with the link can check out the cart as that customer. Do not log or share it, and create the cart right before redirecting the customer.
-</Warning>
+The `checkoutUrl` in this response has no handoff token, so it does not open the checkout page by itself.
 
 # Guest carts
 

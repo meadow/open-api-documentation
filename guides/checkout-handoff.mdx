@@ -15,7 +15,8 @@ When the customer is ready to check out, create a cart with [POST /api/v1/carts]
 {
   "type": "pickup",
   "userId": 4821,
-  "returnUrl": "https://example.com/checkout/complete",
+  "continueShoppingUrl": "https://example.com/shop",
+  "autoSuccessUrl": "https://example.com/checkout/complete",
   "lineItems": [
     {
       "productOptionId": 1899,
@@ -27,31 +28,112 @@ When the customer is ready to check out, create a cart with [POST /api/v1/carts]
 
 If the customer changes their cart before being redirected, you can replace its line items with [PUT /api/v1/carts/\{cartId\}](/endpoints/carts/update-cart).
 
-## Step 2 - Redirect to the checkout page
+## Step 2 - Mint a handoff token
 
-Redirect the customer's browser to the `checkoutUrl` from the response, from a page on the dispensary's authorized domain. It will look like:
+The checkout page only opens with a handoff token: a short-lived, single-use credential that lets the customer's browser check out this one cart. When the customer clicks checkout, mint one with [POST /api/v1/carts/\{cartId\}/access-token](/endpoints/carts/create-access-token).
 
+```javascript
+{
+  "data": {
+    "accessToken": "Xq3v8kR1mJ2p9sT0wY5zA7bC4dE6fG8hI0jK2lM4nO6",
+    "expiresAt": "2026-10-28T16:05:00.000Z",
+    "checkoutUrl": "https://embed.getmeadow.com/organizations/12/h/checkout/01999c4e-3a7b-7c2d-9e1f-4a5b6c7d8e9f?access_token=Xq3v8kR1mJ2p9sT0wY5zA7bC4dE6fG8hI0jK2lM4nO6"
+  }
+}
 ```
-https://embed.getmeadow.com/organizations/{organizationId}/h/checkout/{cartId}
-```
+
+The token expires 5 minutes after it is minted. Mint it immediately before redirecting the customer. Do not mint it when the cart is created, cache it or reuse it.
+
+## Step 3 - Redirect to the checkout page
+
+Redirect the customer's browser to the `checkoutUrl` from the token response. Use a top-level navigation, a `303 See Other` redirect from your server or `window.location.assign()`, not a fetch. Because the token is in the URL, do not show it as a link the customer could copy or share. Any other query parameters you add, such as `utm_source`, are kept on the page.
+
+The checkout page exchanges the token for a checkout session for the cart and removes it from the URL, so it isn't kept in the browser history or in a shared link. The 5 minute expiry only limits the time between minting the token and the customer reaching the page: the session lasts long enough to check out, including reloading the page in the same tab.
 
 The customer reviews their order, pays and places it on the Meadow page. A cart can only be checked out once.
 
-## Step 3 - Return to your site
+## Step 4 - Return to your site
 
-If you set a `returnUrl`, the customer is sent back to it after checkout. By default Meadow shows its order confirmation page with a link back to your site. If the dispensary turns on automatic redirects, the customer is sent straight back instead. Without a `returnUrl`, Meadow shows its order confirmation page.
+A cart can have two URLs back to your site:
 
-## Step 4 - Look up the order
+- `continueShoppingUrl` - where the checkout page's **Continue Shopping** button goes, for a customer who wants to keep shopping before ordering.
+- `autoSuccessUrl` - where the customer is sent automatically after placing their order, e.g. your thank you page.
+
+Without an `autoSuccessUrl`, Meadow shows its order confirmation page with a link to `continueShoppingUrl`. Without a `continueShoppingUrl`, both go to the authorized domain if the dispensary has set one.
+
+Both must be on the authorized domain, or links into your app in its URL scheme (see [Customizing the checkout](#customizing-the-checkout)).
+
+## Step 5 - Look up the order
 
 Retrieve the cart with [GET /api/v1/carts/\{cartId\}](/endpoints/carts/retrieve-cart). Once the customer has checked out, `orderId` will be set. Use it with [GET /api/v1/orders/\{orderId\}](/endpoints/orders/retrieve-status) to follow the order's status.
 
-# Dispensary settings
+# Customizing the checkout
 
-Dispensaries configure checkout handoff in Meadow under **Settings > API Integrations > Checkout Handoff**:
+Each integration has its own checkout handoff settings. The dispensary manages them in Meadow, on your integration's page: **Settings > API Integrations**, then **Edit** next to your integration, in the **Checkout Handoff** section. They apply to every cart you create, and you can't change them through the API.
 
-- **Authorized domain** (required) - checkout handoff is turned off until the dispensary sets this to your domain. Until then, creating a cart returns `CHECKOUT_HANDOFF_NOT_CONFIGURED`. Once set, `returnUrl` must be on this domain or one of its subdomains (otherwise creating the cart returns `INVALID_PARAMS`), and customers must be sent to the checkout page from a page on this domain (see [Security](#security)).
-- **Automatically redirect to the return URL** - off by default, and only available once an authorized domain is set. When on, customers are sent straight back to `returnUrl` after placing their order.
-- **Appearance** - the colors, corner radius and button style of the checkout page.
+### Settings
+
+| Setting | Default | What it does |
+| --- | --- | --- |
+| Authorized domain | None | A cart's web `continueShoppingUrl` and `autoSuccessUrl` must be on this domain or one of its subdomains, e.g. `example.com`. Until it's set, carts can't have web URLs: creating one returns `INVALID_PARAMS`. |
+| App URL scheme | None | Your mobile app's URL scheme, e.g. `myapp`. Once it's set, a cart's URLs can also be links into your app such as `myapp://orders/complete` (see [Mobile apps](#mobile-apps)). |
+| Foreground color | `#000000` | Text and icons. |
+| Background color | `#ffffff` | The page background. |
+| Accent color | `#00b2ff` | Buttons and links. |
+| Error color | `#f44336` | Error messages and invalid fields. |
+| Corner radius | `5` px | The roundness of buttons, inputs and cards, from 0 to 24. |
+| Button style | Fill | **Fill** buttons have a solid background, **Border** buttons only an outline. |
+
+The page's other colors, such as hover states, borders and light tints, are worked out from these.
+
+### Trying out an appearance
+
+To try colors on a live checkout page, use your browser's developer tools:
+
+1. Open a checkout page, or the preview below, and open the developer tools (right click > **Inspect**).
+2. In the **Elements** panel, select the `<html>` element.
+3. In the **Styles** panel, find the rule that sets the `--color-` variables and edit them. The changes show right away and are lost when the page reloads:
+
+| Variable | Setting |
+| --- | --- |
+| `--color-foreground` | Foreground color |
+| `--color-background` | Background color |
+| `--color-accent` | Accent color |
+| `--color-error` | Error color |
+| `--corner-radius` | Corner radius, e.g. `8px` |
+
+Shades worked out from these, such as button hover colors, don't update in the developer tools. To see the exact result, including the button style, open the checkout preview with the settings as query parameters. It shows sample products and can't place orders:
+
+```
+https://embed.getmeadow.com/organizations/{organizationId}/h/checkout/preview?colorAccent=%232e7d32&colorBackground=%23fdf6e3&uiCornerRadius=12&uiStyle=border
+```
+
+The parameters are `colorForeground`, `colorBackground`, `colorAccent` and `colorError` (hex colors, with `#` written as `%23`), `uiCornerRadius` (0 to 24), `uiStyle` (`fill` or `border`) and `type` (`pickup` or `delivery`).
+
+### Asking the dispensary to update the settings
+
+Send the dispensary the values you'd like. A Meadow admin with full permissions can then update them on your integration's page:
+
+- **Authorized domain** - the domain of your site, e.g. `example.com`. Needed for web `continueShoppingUrl` and `autoSuccessUrl`.
+- **App URL scheme** - your mobile app's scheme, e.g. `myapp`, if you send customers back to your app.
+- **Appearance** - the colors, corner radius and button style, e.g. as a preview link from above. The dispensary sees a preview of their changes before saving.
+
+# Mobile apps
+
+Checkout handoff works from a mobile app the same way as from a website. The app asks your server to create the cart and mint the handoff token, then opens the `checkoutUrl`.
+
+<Warning>
+  Create carts and mint handoff tokens from your server. Never put your API keys in the app.
+</Warning>
+
+Open the `checkoutUrl` in one of:
+
+- **An in-app browser** (`SFSafariViewController` or `ASWebAuthenticationSession` on iOS, Custom Tabs on Android). Recommended: the customer sees it is a secure page, and it shares nothing with your app. To come back to your app after checkout, ask the dispensary to set your **App URL scheme** and use an `autoSuccessUrl` in it, such as `myapp://orders/complete`. If the customer doesn't open your app, Meadow's confirmation page offers the link again. With `ASWebAuthenticationSession`, use the same scheme as its callback scheme so the session closes itself.
+- **A WebView**. Use an `https` `autoSuccessUrl` on your authorized domain, watch the WebView's navigation for it (`WKNavigationDelegate` on iOS, `shouldOverrideUrlLoading` on Android), and close the WebView when the customer reaches it.
+
+Universal links (iOS) and App Links (Android) on your authorized domain can also be a cart's URLs, but the operating system usually only opens your app from a link the customer taps, not from an automatic redirect. For `autoSuccessUrl`, use your app's URL scheme instead.
+
+Mint a new token every time the customer opens the checkout. If they close it and come back later, the token they used before no longer works.
 
 # Customer vs. guest carts
 
@@ -61,19 +143,19 @@ Pass `userId` with the ID of a customer in the organization (for example, from [
 
 ### Guest carts
 
-If `userId` is omitted, the order is placed as a guest order using `customerName`. Guest carts must have a `type` of `pickup` (creating a guest `delivery` cart returns `INVALID_PARAMS`), and the organization must have anonymous pickup orders enabled for the cart to be checked out.
+If `userId` is omitted, the order is placed as a guest order using `customerName`. Guest carts must have a `type` of `pickup` (creating a guest `delivery` cart returns `INVALID_PARAMS`), and the organization must allow anonymous pickup orders (otherwise creating the cart returns `ANONYMOUS_EMBED_ORDERS_NOT_ENABLED`).
 
 # Security
 
-<Warning>
-  Treat `checkoutUrl` as a secret bearer link. Anyone with it can check out the cart as that customer.
+The checkout page only opens with a handoff token minted by your integration. A cart's `checkoutUrl` without a token, or with a token that has expired or was already used, shows "Checkout link expired". Your customer's cart is unchanged, so mint a new token and send them back to checkout.
 
-  - Do not log it or share it anywhere other than the customer's browser
-  - Create the cart right before redirecting the customer, not ahead of time
+<Warning>
+  Until it is used or expires, a handoff token lets anyone with it check out the cart as that customer.
+
+  - Mint it immediately before redirecting the customer, and only send it to the customer's browser
+  - Do not log the token or the `checkoutUrl` that contains it
 </Warning>
 
-The checkout page only opens when the browser's referrer is on the authorized domain. Browsers send it by default, so do not open `checkoutUrl` with `rel="noreferrer"` or from a page with `Referrer-Policy: no-referrer`, otherwise the customer sees "Checkout unavailable".
-
-This check only stops other sites from sending customers to checkout pages. It does not protect a leaked `checkoutUrl`.
+The checkout page doesn't check where the customer came from, so you can send them from your site, your mobile app or a page that sends no referrer. Only the handoff token gives access to the cart.
 
 Carts stop working if the dispensary deletes your integration or removes its **Create Orders** permission: the checkout page shows "Checkout not found" and the cart can no longer be priced or checked out. Create a new cart once access is restored.

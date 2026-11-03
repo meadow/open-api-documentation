@@ -70,7 +70,8 @@
         "pages": [
           "endpoints/carts/create-cart",
           "endpoints/carts/retrieve-cart",
-          "endpoints/carts/update-cart"
+          "endpoints/carts/update-cart",
+          "endpoints/carts/create-access-token"
         ]
       },
       {

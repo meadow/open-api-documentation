@@ -36,6 +36,17 @@ When an error is returned, it will be in the following format
 
 Below is a list of error codes that Meadow may return on various requests. This list does not contain every single error that is possible, so we encourage you to handle unknown codes that you have not seen before.
 
+### `ANONYMOUS_EMBED_ORDERS_NOT_ENABLED`
+Thrown when [creating a guest cart](/endpoints/carts/create-cart) (without a `userId`) for an organization that does not allow guest pickup orders. The dispensary must turn on **Allow anonymous pickup orders** in **Settings > E-commerce Menu**.
+```json
+{
+  "error": {
+    "message": "Carts without a userId (guest checkout) require the dispensary to turn on \"Allow anonymous pickup orders\" in Settings > E-commerce Menu.",
+    "code": "ANONYMOUS_EMBED_ORDERS_NOT_ENABLED"
+  }
+}
+```
+
 ### `CART_CHECKED_OUT`
 Thrown when a [cart](/endpoints/carts/update-cart) is updated or checked out after it has already been checked out. A cart can only be checked out once.
 ```json
@@ -43,17 +54,6 @@ Thrown when a [cart](/endpoints/carts/update-cart) is updated or checked out aft
   "error": {
     "message": "This cart has already been checked out.",
     "code": "CART_CHECKED_OUT"
-  }
-}
-```
-
-### `CHECKOUT_HANDOFF_NOT_CONFIGURED`
-Thrown when [creating a cart](/endpoints/carts/create-cart) for an organization that has not turned on checkout handoff. The dispensary must set an authorized domain in **Settings > API Integrations > Checkout Handoff**.
-```json
-{
-  "error": {
-    "message": "Checkout handoff is not enabled. The dispensary must set an authorized domain in Settings > API Integrations > Checkout Handoff.",
-    "code": "CHECKOUT_HANDOFF_NOT_CONFIGURED"
   }
 }
 ```
