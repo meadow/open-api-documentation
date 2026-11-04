@@ -71,7 +71,7 @@ Send the customer's browser to `checkoutUrl` with a `303 See Other` redirect or 
 | Field | Where the customer goes | If it's not set |
 | --- | --- | --- |
 | `continueShoppingUrl` | The checkout page's **Continue Shopping** button | The authorized domain |
-| `autoSuccessUrl` | Straight after placing the order | Meadow's order confirmation page, with a link to `continueShoppingUrl` |
+| `autoSuccessUrl` | Straight after placing the order, or once they've paid when paying with Stronghold | Meadow's order confirmation page, with a link to `continueShoppingUrl` |
 
 Both must be on your authorized domain or in your app URL scheme.
 
@@ -132,6 +132,7 @@ Send the dispensary your authorized domain, your app URL scheme if you have an a
 - **Keep tokens private:** until it's used, a token lets anyone check out the cart as that customer. Only send it to the customer's browser, and don't log it.
 - **One checkout per cart:** a cart can only be ordered once. Create a new cart for the next order.
 - **Revoked access:** if the dispensary deletes your integration or removes **Create Orders** or **Customers**, its carts can no longer be checked out.
+- **Discount codes only:** the customer can enter discount codes at checkout, but not promo (credit) codes, which need them to be signed in to the dispensary's menu.
 
 # Endpoint summary
 
