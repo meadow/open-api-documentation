@@ -2699,7 +2699,7 @@
                   },
                   "address": {
                     "type": "object",
-                    "description": "The delivery address for this order. Used for `delivery` carts.",
+                    "description": "The delivery address, required for `delivery` carts with `street1`, `city`, `state` and `postalCode`. The dispensary must deliver to it, otherwise creating the cart returns `CART_ADDRESS_NOT_DELIVERABLE` (with delivery zones) or `INVALID_DELIVERY_POSTAL_CODE`.",
                     "properties": {
                       "street1": {
                         "type": "string",
