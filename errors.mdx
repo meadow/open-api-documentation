@@ -36,19 +36,8 @@ When an error is returned, it will be in the following format
 
 Below is a list of error codes that Meadow may return on various requests. This list does not contain every single error that is possible, so we encourage you to handle unknown codes that you have not seen before.
 
-### `ANONYMOUS_EMBED_ORDERS_NOT_ENABLED`
-Thrown when [creating a guest cart](/endpoints/carts/create-cart) (without a `userId`) for an organization that does not allow guest pickup orders. The dispensary must turn on **Allow anonymous pickup orders** in **Settings > E-commerce Menu**.
-```json
-{
-  "error": {
-    "message": "Carts without a userId (guest checkout) require the dispensary to turn on \"Allow anonymous pickup orders\" in Settings > E-commerce Menu.",
-    "code": "ANONYMOUS_EMBED_ORDERS_NOT_ENABLED"
-  }
-}
-```
-
 ### `CART_ADDRESS_NOT_DELIVERABLE`
-Thrown when [creating a delivery cart](/endpoints/carts/create-cart) for an address outside the dispensary's delivery zones, or one that can't be located. The cart's checkout returns it too if the address is no longer delivered to.
+Thrown when [creating a delivery cart](/endpoints/carts/create-cart) for an address outside the dispensary's delivery zones, or one that can't be located.
 ```json
 {
   "error": {
@@ -103,7 +92,7 @@ Thrown when data submitted is not owned by the parent resource specified (Exampl
 ```
 
 ### `INVALID_DELIVERY_POSTAL_CODE`
-Thrown when [creating a delivery cart](/endpoints/carts/create-cart) for a postal code the dispensary doesn't deliver to, for dispensaries without delivery zones. The cart's checkout returns it too if the postal code is no longer delivered to.
+Thrown when [creating a delivery cart](/endpoints/carts/create-cart) for a postal code the dispensary doesn't deliver to, for dispensaries without delivery zones.
 ```json
 {
   "error": {

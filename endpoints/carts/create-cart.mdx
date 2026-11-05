@@ -5,10 +5,4 @@ openapi: 'POST /api/v1/carts'
 
 # Checking out
 
-When the customer checks out, mint a handoff token with [POST /api/v1/carts/\{cartId\}/access-token](/endpoints/carts/create-access-token) and redirect their browser to the `checkoutUrl` it returns. Meadow's checkout page handles pricing, discounts, loyalty, payment and creating the order. See the [Checkout Handoff guide](/guides/checkout-handoff) for the full flow.
-
-The `checkoutUrl` in this response has no handoff token, so it does not open the checkout page by itself.
-
-# Guest carts
-
-If `userId` is omitted, the cart is checked out as a guest order using `customerName`. Guest carts must have a `type` of `pickup`, otherwise `INVALID_PARAMS` is returned. The organization must also have anonymous pickup orders enabled for the cart to be checked out.
+When the customer checks out, redirect their browser to the cart's `checkoutUrl`. It opens the checkout of the dispensary's menu with the cart, where the customer signs in or checks out as a guest and places the order. See the [Checkout Handoff guide](/guides/checkout-handoff) for the full flow.
