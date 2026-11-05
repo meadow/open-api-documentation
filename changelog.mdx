@@ -5,30 +5,14 @@ description: 'New updates and improvements to the Meadow API'
 
 <Update label="November 3, 2026">
     - Adds [Checkout Handoff](/guides/checkout-handoff): create a cart and send the customer to Meadow's checkout page to pay and place the order
-</Update>
-
-<Update label="November 2, 2026">
-    - Replaces a cart's `returnUrl` with `continueShoppingUrl`, for the checkout page's Continue Shopping button, and `autoSuccessUrl`, where the customer is sent after ordering. The dispensary's automatic redirect setting is removed: a cart with an `autoSuccessUrl` always redirects
-    - [Checkout Handoff](/guides/checkout-handoff) can be used from [mobile apps](/guides/checkout-handoff#mobile-apps). The checkout page no longer requires the customer to come from the authorized domain, and a cart's URLs can be links into your app once the dispensary sets your app's URL scheme
-    - Checkout handoff settings now belong to each integration, on its page in **Settings > API Integrations**, see [Customizing the checkout](/guides/checkout-handoff#customizing-the-checkout)
-    - The authorized domain is now optional, so checkout handoff no longer needs to be turned on by the dispensary. Without it, a cart's URLs can only be links into your app. Removes the `CHECKOUT_HANDOFF_NOT_CONFIGURED` error
-    - [POST /api/v1/carts](/endpoints/carts/create-cart) returns `ANONYMOUS_EMBED_ORDERS_NOT_ENABLED` for a guest cart when the dispensary doesn't allow guest pickup orders, instead of the order failing at checkout
-</Update>
-
-<Update label="October 28, 2026">
-    - Adds [POST /api/v1/carts/\{cartId\}/access-token](/endpoints/carts/create-access-token). [Checkout Handoff](/guides/checkout-handoff) now requires a handoff token, so the `checkoutUrl` of a cart no longer opens the checkout page by itself
-</Update>
-
-<Update label="October 22, 2026">
-    - Adds `isActive` and `isFeatured` to [POST /api/v1/products](/endpoints/products/create-product) and [PUT /api/v1/products/\{productId\}](/endpoints/products/update-product)
-</Update>
-
-<Update label="September 30, 2026">
-    - Adds [Checkout Handoff](/guides/checkout-handoff)
     - Adds [POST /api/v1/carts](/endpoints/carts/create-cart)
     - Adds [GET /api/v1/carts/\{cartId\}](/endpoints/carts/retrieve-cart)
     - Adds [PUT /api/v1/carts/\{cartId\}](/endpoints/carts/update-cart)
     - Adds [POST /api/v1/carts/\{cartId\}/access-token](/endpoints/carts/create-access-token)
+</Update>
+
+<Update label="October 22, 2026">
+    - Adds `isActive` and `isFeatured` to [POST /api/v1/products](/endpoints/products/create-product) and [PUT /api/v1/products/\{productId\}](/endpoints/products/update-product)
 </Update>
 
 <Update label="September 22, 2026">
