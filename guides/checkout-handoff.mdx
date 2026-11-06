@@ -1,0 +1,104 @@
+---
+title: Checkout Handoff
+description: Send customers to the dispensary's menu to check out the cart they built with you
+---
+
+Build your own shopping experience and hand the customer off to the dispensary's Meadow menu to check out. The menu handles signing in, pricing, discounts, loyalty, payment and placing the order.
+
+## Prerequisites
+
+- An integration with the **Create Orders** [permission](/permissions)
+- Product option IDs from the [menu](/endpoints/menu/list-menu)
+- To send customers back to your site or app, the dispensary sets your [authorized domain or app URL scheme](#return-urls)
+
+## How it works
+
+1. Your server creates a cart with the customer's line items.
+2. When the customer clicks checkout, you redirect them to the cart's `checkoutUrl`.
+3. The dispensary's menu opens its checkout with the cart. The customer signs in, or checks out as a guest where the dispensary allows it, and places the order.
+4. The menu sends the customer back to you, and you look up the order.
+
+The order is one of the menu's orders, like any other placed on it: the dispensary's menu settings, discounts and order rules apply. The cart only links the order back to you.
+
+## Step 1 - Create a cart
+
+Create the cart with [POST /api/v1/carts](/endpoints/carts/create-cart).
+
+```javascript
+{
+  "type": "pickup",
+  "continueShoppingUrl": "https://example.com/shop",
+  "autoSuccessUrl": "https://example.com/checkout/complete",
+  "lineItems": [
+    {
+      "productOptionId": 1899,
+      "quantity": 3
+    }
+  ]
+}
+```
+
+A delivery cart needs a full address the dispensary delivers to. To change the line items before checkout, use [PUT /api/v1/carts/\{cartId\}](/endpoints/carts/update-cart).
+
+## Step 2 - Redirect to the checkout
+
+The cart's `checkoutUrl` opens the checkout of the dispensary's menu wherever they've installed it: on their own domain, on a page of their website, or on Meadow's.
+
+```javascript
+{
+  "data": {
+    "id": "6f1c2e4a-8b3d-4f5e-9a7b-1c2d3e4f5a6b",
+    "checkoutUrl": "https://dispensary.com/shop/checkout?checkoutCart=6f1c2e4a-8b3d-4f5e-9a7b-1c2d3e4f5a6b",
+    ...
+  }
+}
+```
+
+Send the customer's browser to it with a `303 See Other` redirect or `window.location.assign()`. Read it from the cart rather than building it yourself, since it changes when the dispensary changes how their menu is installed.
+
+The menu replaces the customer's menu cart with yours. They can still change it before placing the order.
+
+## Step 3 - Return to your site
+
+| Field | Where the customer goes | If it's not set |
+| --- | --- | --- |
+| `autoSuccessUrl` | Straight after placing the order. When paying with Stronghold, the confirmation shows the payment link and a button back instead. | The menu's order confirmation |
+| `continueShoppingUrl` | The confirmation's button back to you | No button |
+
+## Step 4 - Look up the order
+
+[GET /api/v1/carts/\{cartId\}](/endpoints/carts/retrieve-cart) returns the cart's `orderId` once the customer has checked out. Follow the order with [GET /api/v1/orders/\{orderId\}](/endpoints/orders/retrieve-status).
+
+# Return URLs
+
+`continueShoppingUrl` and `autoSuccessUrl` must be on your integration's authorized domain, or links into your app with its app URL scheme. Each integration has its own. The dispensary sets them in Meadow under **Settings > API Integrations**, by editing your integration.
+
+| Setting | What it does |
+| --- | --- |
+| Authorized domain | Your site's domain, e.g. `example.com`. Web URLs on a cart must be on it or a subdomain. Without it, a web URL returns `INVALID_PARAMS`. |
+| App URL scheme | Your mobile app's scheme, e.g. `myapp`, for URLs like `myapp://orders/complete`. |
+
+# Mobile apps
+
+Create the cart on your server, never with API keys in the app. Then open `checkoutUrl` in:
+
+- **An in-app browser** (`SFSafariViewController` or `ASWebAuthenticationSession` on iOS, Custom Tabs on Android). Use an `autoSuccessUrl` in your app URL scheme, such as `myapp://orders/complete`, to come back to your app.
+- **A WebView**. Use an `https` `autoSuccessUrl` and close the WebView when it navigates there.
+
+Use your app URL scheme rather than universal links or App Links for `autoSuccessUrl`: operating systems usually only open apps from links the customer taps.
+
+# Constraints
+
+- **The cart id is the key:** anyone with `checkoutUrl` can load the cart into their menu cart. It holds only the line items, order type and delivery address, so only send it to the customer's browser.
+- **Signing in:** customers sign in on the menu. Carts aren't tied to a customer, so the order is for whoever signs in, or a guest.
+- **Guests:** guest checkout is pickup only, and only when the dispensary allows anonymous pickup orders. Otherwise the customer signs in or creates an account.
+- **One checkout per cart:** a cart can only be ordered once. Opening its `checkoutUrl` again shows the menu, with a message that the order was placed. Create a new cart for the next order.
+- **Revoked access:** if the dispensary deletes your integration or removes **Create Orders**, its carts can no longer be checked out.
+
+# Endpoint summary
+
+| Endpoint | Purpose |
+| --- | --- |
+| [POST /api/v1/carts](/endpoints/carts/create-cart) | Create a cart and get its `checkoutUrl` |
+| [PUT /api/v1/carts/\{cartId\}](/endpoints/carts/update-cart) | Replace a cart's line items |
+| [GET /api/v1/carts/\{cartId\}](/endpoints/carts/retrieve-cart) | Look up a cart, its `checkoutUrl` and its `orderId` |
