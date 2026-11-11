@@ -5,4 +5,4 @@ openapi: 'POST /api/v1/carts'
 
 # Checking out
 
-When the customer checks out, redirect their browser to the cart's `checkoutUrl`. It opens the checkout of the dispensary's menu with the cart, where the customer signs in or checks out as a guest and places the order. See the [Checkout Handoff guide](/guides/checkout-handoff) for the full flow.
+When the customer checks out, redirect their browser to the dispensary's menu checkout with the cart: the cart's `checkoutUrl` (the menu on Meadow's domain), or the page of the dispensary's site the menu is embedded on, with `meadowPath=/checkout&meadowQuery=checkoutCart%3D{cartId}`. There the customer signs in or checks out as a guest and places the order. See the [Checkout Handoff guide](/guides/checkout-handoff) for the full flow.

@@ -2755,7 +2755,7 @@
                     "autoSuccessUrl": "https://example.com/checkout/complete",
                     "address": null,
                     "orderId": null,
-                    "checkoutUrl": "https://dispensary.com/shop/checkout?checkoutCart=6f1c2e4a-8b3d-4f5e-9a7b-1c2d3e4f5a6b",
+                    "checkoutUrl": "https://embed.getmeadow.com/organizations/12/checkout?checkoutCart=6f1c2e4a-8b3d-4f5e-9a7b-1c2d3e4f5a6b",
                     "createdAt": "2026-09-30T15:53:44.336Z",
                     "updatedAt": "2026-09-30T15:53:44.336Z",
                     "lineItems": [
@@ -2821,7 +2821,7 @@
                     "autoSuccessUrl": "https://example.com/checkout/complete",
                     "address": null,
                     "orderId": 18673982,
-                    "checkoutUrl": "https://dispensary.com/shop/checkout?checkoutCart=6f1c2e4a-8b3d-4f5e-9a7b-1c2d3e4f5a6b",
+                    "checkoutUrl": "https://embed.getmeadow.com/organizations/12/checkout?checkoutCart=6f1c2e4a-8b3d-4f5e-9a7b-1c2d3e4f5a6b",
                     "createdAt": "2026-09-30T15:53:44.336Z",
                     "updatedAt": "2026-09-30T16:05:31.847Z",
                     "lineItems": [
@@ -2928,7 +2928,7 @@
                     "autoSuccessUrl": "https://example.com/checkout/complete",
                     "address": null,
                     "orderId": null,
-                    "checkoutUrl": "https://dispensary.com/shop/checkout?checkoutCart=6f1c2e4a-8b3d-4f5e-9a7b-1c2d3e4f5a6b",
+                    "checkoutUrl": "https://embed.getmeadow.com/organizations/12/checkout?checkoutCart=6f1c2e4a-8b3d-4f5e-9a7b-1c2d3e4f5a6b",
                     "createdAt": "2026-09-30T15:53:44.336Z",
                     "updatedAt": "2026-09-30T16:02:10.112Z",
                     "lineItems": [
@@ -6648,7 +6648,7 @@
           },
           "checkoutUrl": {
             "type": "string",
-            "description": "The checkout of the dispensary's menu with this cart, wherever the dispensary has installed their menu. Redirect the customer's browser here when they check out."
+            "description": "The checkout of the dispensary's menu on Meadow's domain, with this cart. To send the customer to the menu embedded on the dispensary's own site instead, see the Checkout Handoff guide."
           },
           "createdAt": {
             "type": "string",
