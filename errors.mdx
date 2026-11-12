@@ -36,17 +36,6 @@ When an error is returned, it will be in the following format
 
 Below is a list of error codes that Meadow may return on various requests. This list does not contain every single error that is possible, so we encourage you to handle unknown codes that you have not seen before.
 
-### `CART_CHECKED_OUT`
-Thrown when a [cart](/endpoints/carts/retrieve-cart) is checked out after it has already been checked out. A cart can only be checked out once.
-```json
-{
-  "error": {
-    "message": "This cart has already been checked out.",
-    "code": "CART_CHECKED_OUT"
-  }
-}
-```
-
 ### `INSUFFICIENT_PERMISSIONS`
 The `X-Client-Key` is valid but does not have the proper permissions for that endpoint
 ```json
