@@ -36,17 +36,6 @@ When an error is returned, it will be in the following format
 
 Below is a list of error codes that Meadow may return on various requests. This list does not contain every single error that is possible, so we encourage you to handle unknown codes that you have not seen before.
 
-### `CART_ADDRESS_NOT_DELIVERABLE`
-Thrown when [creating a delivery cart](/endpoints/carts/create-cart) for an address outside the dispensary's delivery zones, or one that can't be located.
-```json
-{
-  "error": {
-    "message": "The dispensary does not deliver to this address.",
-    "code": "CART_ADDRESS_NOT_DELIVERABLE"
-  }
-}
-```
-
 ### `CART_CHECKED_OUT`
 Thrown when a [cart](/endpoints/carts/retrieve-cart) is checked out after it has already been checked out. A cart can only be checked out once.
 ```json
@@ -87,17 +76,6 @@ Thrown when data submitted is not owned by the parent resource specified (Exampl
   "error": {
     "message": "That child resource does not belong to the specified parent.",
     "code": "INVALID_CHILD_RESOURCE"
-  }
-}
-```
-
-### `INVALID_DELIVERY_POSTAL_CODE`
-Thrown when [creating a delivery cart](/endpoints/carts/create-cart) for a postal code the dispensary doesn't deliver to, for dispensaries without delivery zones.
-```json
-{
-  "error": {
-    "message": "The organization you submitted the order for does not deliver to that postal code.",
-    "code": "INVALID_DELIVERY_POSTAL_CODE"
   }
 }
 ```

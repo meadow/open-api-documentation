@@ -33,7 +33,7 @@ Create the cart with [POST /api/v1/carts](/endpoints/carts/create-cart).
 }
 ```
 
-A delivery cart needs a full address the dispensary delivers to. A cart can't be changed after it's created: to change the line items, create a new cart and send the customer to its `checkoutUrl`.
+A delivery cart can carry the customer's address; the menu's checkout fills its address form from it and lets the customer confirm it and pick the delivery zone, as for any delivery order. A cart can't be changed after it's created: to change the line items, create a new cart and send the customer to its `checkoutUrl`.
 
 ## Step 2 - Redirect to the checkout
 

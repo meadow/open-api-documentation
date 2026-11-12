@@ -2683,7 +2683,7 @@
                   },
                   "address": {
                     "type": "object",
-                    "description": "The delivery address, required for `delivery` carts with `street1`, `city`, `state` and `postalCode`, and ignored for `pickup` carts. The dispensary must deliver to it, otherwise creating the cart returns `CART_ADDRESS_NOT_DELIVERABLE` (with delivery zones) or `INVALID_DELIVERY_POSTAL_CODE`.",
+                    "description": "The customer's delivery address, optional for `delivery` carts and ignored for `pickup` carts. When given it needs `street1`, `city`, `state` and `postalCode`. The menu's checkout fills its address form from it; the customer confirms it there and picks the delivery zone.",
                     "properties": {
                       "street1": {
                         "type": "string",
