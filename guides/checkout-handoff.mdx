@@ -18,7 +18,7 @@ Build your own shopping experience and hand the customer off to the dispensary's
 
 ## Step 1 - Create a cart
 
-Create the cart with [POST /api/v1/carts](/endpoints/carts/create-cart).
+Create the cart with [POST /api/v1/carts](/endpoints/orders/create-cart).
 
 ```javascript
 {
@@ -54,11 +54,11 @@ The menu replaces the customer's menu cart with yours. They can still change it 
 
 ## Step 3 - Look up the order
 
-[GET /api/v1/carts/\{cartId\}](/endpoints/carts/retrieve-cart) returns the cart's `orderId` once the customer has checked out. Follow the order with [GET /api/v1/orders/\{orderId\}](/endpoints/orders/retrieve-status).
+[GET /api/v1/carts/\{cartId\}](/endpoints/orders/retrieve-cart) returns the cart's `orderId` once the customer has checked out. Follow the order with [GET /api/v1/orders/\{orderId\}](/endpoints/orders/retrieve-status).
 
 # Mobile apps
 
-Create the cart on your server, never with API keys in the app. Then open the checkout in an in-app browser (`SFSafariViewController` on iOS, Custom Tabs on Android) or a WebView. The customer stays on the menu's order confirmation once they've ordered, so close the browser when they're done, and poll [GET /api/v1/carts/\{cartId\}](/endpoints/carts/retrieve-cart) for the `orderId` to update your app.
+Create the cart on your server, never with API keys in the app. Then open the checkout in an in-app browser (`SFSafariViewController` on iOS, Custom Tabs on Android) or a WebView. The customer stays on the menu's order confirmation once they've ordered, so close the browser when they're done, and poll [GET /api/v1/carts/\{cartId\}](/endpoints/orders/retrieve-cart) for the `orderId` to update your app.
 
 # Constraints
 
@@ -73,5 +73,5 @@ Create the cart on your server, never with API keys in the app. Then open the ch
 
 | Endpoint | Purpose |
 | --- | --- |
-| [POST /api/v1/carts](/endpoints/carts/create-cart) | Create a cart and get its `checkoutUrl` |
-| [GET /api/v1/carts/\{cartId\}](/endpoints/carts/retrieve-cart) | Look up a cart, its `checkoutUrl` and its `orderId` |
+| [POST /api/v1/carts](/endpoints/orders/create-cart) | Create a cart and get its `checkoutUrl` |
+| [GET /api/v1/carts/\{cartId\}](/endpoints/orders/retrieve-cart) | Look up a cart, its `checkoutUrl` and its `orderId` |
