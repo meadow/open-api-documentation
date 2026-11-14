@@ -34,7 +34,8 @@
       {
         "group": "Guides",
         "pages": [
-          "guides/inventory"
+          "guides/inventory",
+          "guides/checkout-handoff"
         ]
       },
       {
@@ -58,6 +59,8 @@
         "pages": [
           "endpoints/orders/customer-matching",
           "endpoints/orders/retrieve-status",
+          "endpoints/orders/create-cart",
+          "endpoints/orders/retrieve-cart",
           "endpoints/orders/retrieve-pricing",
           "endpoints/orders/create-order",
           "endpoints/orders/list-payment-types",

@@ -1,0 +1,77 @@
+---
+title: Checkout Handoff
+description: Send customers to the dispensary's menu to check out the cart they built with you
+---
+
+Build your own shopping experience and hand the customer off to the dispensary's Meadow menu to check out. The menu handles signing in, pricing, discounts, loyalty, payment and placing the order.
+
+## Prerequisites
+
+- An integration with the **Create Orders** [permission](/permissions)
+- Product option IDs from the [menu](/endpoints/menu/list-menu)
+
+## How it works
+
+1. Your server creates a cart with the customer's line items.
+2. When the customer clicks checkout, you redirect them to the dispensary's menu checkout with the cart.
+3. The dispensary's menu opens its checkout with the cart. The customer signs in, or checks out as a guest where the dispensary allows it, and places the order.
+
+## Step 1 - Create a cart
+
+Create the cart with [POST /api/v1/carts](/endpoints/orders/create-cart).
+
+```javascript
+{
+  "type": "pickup",
+  "lineItems": [
+    {
+      "productOptionId": 1899,
+      "quantity": 3
+    }
+  ]
+}
+```
+
+A delivery cart can carry the customer's address; the menu's checkout fills its address form from it and lets the customer confirm it and pick the delivery zone, as for any delivery order. A cart can't be changed after it's created: to change the line items, create a new cart and send the customer to its `checkoutUrl`.
+
+## Step 2 - Redirect to the checkout
+
+The cart's `checkoutUrl` opens the checkout of the dispensary's menu on Meadow's domain, with the cart:
+
+```
+https://embed.getmeadow.com/organizations/{organizationId}/checkout?checkoutCart={cartId}
+```
+
+Most dispensaries embed the menu on a page of their own website. If you'd rather send the customer there, use that page's URL and pass the checkout through the two query parameters the menu's embed script reads, `meadowPath` (the menu page) and `meadowQuery` (its query string), both URL-encoded:
+
+```
+https://dispensary.com/menu.html?meadowPath=%2Fcheckout&meadowQuery=checkoutCart%3D{cartId}
+```
+
+Send the customer's browser there with a `303 See Other` redirect or `window.location.assign()`.
+
+The menu replaces the customer's menu cart with yours. They can still change it before placing the order.
+
+## Step 3 - Look up the order
+
+[GET /api/v1/carts/\{cartId\}](/endpoints/orders/retrieve-cart) returns the cart's `orderId` once the customer has checked out. Follow the order with [GET /api/v1/orders/\{orderId\}](/endpoints/orders/retrieve-status).
+
+# Mobile apps
+
+Create the cart on your server, never with API keys in the app. Then open the checkout in an in-app browser (`SFSafariViewController` on iOS, Custom Tabs on Android) or a WebView. The customer stays on the menu's order confirmation once they've ordered, so close the browser when they're done, and poll [GET /api/v1/carts/\{cartId\}](/endpoints/orders/retrieve-cart) for the `orderId` to update your app.
+
+# Constraints
+
+- **The cart id is the key:** anyone with `checkoutUrl` can load the cart into their menu cart. It holds only the line items, order type and delivery address, so only send it to the customer's browser.
+- **Signing in:** customers sign in on the menu. Carts aren't tied to a customer, so the order is for whoever signs in, or a guest.
+- **Guests:** guest checkout is pickup only, and only when the dispensary allows anonymous pickup orders. Otherwise the customer signs in or creates an account.
+- **One checkout per cart:** a cart can only be ordered once. Opening its checkout again shows the menu, with a message that the order was placed. Create a new cart for the next order.
+- **No redirect back:** after ordering, the customer stays on the menu. To know when the order was placed, read the cart's `orderId`.
+- **Revoked access:** if the dispensary deletes your integration or removes **Create Orders**, its carts can no longer be checked out.
+
+# Endpoint summary
+
+| Endpoint | Purpose |
+| --- | --- |
+| [POST /api/v1/carts](/endpoints/orders/create-cart) | Create a cart and get its `checkoutUrl` |
+| [GET /api/v1/carts/\{cartId\}](/endpoints/orders/retrieve-cart) | Look up a cart, its `checkoutUrl` and its `orderId` |
