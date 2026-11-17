@@ -34,6 +34,28 @@ Create the cart with [POST /api/v1/carts](/endpoints/orders/create-cart).
 
 A delivery cart can carry the customer's address; the menu's checkout fills its address form from it and lets the customer confirm it and pick the delivery zone, as for any delivery order. A cart can't be changed after it's created: to change the line items, create a new cart and send the customer to its `checkoutUrl`.
 
+### Previewing the price
+
+To show the customer a total in your cart before they check out, price the same line items with [POST /api/v1/orders/pricing](/endpoints/orders/retrieve-pricing). It needs the same **Create Orders** permission and doesn't create anything.
+
+```javascript
+{
+  "type": "pickup",
+  "lineItems": [
+    {
+      "productOptionId": 1899,
+      "quantity": 3
+    }
+  ]
+}
+```
+
+Show `totalPrice` as the subtotal and `customerGrandTotal` as the total, with the `discounts`, `adjustments` and `taxes` in between (see [how to display pricing](/endpoints/orders/retrieve-pricing#how-to-display-to-a-customer)). `metOrderMinimum` tells you whether a delivery cart is under the dispensary's order minimum, and `purchaseLimits` whether it's over a purchase limit.
+
+<Note>
+  This is an estimate. The final price is worked out on the menu at checkout with the menu's own discounts, which can differ from your integration's, and it can change there: the customer may sign in and use their loyalty rewards or discounts, enter discount codes, pick a delivery zone with its own fees and minimum, or choose a payment type with a fee.
+</Note>
+
 ## Step 2 - Redirect to the checkout
 
 The cart's `checkoutUrl` opens the checkout of the dispensary's menu on Meadow's domain, with the cart:
