@@ -15,6 +15,7 @@ Build your own shopping experience and hand the customer off to the dispensary's
 1. Your server creates a cart with the customer's line items.
 2. When the customer clicks checkout, you redirect them to the dispensary's menu checkout with the cart.
 3. The dispensary's menu opens its checkout with the cart. The customer signs in, or checks out as a guest where the dispensary allows it, and places the order.
+4. The menu sends the customer back to you, or shows its confirmation with a link back.
 
 ## Step 1 - Create a cart
 
@@ -23,6 +24,8 @@ Create the cart with [POST /api/v1/carts](/endpoints/orders/create-cart).
 ```javascript
 {
   "type": "pickup",
+  "continueShoppingUrl": "https://example.com/shop",
+  "autoSuccessUrl": "https://example.com/checkout/complete",
   "lineItems": [
     {
       "productOptionId": 1899,
@@ -74,13 +77,24 @@ Send the customer's browser there with a `303 See Other` redirect or `window.loc
 
 The menu replaces the customer's menu cart with yours. They can still change it before placing the order.
 
-## Step 3 - Look up the order
+## Step 3 - Return to your site
+
+| Field | Where the customer goes | If it's not set |
+| --- | --- | --- |
+| `autoSuccessUrl` | Straight after placing the order. When paying with Stronghold, the confirmation shows the payment link and a button back instead. | The menu's order confirmation |
+| `continueShoppingUrl` | The button back to you on the menu's confirmation | No button |
+
+Both take an `http` or `https` URL, or a link into your mobile app (e.g. `myapp://orders/complete`), of at most 2048 characters.
+
+If the customer is still on the menu a few seconds after placing the order, for example because the device didn't open your app, the confirmation shows with a button back to `autoSuccessUrl`.
+
+## Step 4 - Look up the order
 
 [GET /api/v1/carts/\{cartId\}](/endpoints/orders/retrieve-cart) returns the cart's `orderId` once the customer has checked out. Follow the order with [GET /api/v1/orders/\{orderId\}](/endpoints/orders/retrieve-status).
 
 # Mobile apps
 
-Create the cart on your server, never with API keys in the app. Then open the checkout in an in-app browser (`SFSafariViewController` on iOS, Custom Tabs on Android) or a WebView. The customer stays on the menu's order confirmation once they've ordered, so close the browser when they're done, and poll [GET /api/v1/carts/\{cartId\}](/endpoints/orders/retrieve-cart) for the `orderId` to update your app.
+Create the cart on your server, never with API keys in the app. Both URLs can be links into your app in its URL scheme, such as `myapp://orders/complete`.
 
 # Constraints
 
@@ -88,7 +102,6 @@ Create the cart on your server, never with API keys in the app. Then open the ch
 - **Signing in:** customers sign in on the menu. Carts aren't tied to a customer, so the order is for whoever signs in, or a guest.
 - **Guests:** guest checkout is pickup only, and only when the dispensary allows anonymous pickup orders. Otherwise the customer signs in or creates an account.
 - **One checkout per cart:** a cart can only be ordered once. Opening its checkout again shows the menu, with a message that the order was placed. Create a new cart for the next order.
-- **No redirect back:** after ordering, the customer stays on the menu. To know when the order was placed, read the cart's `orderId`.
 - **Revoked access:** if the dispensary deletes your integration or removes **Create Orders**, its carts can no longer be checked out.
 
 # Endpoint summary

@@ -2681,6 +2681,14 @@
                       }
                     }
                   },
+                  "continueShoppingUrl": {
+                    "type": "string",
+                    "description": "The button back to you on the menu's order confirmation: an `http` or `https` URL, or a link into your mobile app (e.g. `myapp://orders`). Max 2048 characters."
+                  },
+                  "autoSuccessUrl": {
+                    "type": "string",
+                    "description": "Where the customer is sent straight after placing their order: an `http` or `https` URL, or a link into your mobile app (e.g. `myapp://orders/complete`). Max 2048 characters. If omitted, the menu shows its order confirmation."
+                  },
                   "address": {
                     "type": "object",
                     "description": "The customer's delivery address, optional for `delivery` carts and ignored for `pickup` carts. When given it needs `street1`, `city`, `state` and `postalCode`. The menu's checkout fills its address form from it; the customer confirms it there and picks the delivery zone.",
@@ -2715,6 +2723,8 @@
               },
               "example": {
                 "type": "pickup",
+                "continueShoppingUrl": "https://example.com/shop",
+                "autoSuccessUrl": "https://example.com/checkout/complete",
                 "lineItems": [
                   {
                     "productOptionId": 1899,
@@ -2741,6 +2751,8 @@
                   "data": {
                     "id": "6f1c2e4a-8b3d-4f5e-9a7b-1c2d3e4f5a6b",
                     "type": "pickup",
+                    "continueShoppingUrl": "https://example.com/shop",
+                    "autoSuccessUrl": "https://example.com/checkout/complete",
                     "address": null,
                     "orderId": null,
                     "checkoutUrl": "https://embed.getmeadow.com/organizations/12/checkout?checkoutCart=6f1c2e4a-8b3d-4f5e-9a7b-1c2d3e4f5a6b",
@@ -2805,6 +2817,8 @@
                   "data": {
                     "id": "6f1c2e4a-8b3d-4f5e-9a7b-1c2d3e4f5a6b",
                     "type": "pickup",
+                    "continueShoppingUrl": "https://example.com/shop",
+                    "autoSuccessUrl": "https://example.com/checkout/complete",
                     "address": null,
                     "orderId": 18673982,
                     "checkoutUrl": "https://embed.getmeadow.com/organizations/12/checkout?checkoutCart=6f1c2e4a-8b3d-4f5e-9a7b-1c2d3e4f5a6b",
@@ -6490,6 +6504,16 @@
           "type": {
             "type": "string",
             "description": "The type of the order. One of `delivery`, `pickup`"
+          },
+          "continueShoppingUrl": {
+            "type": "string",
+            "nullable": true,
+            "description": "The button back to you on the menu's order confirmation"
+          },
+          "autoSuccessUrl": {
+            "type": "string",
+            "nullable": true,
+            "description": "Where the customer is sent straight after placing their order"
           },
           "address": {
             "type": "object",
